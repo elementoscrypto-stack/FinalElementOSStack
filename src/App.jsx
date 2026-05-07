@@ -594,7 +594,7 @@ function FeedbackPanel() {
         </div>
       </div>
       <button
-        onClick={() => window.location.href = "mailto:hello@elementos.app?subject=ElementOS%20Beta%20Feedback"}
+        onClick={() => window.location.href = "mailto:elementoscrypto@gmail.com?subject=ElementOS%20Beta%20Feedback"}
         className="mt-4 w-full rounded-2xl bg-cyan-300 p-4 font-black text-slate-950 shadow-[0_0_35px_rgba(34,211,238,.3)] transition hover:scale-[1.02]"
       >
         Send Beta Feedback
