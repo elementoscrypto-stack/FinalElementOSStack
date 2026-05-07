@@ -1,3 +1,4 @@
+// demo-ready build: simulated features clearly labelled, wallet/ELM/network marked as demo, feedback path included.
 // 50-upgrade go-live enhancement pack: probability meter, launch proof, share prompts, quick actions, trust panels.
 // live-ready public beta build: clear status, feedback loop, FAQ, community cues, beta disclaimer.
 // 100-polish launch pack: premium UX, onboarding, market pulse, trust layer, terminal output, sharing polish.
@@ -23,15 +24,15 @@ const PARTICLES = Array.from({ length: 48 }, (_, i) => ({
 
 
 const MARKET_STATS = [
-  ["ELM Price", "$0.284", "+12.4%"],
+  ["Demo ELM Price", "$0.284", "+12.4%"],
   ["24h Volume", "$2.1M", "mock"],
   ["Sim Runs", "2.4M", "network"],
-  ["ZDAR Events", "12,904", "global"],
+  ["ZDAR Events", "12,904", "demo global"],
 ];
 
 const FEATURE_PILLS = [
   "SimulationFi", "ARM Engine", "ELM Gas", "ZDAR Rarity",
-  "118 Elements", "Live Network", "Mobile Ready", "Shareable Results"
+  "118 Elements", "Simulated Demo Network", "Mobile Ready", "Shareable Results"
 ];
 
 const LAUNCH_CHECKLIST = ["Pick two elements", "Run simulation", "Trigger ZDAR", "Share the result"];
@@ -71,7 +72,7 @@ const ARM_AI_LINES = [
 
 
 const LAUNCH_STATUS = [
-  ["Public Beta", "Live"],
+  ["Public Demo", "Live"],
   ["Network", "Online"],
   ["Build", "Launch Ready"],
   ["Access", "Open"],
@@ -88,7 +89,7 @@ const FAQS = [
   ["What is ElementOS?", "A crypto-native element simulation experience built around ARM, ELM gas, and ZDAR rarity events."],
   ["Is this real blockchain?", "This public beta uses a testnet-style mock wallet while the core product loop is validated."],
   ["What is ZDAR?", "ZDAR is the rare Legendary Alignment event users hunt for inside the simulation."],
-  ["What should users do first?", "Connect the testnet wallet, run a simulation, then try Find Legendary Alignment."],
+  ["What should users do first?", "Connect the demo wallet, run a simulation, then try Find Legendary Alignment."],
 ];
 
 
@@ -120,10 +121,42 @@ const LAUNCH_METRICS = [
 ];
 
 const SAFETY_NOTES = [
-  "Prototype/testnet wallet only",
+  "Prototype/demo wallet only",
   "No real token transfer",
   "Experimental scoring model",
   "Public beta feedback welcomed",
+];
+
+
+
+const DEMO_TRUTH_TABLE = [
+  ["Real Today", "Live website, responsive UI, interactive simulations, shareable result cards"],
+  ["Simulated Today", "Demo Wallet, ELM gas, activity feed, market stats, ARM Assistant output"],
+  ["Not Live Yet", "Real blockchain, user accounts, database persistence, token trading"],
+  ["Next Step", "Tester feedback, analytics, saved runs, real authentication"],
+];
+
+const DEMO_STEPS = [
+  ["1", "Connect Demo Demo Wallet", "Starts the testnet-style experience. No real wallet or transaction occurs."],
+  ["2", "Run Simulation", "Spend demo ELM/credits and generate a result card."],
+  ["3", "Hunt ZDAR", "Trigger the rare Legendary Alignment moment."],
+  ["4", "Share Result", "Copy or share a demo result card for feedback."],
+];
+
+const DEMO_LIMITATIONS = [
+  "No real crypto transactions.",
+  "No user login or saved cloud accounts yet.",
+  "Network activity and ELM price are simulated.",
+  "Scoring model is experimental and for product demonstration.",
+  "Demo Wallet is a mock testnet-style interaction.",
+];
+
+const WHAT_FEEDBACK = [
+  "Did the site make sense in 10 seconds?",
+  "Was the ZDAR moment exciting?",
+  "Would you share a result card?",
+  "Where did the demo feel confusing?",
+  "What feature would make you return?",
 ];
 
 
@@ -268,10 +301,10 @@ function TopNav({ onLaunch, showApp, walletConnected }) {
         </div>
       </div>
       <div className="hidden items-center gap-2 md:flex">
-        <StatusPill tone="emerald">Live Network</StatusPill>
+        <StatusPill tone="emerald">Simulated Demo Network</StatusPill>
         <StatusPill tone="cyan">118 Elements</StatusPill>
         <StatusPill tone="fuchsia">ZDAR Enabled</StatusPill>
-        <StatusPill tone={walletConnected ? "emerald" : "yellow"}>{walletConnected ? "Wallet Online" : "Testnet"}</StatusPill>
+        <StatusPill tone={walletConnected ? "emerald" : "yellow"}>{walletConnected ? "Demo Demo Wallet" : "Testnet"}</StatusPill>
       </div>
       {!showApp && (
         <button onClick={onLaunch} className="rounded-2xl bg-cyan-300 px-4 py-2 text-sm font-black text-slate-950 shadow-[0_0_30px_rgba(34,211,238,.35)] transition hover:scale-[1.03]">
@@ -317,7 +350,7 @@ function OnboardingStrip() {
 
 function MarketPanel() {
   return (
-    <Card title="ELM Market Pulse" kicker="mock ecosystem signal">
+    <Card title="Demo ELM Market Pulse" kicker="simulated ecosystem signal">
       <div className="mt-4 grid gap-3 sm:grid-cols-2">
         {MARKET_STATS.map(([label, value, sub]) => <Metric key={label} label={label} value={value} sub={sub} />)}
       </div>
@@ -390,9 +423,9 @@ function NetworkStatsPanel({ history, feed, result }) {
 
   return (
     <section className="mt-5 grid gap-3 md:grid-cols-4">
-      <Metric label="Users Online" value={online.toLocaleString()} sub="mock live network" />
-      <Metric label="Simulations Today" value={simsToday.toLocaleString()} sub="global activity" />
-      <Metric label="Global ZDAR" value={zdarGlobal.toLocaleString()} sub="legendary hits" />
+      <Metric label="Demo Users Online" value={online.toLocaleString()} sub="simulated network" />
+      <Metric label="Demo Simulations Today" value={simsToday.toLocaleString()} sub="simulated activity" />
+      <Metric label="Demo ZDAR Events" value={zdarGlobal.toLocaleString()} sub="legendary hits" />
       <Metric label="ZDAR Streak" value={`${streak}x`} sub="active challenge" />
     </section>
   );
@@ -402,11 +435,12 @@ function CollectibleResultCard({ pair, result, shareText, onShare }) {
   const id = `ZDAR-${Math.abs(pair.join("").split("").reduce((a, c) => a + c.charCodeAt(0), 0) * 137 + result.stability * 11)}`;
   return (
     <Card title="Collectible Result Card" kicker="share-ready output">
-      <div className={`mt-4 overflow-hidden rounded-[2rem] border p-5 ${
+      <div className={`relative mt-4 overflow-hidden rounded-[2rem] border p-5 ${
         result.zdar
           ? "border-fuchsia-300/50 bg-fuchsia-500/15 shadow-[0_0_70px_rgba(217,70,239,.32)]"
           : "border-cyan-300/25 bg-cyan-500/10"
       }`}>
+        <DemoWatermark />
         <div className="flex items-start justify-between gap-3">
           <div>
             <div className="text-[10px] font-black uppercase tracking-[0.34em] text-slate-300">Simulation Card</div>
@@ -443,9 +477,9 @@ function ARMAIPanel({ pair, result }) {
       : "ARM AI: Stability is forming. Try Discover or Find Legendary Alignment.";
 
   return (
-    <Card title="ARM AI Analyst" kicker="predictive assistant">
+    <Card title="ARM Assistant Demo" kicker="simulated assistant">
       <div className="mt-4 rounded-2xl border border-emerald-300/20 bg-emerald-500/10 p-4 text-emerald-100 shadow-[0_0_35px_rgba(16,185,129,.12)]">
-        <div className="text-[10px] font-black uppercase tracking-[0.3em] text-emerald-200">Live Interpretation</div>
+        <div className="text-[10px] font-black uppercase tracking-[0.3em] text-emerald-200">Demo Interpretation</div>
         <div className="mt-2 text-lg font-black">{advice}</div>
         <div className="mt-3 text-sm text-emerald-100/75">
           {pair.join(" / ")} currently resolves at {result.stability}% stability with {result.delta}° angular delta.
@@ -539,9 +573,9 @@ function LaunchStatusBar() {
 function PublicBetaNotice() {
   return (
     <div className="mt-5 rounded-[2rem] border border-yellow-300/25 bg-yellow-400/10 p-4 text-yellow-50 shadow-[0_0_45px_rgba(250,204,21,.1)]">
-      <div className="text-[10px] font-black uppercase tracking-[0.32em] text-yellow-200">Public Beta Notice</div>
+      <div className="text-[10px] font-black uppercase tracking-[0.32em] text-yellow-200">Public Demo Notice</div>
       <p className="mt-2 text-sm text-yellow-50/85">
-        ElementOS is live as an experimental SimulationFi MVP. Wallet, ELM gas, market stats, and activity signals are prototype/testnet mechanics while the product loop is validated.
+        ElementOS is live as an experimental SimulationFi MVP. Demo Wallet, ELM gas, market stats, and activity signals are prototype/testnet mechanics while the product loop is validated.
       </p>
     </div>
   );
@@ -549,7 +583,7 @@ function PublicBetaNotice() {
 
 function FeedbackPanel() {
   return (
-    <Card title="Public Beta Feedback" kicker="help shape ElementOS">
+    <Card title="Public Demo Feedback" kicker="help shape ElementOS">
       <div className="mt-4 rounded-2xl border border-cyan-300/20 bg-cyan-500/10 p-4">
         <div className="text-lg font-black text-white">What should users tell us?</div>
         <div className="mt-3 grid gap-2 text-sm text-slate-300">
@@ -602,17 +636,17 @@ function FAQPanel() {
 function LiveLaunchFooter({ onFindZDAR, onRun, walletConnected }) {
   return (
     <footer className="mt-5 rounded-[2.5rem] border border-white/10 bg-slate-950/70 p-6 text-center shadow-[0_0_80px_rgba(0,0,0,.25)]">
-      <div className="text-[10px] font-black uppercase tracking-[0.4em] text-cyan-300">ElementOS is Live</div>
+      <div className="text-[10px] font-black uppercase tracking-[0.4em] text-cyan-300">ElementOS Public Demo</div>
       <h2 className="mt-3 text-3xl font-black text-white sm:text-5xl">Run a simulation. Hunt ZDAR. Share the result. Go live.</h2>
       <p className="mx-auto mt-3 max-w-2xl text-sm leading-6 text-slate-300">
-        Public beta build for validating the ElementOS SimulationFi loop before accounts, backend persistence, and real token integrations.
+        Public demo build for validating the ElementOS SimulationFi loop before accounts, backend persistence, and real token integrations.
       </p>
       <div className="mt-5 flex flex-wrap justify-center gap-3">
         <button onClick={onFindZDAR} className="rounded-2xl border border-fuchsia-300/40 bg-fuchsia-500/20 px-5 py-3 font-black text-fuchsia-100 shadow-[0_0_35px_rgba(217,70,239,.22)] transition hover:scale-[1.03]">⚡ Find ZDAR</button>
         <button disabled={!walletConnected} onClick={onRun} className="rounded-2xl bg-cyan-300 px-5 py-3 font-black text-slate-950 shadow-[0_0_35px_rgba(34,211,238,.35)] transition hover:scale-[1.03] disabled:opacity-50">🚀 Run Simulation</button>
       </div>
       <div className="mt-5 text-xs text-slate-500">
-        Experimental product preview. Not financial advice. Not a scientific validation engine.
+        ElementOS Public Demo — experimental MVP. No real transactions, no real wallet connection, no investment offer, and no scientific validation.
       </div>
     </footer>
   );
@@ -726,6 +760,107 @@ function SharePromptPanel({ result, onShare }) {
         <div className="text-2xl font-black text-white">{result.zdar ? "You hit Legendary." : "Generate a shareable result."}</div>
         <p className="mt-2 text-sm text-slate-300">Use this panel to push users toward screenshots, clips, and social posts.</p>
         <button onClick={onShare} className="mt-4 w-full rounded-2xl bg-fuchsia-300 p-4 font-black text-slate-950 shadow-[0_0_35px_rgba(217,70,239,.35)] transition hover:scale-[1.02]">📤 Prepare Share Text</button>
+      </div>
+    </Card>
+  );
+}
+
+
+
+function DemoModeBadge() {
+  return (
+    <div className="fixed bottom-3 left-3 z-[70] rounded-2xl border border-yellow-300/30 bg-slate-950/90 px-4 py-3 text-xs font-black uppercase tracking-[0.2em] text-yellow-100 shadow-[0_0_40px_rgba(250,204,21,.18)] backdrop-blur-xl">
+      Demo Build • No Real Transactions
+    </div>
+  );
+}
+
+function DemoTruthPanel() {
+  return (
+    <Card title="What Is Real vs Simulated?" kicker="demo transparency">
+      <div className="mt-4 grid gap-3">
+        {DEMO_TRUTH_TABLE.map(([label, detail]) => (
+          <div key={label} className="rounded-2xl border border-white/10 bg-slate-950/45 p-4">
+            <div className="text-xs font-black uppercase tracking-[0.24em] text-cyan-300">{label}</div>
+            <div className="mt-2 text-sm leading-6 text-slate-300">{detail}</div>
+          </div>
+        ))}
+      </div>
+    </Card>
+  );
+}
+
+function GuidedDemoPanel({ onConnect, onRun, onFindZDAR, onShare, walletConnected }) {
+  return (
+    <Card title="Guided Demo Mode" kicker="recommended first path">
+      <div className="mt-4 grid gap-3">
+        {DEMO_STEPS.map(([num, title, desc]) => (
+          <div key={title} className="rounded-2xl border border-white/10 bg-slate-950/45 p-4">
+            <div className="flex gap-3">
+              <div className="grid h-9 w-9 shrink-0 place-items-center rounded-xl border border-cyan-300/30 bg-cyan-300/10 font-black text-cyan-100">{num}</div>
+              <div>
+                <div className="font-black text-white">{title}</div>
+                <div className="mt-1 text-sm leading-6 text-slate-400">{desc}</div>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+      <div className="mt-4 grid gap-3 sm:grid-cols-2">
+        <button onClick={onConnect} className="rounded-2xl bg-cyan-300 p-4 font-black text-slate-950 shadow-[0_0_35px_rgba(34,211,238,.3)] transition hover:scale-[1.02]">
+          {walletConnected ? "Demo Demo Wallet Connected" : "Connect Demo Demo Wallet"}
+        </button>
+        <button disabled={!walletConnected} onClick={onRun} className="rounded-2xl border border-cyan-300/30 bg-cyan-500/10 p-4 font-black text-cyan-100 transition hover:bg-cyan-500/15 disabled:opacity-50">Run Demo Simulation</button>
+        <button onClick={onFindZDAR} className="rounded-2xl border border-fuchsia-300/40 bg-fuchsia-500/20 p-4 font-black text-fuchsia-100 transition hover:scale-[1.02]">Find ZDAR</button>
+        <button onClick={onShare} className="rounded-2xl border border-white/10 bg-white/10 p-4 font-black text-white transition hover:bg-white/15">Generate Share Card</button>
+      </div>
+    </Card>
+  );
+}
+
+function DemoLimitationsPanel() {
+  return (
+    <Card title="Current Demo Limitations" kicker="honest product status">
+      <div className="mt-4 grid gap-2">
+        {DEMO_LIMITATIONS.map((item) => (
+          <div key={item} className="rounded-xl border border-yellow-300/15 bg-yellow-400/5 p-3 text-sm text-yellow-50/85">
+            <span className="mr-2 text-yellow-300">!</span>{item}
+          </div>
+        ))}
+      </div>
+    </Card>
+  );
+}
+
+function FeedbackChecklistPanel() {
+  return (
+    <Card title="What Feedback We Need" kicker="early tester prompt">
+      <div className="mt-4 grid gap-2">
+        {WHAT_FEEDBACK.map((item) => (
+          <div key={item} className="rounded-xl border border-emerald-300/15 bg-emerald-400/5 p-3 text-sm text-emerald-50/85">
+            <span className="mr-2 text-emerald-300">✓</span>{item}
+          </div>
+        ))}
+      </div>
+    </Card>
+  );
+}
+
+function DemoWatermark() {
+  return (
+    <div className="pointer-events-none absolute right-4 top-4 rounded-full border border-yellow-300/20 bg-yellow-400/10 px-3 py-1 text-[10px] font-black uppercase tracking-[0.22em] text-yellow-100">
+      Demo Data
+    </div>
+  );
+}
+
+function AboutDemoPanel() {
+  return (
+    <Card title="What Is ElementOS?" kicker="10-second explanation">
+      <div className="mt-4 rounded-2xl border border-cyan-300/20 bg-cyan-500/10 p-5">
+        <p className="text-sm leading-7 text-slate-200">
+          ElementOS is an interactive SimulationFi demo where users select elements, run simulated ARM-based pairings, hunt rare ZDAR alignment events, and generate shareable result cards. This build is designed for early feedback before real accounts, persistence, and blockchain integrations.
+        </p>
       </div>
     </Card>
   );
@@ -846,7 +981,7 @@ function LiveFeedPanel({ feed }) {
   const merged = [...feed, ...fallbackFeed].slice(0, 9);
 
   return (
-    <Card title="🔥 Live Network Feed" kicker="real-time simulation stream">
+    <Card title="🔥 Simulated Activity Feed" kicker="demo activity stream">
       <div className="mt-4 grid gap-2">
         {merged.map((item, index) => (
           <div
@@ -864,18 +999,18 @@ function LiveFeedPanel({ feed }) {
   );
 }
 
-function MockWalletPanel({ walletConnected, walletAddress, elm, credits, stakedElm, onConnect, onDisconnect, onTopUp, onStake, onBuyCredits }) {
+function MockDemo WalletPanel({ walletConnected, walletAddress, elm, credits, stakedElm, onConnect, onDisconnect, onTopUp, onStake, onBuyCredits }) {
   return (
-    <Card title="Wallet" kicker="testnet wallet" className="md:col-span-2 xl:col-span-2">
+    <Card title="Demo Wallet" kicker="demo wallet" className="md:col-span-2 xl:col-span-2">
       <div className="mt-4 grid gap-4">
         <div className={`rounded-3xl border p-5 ${walletConnected ? "border-emerald-300/30 bg-emerald-500/10" : "border-yellow-300/30 bg-yellow-500/10"}`}>
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <div>
-              <div className="text-xs uppercase tracking-[0.25em] text-slate-300">Wallet Status</div>
+              <div className="text-xs uppercase tracking-[0.25em] text-slate-300">Demo Demo Wallet Status</div>
               <div className="mt-1 text-3xl font-black">{walletConnected ? "Connected" : "Disconnected"}</div>
             </div>
             <div className={`rounded-full px-4 py-2 text-xs font-black uppercase tracking-[0.22em] ${walletConnected ? "bg-emerald-300/20 text-emerald-100" : "bg-yellow-300/20 text-yellow-100"}`}>
-              {walletConnected ? "Testnet Live" : "Wallet Required"}
+              {walletConnected ? "Demo Mode Live" : "Demo Demo Wallet Required"}
             </div>
           </div>
           <div className="mt-4 rounded-2xl border border-white/10 bg-slate-950/60 p-3 font-mono text-xs text-cyan-100 break-all">
@@ -884,15 +1019,15 @@ function MockWalletPanel({ walletConnected, walletAddress, elm, credits, stakedE
         </div>
 
         <div className="grid gap-3 sm:grid-cols-3">
-          <Metric label="ELM Balance" value={elm.toLocaleString()} sub="testnet gas" />
+          <Metric label="Demo ELM Balance" value={elm.toLocaleString()} sub="testnet gas" />
           <Metric label="Credits" value={credits} sub="free runs" />
           <Metric label="Staked ELM" value={stakedElm.toLocaleString()} sub="mock staking" />
         </div>
 
         {!walletConnected ? (
-          <PrimaryButton onClick={onConnect} className="w-full">Connect Wallet</PrimaryButton>
+          <PrimaryButton onClick={onConnect} className="w-full">Connect Demo Wallet</PrimaryButton>
         ) : (
-          <GhostButton onClick={onDisconnect} className="w-full">Disconnect Wallet</GhostButton>
+          <GhostButton onClick={onDisconnect} className="w-full">Disconnect Demo Wallet</GhostButton>
         )}
 
         <div className="grid gap-3 sm:grid-cols-3">
@@ -1033,8 +1168,8 @@ export default function App() {
   const [elm, setElm] = useState(2000000);
   const [credits, setCredits] = useState(5);
   const [stakedElm, setStakedElm] = useState(0);
-  const [walletConnected, setWalletConnected] = useState(false);
-  const [walletAddress, setWalletAddress] = useState("");
+  const [walletConnected, setDemo WalletConnected] = useState(false);
+  const [walletAddress, setDemo WalletAddress] = useState("");
   const [history, setHistory] = useState([]);
   const [favorites, setFav] = useState([]);
   const [shareText, setShareText] = useState("");
@@ -1064,9 +1199,9 @@ export default function App() {
     setPair((current) => current.map((value, i) => (i === index ? symbol : value)));
   }
 
-  function connectWallet() {
-    setWalletConnected(true);
-    setWalletAddress(`0xELM${Math.random().toString(16).slice(2, 8).toUpperCase()}...${Math.random().toString(16).slice(2, 6).toUpperCase()}`);
+  function connectDemo Wallet() {
+    setDemo WalletConnected(true);
+    setDemo WalletAddress(`0xELM${Math.random().toString(16).slice(2, 8).toUpperCase()}...${Math.random().toString(16).slice(2, 6).toUpperCase()}`);
   }
 
   function run() {
@@ -1124,7 +1259,9 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen overflow-hidden bg-slate-950 p-3 text-white sm:p-5">
+    <>
+      <DemoModeBadge />
+      <div className="min-h-screen overflow-hidden bg-slate-950 p-3 text-white sm:p-5">
       <style>{`
         @keyframes zdarPulse {
           0%, 100% { transform: scale(1); filter: brightness(1); }
@@ -1191,21 +1328,38 @@ export default function App() {
                 </div>
                 <div className="grid w-full gap-3 sm:min-w-[360px] lg:w-auto">
                   <Metric label="Current Pair" value={pair.join(" / ")} sub="live simulation pair" />
-                  <Metric label="Wallet Balance" value={elm.toLocaleString()} sub="testnet ELM" />
-                  <Metric label="Wallet" value={walletConnected ? "Connected" : "Offline"} sub={walletConnected ? walletAddress : "connect to run"} />
+                  <Metric label="Demo Demo Demo ELM Balance" value={elm.toLocaleString()} sub="demo ELM" />
+                  <Metric label="Demo Wallet" value={walletConnected ? "Connected" : "Offline"} sub={walletConnected ? walletAddress : "connect to run"} />
                 </div>
               </div>
             </header>
 
             <LaunchBanner onFindZDAR={discoverZDAR} />
 
+            <section className="mt-5 grid gap-5 lg:grid-cols-2">
+              <AboutDemoPanel />
+              <GuidedDemoPanel
+                onConnect={connectWallet}
+                onRun={run}
+                onFindZDAR={discoverZDAR}
+                onShare={generateShareCard}
+                walletConnected={walletConnected}
+              />
+            </section>
+
+            <section className="mt-5 grid gap-5 lg:grid-cols-3">
+              <DemoTruthPanel />
+              <DemoLimitationsPanel />
+              <FeedbackChecklistPanel />
+            </section>
+
             <section className="mt-4 grid grid-cols-2 gap-3 md:grid-cols-3 xl:grid-cols-6 sm:mt-5">
               <Metric label="Explorer Level" value={level} sub={`${xp} XP`} />
               <Metric label="Simulation Credits" value={credits} />
               <Metric label="Staked ELM" value={stakedElm.toLocaleString()} />
               <Metric label="ARM Nodes" value="118" />
-              <Metric label="Live Network" value="Online" sub="activity stream" />
-              <Metric label="Gas Mode" value="Testnet" />
+              <Metric label="Simulated Demo Network" value="Online" sub="activity stream" />
+              <Metric label="Demo Gas" value="Testnet" />
             </section>
 
             <NetworkStatsPanel history={history} feed={feed} result={result} />
@@ -1279,16 +1433,16 @@ export default function App() {
             </section>
 
             <section className="mt-4 grid gap-4 md:grid-cols-2 xl:grid-cols-5 sm:mt-5 sm:gap-5">
-              <MockWalletPanel
+              <MockDemo WalletPanel
                 walletConnected={walletConnected}
                 walletAddress={walletAddress}
                 elm={elm}
                 credits={credits}
                 stakedElm={stakedElm}
-                onConnect={connectWallet}
+                onConnect={connectDemo Wallet}
                 onDisconnect={() => {
-                  setWalletConnected(false);
-                  setWalletAddress("");
+                  setDemo WalletConnected(false);
+                  setDemo WalletAddress("");
                 }}
                 onTopUp={() => walletConnected && setElm((e) => e + 500)}
                 onStake={() => {
@@ -1386,5 +1540,7 @@ export default function App() {
         )}
       </div>
     </div>
+      </div>
+    </>
   );
 }
