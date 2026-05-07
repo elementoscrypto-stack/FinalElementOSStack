@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 
 const UI = {
   appName: "ElementOS — ARM Simulation Network",
@@ -6,6 +6,17 @@ const UI = {
   sub: "Pick two elements → run simulation → hunt ZDAR.",
   launch: "🚀 Run Simulation",
 };
+
+
+const PARTICLES = Array.from({ length: 48 }, (_, i) => ({
+  id: i,
+  left: (i * 37) % 100,
+  top: (i * 61) % 100,
+  size: 2 + (i % 4),
+  delay: (i % 12) * 0.35,
+  duration: 7 + (i % 9),
+  tone: i % 3 === 0 ? "bg-fuchsia-300" : i % 3 === 1 ? "bg-cyan-300" : "bg-blue-300",
+}));
 
 const RAW_ELEMENTS = [
   "1|H|Hydrogen|20|Nonmetal","2|He|Helium|90|Noble Gas","3|Li|Lithium|20|Alkali Metal","4|Be|Beryllium|35|Alkaline Earth Metal","5|B|Boron|10|Metalloid","6|C|Carbon|45|Nonmetal","7|N|Nitrogen|60|Nonmetal","8|O|Oxygen|70|Nonmetal","9|F|Fluorine|80|Halogen","10|Ne|Neon|90|Noble Gas",
@@ -24,6 +35,18 @@ const ELEMENTS = RAW_ELEMENTS.map((row) => {
   const [num, sym, name, theta, family] = row.split("|");
   return [Number(num), sym, name, Number(theta), family];
 });
+
+
+const LIVE_EVENT_TEMPLATES = [
+  "⚡ User_442 discovered Fe / Ru — ZDAR Legendary",
+  "🔵 User_128 ran Ti / W — Epic 91%",
+  "🟣 User_905 saved Al / Pt to watchlist",
+  "⚡ User_317 triggered ZDAR with Co / Rh",
+  "💠 User_611 minted Si / C structure card",
+  "🔥 User_084 joined the ARM Simulation Network",
+  "🧪 User_720 ran Au / Al — Rare alignment",
+  "⚡ User_993 discovered Ru / Fe — ZDAR Legendary",
+];
 
 function clamp(n, min, max) {
   return Math.max(min, Math.min(max, n));
@@ -66,6 +89,27 @@ function simulate(elements, pair, settings) {
     strength: Math.round((stability + clamp(100 - delta, 0, 100)) / 2),
     confidence: clamp(Math.round(76 + stability * 0.19 - delta * 0.08), 48, 99),
   };
+}
+
+
+function ParticleField() {
+  return (
+    <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden">
+      {PARTICLES.map((p) => (
+        <span
+          key={p.id}
+          className={`absolute rounded-full ${p.tone} opacity-40 blur-[1px] shadow-[0_0_18px_currentColor]`}
+          style={{
+            left: `${p.left}%`,
+            top: `${p.top}%`,
+            width: `${p.size}px`,
+            height: `${p.size}px`,
+            animation: `floatParticle ${p.duration}s ease-in-out ${p.delay}s infinite alternate`,
+          }}
+        />
+      ))}
+    </div>
+  );
 }
 
 function Metric({ label, value, sub }) {
@@ -160,6 +204,30 @@ function LandingPage({ onLaunch }) {
         </div>
       </div>
     </section>
+  );
+}
+
+
+function LiveFeedPanel({ feed }) {
+  const fallbackFeed = LIVE_EVENT_TEMPLATES;
+  const merged = [...feed, ...fallbackFeed].slice(0, 9);
+
+  return (
+    <Card title="🔥 Live Network Feed" kicker="real-time simulation stream">
+      <div className="mt-4 grid gap-2">
+        {merged.map((item, index) => (
+          <div
+            key={`${item}-${index}`}
+            className="rounded-2xl border border-cyan-300/15 bg-slate-950/60 p-3 text-sm text-slate-200 shadow-[0_0_22px_rgba(34,211,238,.08)]"
+          >
+            <div className="flex items-start gap-3">
+              <span className="mt-1 h-2 w-2 shrink-0 rounded-full bg-emerald-300 shadow-[0_0_16px_rgba(110,231,183,.9)]" />
+              <span>{item}</span>
+            </div>
+          </div>
+        ))}
+      </div>
+    </Card>
   );
 }
 
@@ -340,6 +408,7 @@ export default function App() {
   const [xp, setXp] = useState(0);
   const [level, setLevel] = useState(1);
   const [feed, setFeed] = useState([]);
+  const [liveStream, setLiveStream] = useState(LIVE_EVENT_TEMPLATES.slice(0, 5));
 
   const elements = useMemo(() => ELEMENTS.map((e) => buildElement(e, settings)), [settings]);
   const result = useMemo(() => simulate(elements, pair, settings), [elements, pair, settings]);
@@ -347,6 +416,14 @@ export default function App() {
     () => elements.map((e) => ({ ...e, sim: simulate(elements, [settings.origin, e.sym], settings) })).sort((a, b) => b.sim.stability - a.sim.stability),
     [elements, settings]
   );
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      const next = LIVE_EVENT_TEMPLATES[Math.floor(Math.random() * LIVE_EVENT_TEMPLATES.length)];
+      setLiveStream((current) => [next, ...current].slice(0, 8));
+    }, 4200);
+    return () => clearInterval(timer);
+  }, []);
 
   function setPairAt(index, symbol) {
     setPair((current) => current.map((value, i) => (i === index ? symbol : value)));
@@ -413,6 +490,12 @@ export default function App() {
           50% { opacity: .35; }
         }
 
+        @keyframes floatParticle {
+          0% { transform: translate3d(0, 0, 0) scale(1); opacity: .18; }
+          50% { transform: translate3d(22px, -34px, 0) scale(1.35); opacity: .65; }
+          100% { transform: translate3d(-18px, 28px, 0) scale(.9); opacity: .28; }
+        }
+
         .zdar-active {
           animation: zdarPulse 1.4s ease-in-out infinite;
         }
@@ -423,6 +506,7 @@ export default function App() {
       `}</style>
       <div className="pointer-events-none fixed inset-0 bg-[radial-gradient(circle_at_20%_10%,rgba(34,211,238,.3),transparent_30%),radial-gradient(circle_at_85%_20%,rgba(217,70,239,.3),transparent_30%),radial-gradient(circle_at_50%_100%,rgba(59,130,246,.25),transparent_35%)]" />
       <div className="pointer-events-none fixed inset-0 opacity-30 [background-image:linear-gradient(rgba(255,255,255,.035)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,.035)_1px,transparent_1px)] [background-size:44px_44px]" />
+      <ParticleField />
       {result.zdar && <div className="pointer-events-none fixed inset-0 z-10 bg-fuchsia-500/20 zdar-flash" />}
 
       <div className="relative mx-auto max-w-7xl">
@@ -452,7 +536,7 @@ export default function App() {
               <Metric label="Simulation Credits" value={credits} />
               <Metric label="Staked ELM" value={stakedElm.toLocaleString()} />
               <Metric label="ARM Nodes" value="118" />
-              <Metric label="Live Feed" value={feed.length} />
+              <Metric label="Live Network" value="Online" sub="activity stream" />
               <Metric label="Gas Mode" value="Testnet" />
             </section>
 
@@ -566,14 +650,7 @@ export default function App() {
                 </div>
               </Card>
 
-              <Card title="🔥 Live Feed" kicker="live discoveries">
-                <div className="mt-4 grid gap-2">
-                  {feed.length === 0 ? <p className="text-sm text-slate-400">No ZDAR events yet. Try Find Legendary Alignment.</p> : feed.map((item, index) => (
-                    <div key={`${item}-${index}`} className="rounded-xl border border-fuchsia-300/20 bg-fuchsia-500/10 p-2 text-sm text-fuchsia-100">{item}</div>
-                  ))}
-                </div>
-              </Card>
-            </section>
+              <LiveFeedPanel feed={[...feed, ...liveStream]} /></section>
 
             <section className="mt-5">
               <Card title="⭐ Saved Pairs" kicker="watchlist">
