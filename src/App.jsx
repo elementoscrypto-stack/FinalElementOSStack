@@ -1,4 +1,5 @@
-// ElementOS Persistent Discovery Layer
+// master-proof-of-telemetry build: 150 upgrade architecture baked into ElementOS demo.
+// ElementOS Proof of Telemetry Layer
 // Frontend-only public demo build: local profile, persistent history, deterministic scoring, onboarding, discovery engine, and social cards.
 
 import React, { useEffect, useMemo, useState } from "react";
@@ -7,10 +8,63 @@ const STORAGE_KEY = "elementos_profile_v1";
 
 const BRAND = {
   name: "ElementOS",
-  tagline: "Persistent Discovery Layer",
+  tagline: "Proof of Telemetry Layer",
   manifesto:
     "ElementOS turns element interaction into a visual discovery network: pick elements, run deterministic simulations, hunt ZDAR alignments, and collect shareable structures.",
 };
+
+
+const TELEMETRY_LAYERS = [
+  ["Persistent Accounts", "Local profile identity, XP, favourites, saved cards"],
+  ["Telemetry Backbone", "Every run generates a deterministic telemetry receipt"],
+  ["Deterministic Simulations", "Same pair + same model = consistent result seed"],
+  ["Validator Layer", "Mock validators score receipts for consistency and trust"],
+  ["Live Network Engine", "Simulated activity stream, status pulses, network state"],
+  ["AI-Assisted Discovery", "ARM Assistant suggests pair paths and ZDAR candidates"],
+  ["ZDAR Event System", "Legendary alignments become shareable event objects"],
+];
+
+const TELEMETRY_SIGNALS = [
+  "pair.selected",
+  "arm.origin.locked",
+  "simulation.queued",
+  "orbital.sync",
+  "stability.converged",
+  "field.resonance",
+  "receipt.validated",
+  "zdar.checked",
+  "card.generated",
+  "profile.persisted",
+];
+
+const VALIDATORS = [
+  ["VAL-ARM-01", "ARM consistency", 99],
+  ["VAL-NOR-07", "NOR/SOR scoring", 96],
+  ["VAL-ZDAR-03", "Alignment rarity", 98],
+  ["VAL-ELM-11", "Demo gas accounting", 94],
+];
+
+const TELEMETRY_ROADMAP = [
+  "Telemetry API",
+  "Validator marketplace",
+  "Proof-of-run receipts",
+  "Community challenge proofs",
+  "ZDAR discovery certificates",
+  "Simulation reputation layer",
+  "Account cloud sync",
+  "Real wallet binding",
+];
+
+const TELEMETRY_UPGRADE_GROUPS = [
+  ["Accounts", 20, "Persistent identity, XP, saves, profiles, history"],
+  ["Telemetry", 20, "Receipts, logs, deterministic events, run trails"],
+  ["Determinism", 20, "Seeded outputs, repeatable scoring, model versioning"],
+  ["Validators", 20, "Mock consensus, trust scores, validation checks"],
+  ["Live Engine", 20, "Network state, activity, counters, pulse layers"],
+  ["AI Discovery", 25, "Suggestions, recommendations, rarity hunts"],
+  ["ZDAR Events", 25, "Event cards, streaks, rarity triggers, share objects"],
+];
+
 
 const RAW_ELEMENTS = [
   "1|H|Hydrogen|20|Nonmetal","2|He|Helium|90|Noble Gas","3|Li|Lithium|20|Alkali Metal","4|Be|Beryllium|35|Alkaline Earth Metal","5|B|Boron|10|Metalloid","6|C|Carbon|45|Nonmetal","7|N|Nitrogen|60|Nonmetal","8|O|Oxygen|70|Nonmetal","9|F|Fluorine|80|Halogen","10|Ne|Neon|90|Noble Gas",
@@ -70,6 +124,9 @@ const DEFAULT_PROFILE = {
   history: [],
   favourites: [],
   zdarDiscoveries: [],
+  telemetryReceipts: [],
+  validatorScore: 0,
+  networkReputation: 1,
   onboardingComplete: false,
   firstStructureSeen: false,
 };
@@ -96,6 +153,32 @@ function clamp(n, min, max) {
 function hashString(value) {
   return value.split("").reduce((acc, char) => (acc * 31 + char.charCodeAt(0)) % 9973, 7);
 }
+
+
+function makeTelemetryReceipt({ profile, pair, result, settings }) {
+  const payload = `${profile.username}|${pair.join("-")}|${result.seed}|${result.stability}|${settings.origin}`;
+  const hash = hashString(payload).toString(16).toUpperCase().padStart(4, "0");
+  return {
+    id: `POT-${result.id}-${hash}`,
+    hash: `0xTEL${hash}${result.seed}`,
+    model: "ARM-POT-v2.demo",
+    pair: [...pair],
+    stability: result.stability,
+    rarity: result.rarity,
+    seed: result.seed,
+    validatorScore: Math.min(99, Math.max(71, Math.round((result.confidence + result.stability) / 2))),
+    timestamp: new Date().toISOString(),
+    signals: TELEMETRY_SIGNALS.slice(0, result.zdar ? 10 : 8),
+  };
+}
+
+function telemetryInsight(pair, result) {
+  if (result.zdar) return "Telemetry confirms a high-value ZDAR event. Save, share, and replay this receipt.";
+  if (result.stability > 82) return "High-stability run detected. Validator confidence is strong; try adjacent transition metals.";
+  if (result.stability > 60) return "Moderate structure forming. Discovery engine recommends a ZDAR hunt path.";
+  return "Low-stability output. Use random discovery or ARM origin switching to find stronger telemetry.";
+}
+
 
 function buildElement(element, settings) {
   let theta = element.thetaBase + settings.calibration;
@@ -175,6 +258,171 @@ function ParticleField() {
     </div>
   );
 }
+
+
+function TelemetryBackbonePanel({ receipt, result, pair }) {
+  const activeReceipt = receipt || {
+    id: "POT-WAITING-FOR-RUN",
+    hash: "0xTELPENDING",
+    model: "ARM-POT-v2.demo",
+    validatorScore: result.confidence,
+    signals: TELEMETRY_SIGNALS.slice(0, 5),
+  };
+
+  return (
+    <Card title="Proof of Telemetry Backbone" kicker="invisible intelligence engine">
+      <div className="mt-4 rounded-[2rem] border border-cyan-300/20 bg-cyan-500/10 p-5 shadow-[0_0_55px_rgba(34,211,238,.12)]">
+        <div className="text-[10px] font-black uppercase tracking-[0.32em] text-cyan-200">Telemetry Receipt</div>
+        <div className="mt-2 break-all font-mono text-sm text-cyan-50">{activeReceipt.id}</div>
+        <div className="mt-3 grid gap-3 sm:grid-cols-3">
+          <Metric label="Receipt Hash" value={activeReceipt.hash} />
+          <Metric label="Model" value={activeReceipt.model.split(".")[0]} sub={activeReceipt.model.split(".")[1] || "demo"} />
+          <Metric label="Validator Score" value={`${activeReceipt.validatorScore}%`} />
+        </div>
+        <div className="mt-4 rounded-2xl border border-white/10 bg-slate-950/55 p-4 text-sm leading-6 text-slate-300">
+          {telemetryInsight(pair, result)}
+        </div>
+      </div>
+      <div className="mt-4 grid gap-2 sm:grid-cols-2">
+        {activeReceipt.signals.map((signal, index) => (
+          <div key={`${signal}-${index}`} className="rounded-xl border border-white/10 bg-slate-950/45 p-3 text-xs font-bold text-slate-200">
+            <span className="mr-2 text-emerald-300">●</span>{signal}
+          </div>
+        ))}
+      </div>
+    </Card>
+  );
+}
+
+function ValidatorLayerPanel({ receipt }) {
+  return (
+    <Card title="Validator Layer" kicker="mock consensus checks">
+      <div className="mt-4 grid gap-3">
+        {VALIDATORS.map(([id, purpose, base]) => {
+          const score = receipt ? Math.min(99, Math.round((base + receipt.validatorScore) / 2)) : base;
+          return (
+            <div key={id} className="rounded-2xl border border-white/10 bg-slate-950/45 p-4">
+              <div className="flex items-center justify-between gap-3">
+                <div>
+                  <div className="font-mono text-xs font-black text-cyan-200">{id}</div>
+                  <div className="mt-1 text-sm text-slate-400">{purpose}</div>
+                </div>
+                <div className="text-2xl font-black text-white">{score}%</div>
+              </div>
+              <div className="mt-3 h-2 overflow-hidden rounded-full bg-slate-800">
+                <div className="h-full rounded-full bg-gradient-to-r from-cyan-300 to-emerald-300" style={{ width: `${score}%` }} />
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </Card>
+  );
+}
+
+function TelemetryArchitecturePanel() {
+  return (
+    <Card title="Version 2 Architecture" kicker="150-upgrade system map">
+      <div className="mt-4 grid gap-3">
+        {TELEMETRY_LAYERS.map(([title, desc]) => (
+          <div key={title} className="rounded-2xl border border-white/10 bg-slate-950/45 p-4">
+            <div className="font-black text-white">{title}</div>
+            <div className="mt-1 text-sm leading-6 text-slate-400">{desc}</div>
+          </div>
+        ))}
+      </div>
+    </Card>
+  );
+}
+
+function TelemetryUpgradeMatrix() {
+  return (
+    <Card title="150 Upgrade Matrix" kicker="proof-of-telemetry coverage">
+      <div className="mt-4 grid gap-3 sm:grid-cols-2">
+        {TELEMETRY_UPGRADE_GROUPS.map(([label, count, desc]) => (
+          <div key={label} className="rounded-2xl border border-white/10 bg-white/5 p-4">
+            <div className="flex items-center justify-between gap-3">
+              <div className="font-black text-white">{label}</div>
+              <div className="rounded-full border border-fuchsia-300/30 bg-fuchsia-300/10 px-3 py-1 text-xs font-black text-fuchsia-100">{count}</div>
+            </div>
+            <div className="mt-2 text-sm leading-6 text-slate-400">{desc}</div>
+          </div>
+        ))}
+      </div>
+    </Card>
+  );
+}
+
+function LiveTelemetryEnginePanel({ profile, receipt }) {
+  const reputation = profile.networkReputation || 1;
+  const receiptCount = profile.telemetryReceipts?.length || 0;
+  return (
+    <Card title="Live Telemetry Engine" kicker="demo network intelligence">
+      <div className="mt-4 grid gap-3 sm:grid-cols-3">
+        <Metric label="Receipts Saved" value={receiptCount} sub="local profile" />
+        <Metric label="Network Rep" value={reputation} sub="demo level" />
+        <Metric label="Latest Proof" value={receipt ? "Valid" : "Pending"} sub={receipt ? receipt.hash : "run required"} />
+      </div>
+      <div className="mt-4 rounded-2xl border border-emerald-300/20 bg-emerald-500/10 p-4 text-sm text-emerald-50/85">
+        This engine makes every simulation feel traceable: input pair, deterministic seed, score, validator pass, and profile persistence.
+      </div>
+    </Card>
+  );
+}
+
+function TelemetryRoadmapPanel() {
+  return (
+    <Card title="Telemetry Roadmap" kicker="future protocol layer">
+      <div className="mt-4 grid gap-2 sm:grid-cols-2">
+        {TELEMETRY_ROADMAP.map((item) => (
+          <div key={item} className="rounded-2xl border border-white/10 bg-white/5 p-3 text-sm font-bold text-slate-200">
+            <span className="mr-2 text-cyan-300">✦</span>{item}
+          </div>
+        ))}
+      </div>
+    </Card>
+  );
+}
+
+function TelemetryConsole({ receipt }) {
+  const lines = receipt
+    ? [
+        `receipt.id=${receipt.id}`,
+        `hash=${receipt.hash}`,
+        `model=${receipt.model}`,
+        `validator.score=${receipt.validatorScore}%`,
+        `signals=${receipt.signals.length}`,
+      ]
+    : ["awaiting simulation receipt...", "run simulation to generate proof trail", "validator layer idle"];
+
+  return (
+    <Card title="Telemetry Console" kicker="proof trail output">
+      <div className="mt-4 rounded-2xl border border-emerald-300/20 bg-black/60 p-4 font-mono text-xs leading-6 text-emerald-100">
+        {lines.map((line) => <div key={line}>&gt; {line}</div>)}
+      </div>
+    </Card>
+  );
+}
+
+function TelemetryDiscoveryAssistant({ pair, result, receipt }) {
+  const recommendation = result.zdar
+    ? "Publish this as a ZDAR proof event. It has deterministic replay value."
+    : result.stability > 80
+      ? "Strong candidate. Try Find ZDAR or switch ARM origin to Ru/Fe for a tighter proof trail."
+      : "Run discovery mode. Validator confidence is forming but not yet rare enough.";
+  return (
+    <Card title="AI-Assisted Telemetry Discovery" kicker="demo intelligence layer">
+      <div className="mt-4 rounded-2xl border border-fuchsia-300/20 bg-fuchsia-500/10 p-4">
+        <div className="text-[10px] font-black uppercase tracking-[0.3em] text-fuchsia-200">Recommendation</div>
+        <div className="mt-2 text-lg font-black text-white">{recommendation}</div>
+        <div className="mt-3 text-sm text-slate-300">
+          Pair: {pair.join(" / ")} • Stability: {result.stability}% • Proof: {receipt ? receipt.id : "pending"}
+        </div>
+      </div>
+    </Card>
+  );
+}
+
 
 function Metric({ label, value, sub }) {
   return (
@@ -272,7 +520,7 @@ function OnboardingModal({ profile, elements, onComplete }) {
           className="mt-5 w-full"
           onClick={() => onComplete(username.trim() || "Element Explorer", favouriteElement)}
         >
-          Enter Persistent Discovery Layer
+          Enter Proof of Telemetry Layer
         </PrimaryButton>
       </div>
     </div>
@@ -305,11 +553,11 @@ function LandingPage({ onLaunch, profile }) {
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(34,211,238,.22),transparent_32%),radial-gradient(circle_at_85%_35%,rgba(217,70,239,.18),transparent_30%)]" />
       <div className="relative grid gap-8 lg:grid-cols-[1.05fr_.95fr] lg:items-center">
         <div>
-          <div className="mb-3 inline-flex rounded-full border border-fuchsia-300/30 bg-fuchsia-300/10 px-4 py-2 text-[10px] font-black uppercase tracking-[0.35em] text-fuchsia-100">Persistent Discovery Layer</div>
+          <div className="mb-3 inline-flex rounded-full border border-fuchsia-300/30 bg-fuchsia-300/10 px-4 py-2 text-[10px] font-black uppercase tracking-[0.35em] text-fuchsia-100">Proof of Telemetry Layer</div>
           <br />
           <div className="inline-flex rounded-full border border-cyan-300/30 bg-cyan-300/10 px-4 py-2 text-xs font-black uppercase tracking-[0.35em] text-cyan-200">{BRAND.name}</div>
           <h1 className="mt-5 bg-gradient-to-r from-white via-cyan-200 to-fuchsia-300 bg-clip-text text-4xl font-black leading-[0.95] tracking-tight text-transparent sm:text-6xl md:text-8xl">
-            Save discoveries. Hunt ZDAR. Build your element profile.
+            Proof-backed simulations. Persistent discovery. ZDAR events.
           </h1>
           <p className="mt-4 max-w-3xl text-base leading-7 text-slate-300 sm:mt-6 sm:text-xl sm:leading-8">{BRAND.manifesto}</p>
           <div className="mt-5 flex flex-wrap gap-2">
@@ -331,7 +579,7 @@ function LandingPage({ onLaunch, profile }) {
           <div className="mt-5 rounded-[2rem] border border-yellow-300/25 bg-yellow-400/10 p-4 text-yellow-50">
             <div className="text-[10px] font-black uppercase tracking-[0.32em] text-yellow-200">Public Demo Notice</div>
             <p className="mt-2 text-sm text-yellow-50/85">
-              Frontend-only demo. Profile saves use localStorage. Wallet, ELM gas, activity feed, and market stats are simulated for product validation.
+              Frontend-only demo. Profile saves use localStorage. Wallet, ELM gas, telemetry receipts, validator checks, activity feed, and market stats are simulated for product validation.
             </p>
           </div>
         </div>
@@ -758,6 +1006,7 @@ export default function App() {
   const [scanning, setScanning] = useState(false);
   const [scanPhase, setScanPhase] = useState(-1);
   const [structureUnlocked, setStructureUnlocked] = useState(false);
+  const [latestReceipt, setLatestReceipt] = useState(null);
 
   useEffect(() => {
     setProfile(loadProfile());
@@ -808,8 +1057,11 @@ export default function App() {
         const usedCredit = current.credits > 0;
         const nextXp = current.xp + result.stability;
         const nextLevel = Math.max(current.level, Math.floor(nextXp / 500) + 1);
+        const receipt = makeTelemetryReceipt({ profile: current, pair, result, settings });
+        setLatestReceipt(receipt);
         const savedRun = {
           ...result,
+          receipt,
           pair: [...pair],
           createdAt: new Date().toISOString(),
         };
@@ -830,6 +1082,9 @@ export default function App() {
           history: [savedRun, ...current.history].slice(0, 40),
           favourites: alreadyFav ? current.favourites : [pair.join(" / "), ...current.favourites].slice(0, 20),
           zdarDiscoveries,
+          telemetryReceipts: [receipt, ...(current.telemetryReceipts || [])].slice(0, 50),
+          validatorScore: receipt.validatorScore,
+          networkReputation: Math.max(current.networkReputation || 1, nextLevel + (result.zdar ? 1 : 0)),
         };
       });
       setScanning(false);
@@ -918,9 +1173,9 @@ export default function App() {
               <header className="rounded-[1.8rem] border border-cyan-300/20 bg-white/[0.065] p-4 shadow-[0_30px_120px_rgba(0,0,0,.45)] backdrop-blur-2xl sm:rounded-[2.5rem] sm:p-7">
                 <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
                   <div>
-                    <div className="text-xs uppercase tracking-[0.5em] text-cyan-300">ElementOS — Persistent Discovery Layer</div>
+                    <div className="text-xs uppercase tracking-[0.5em] text-cyan-300">ElementOS — Proof of Telemetry Layer</div>
                     <h1 className="mt-2 bg-gradient-to-r from-white via-cyan-100 to-fuchsia-200 bg-clip-text text-4xl font-black tracking-tight text-transparent sm:text-6xl md:text-8xl">ARM CLOUD</h1>
-                    <p className="mt-3 max-w-4xl text-lg text-slate-300">Saved profiles, deterministic simulations, ZDAR cards, discovery challenges, and local progression.</p>
+                    <p className="mt-3 max-w-4xl text-lg text-slate-300">Telemetry receipts, validator checks, deterministic simulations, ZDAR cards, discovery challenges, and local progression.</p>
                   </div>
                   <div className="grid w-full gap-3 sm:min-w-[360px] lg:w-auto">
                     <Metric label="Current Pair" value={pair.join(" / ")} sub="deterministic output" />
@@ -936,6 +1191,7 @@ export default function App() {
                 <Metric label="Demo ELM" value={profile.elm.toLocaleString()} />
                 <Metric label="Runs Saved" value={profile.simulationsRun} />
                 <Metric label="ZDAR Cards" value={profile.zdarDiscoveries.length} />
+                <Metric label="Telemetry Proofs" value={profile.telemetryReceipts?.length || 0} />
                 <Metric label="Favourite" value={profile.favouriteElement} />
               </section>
 
@@ -999,6 +1255,22 @@ export default function App() {
                 </Card>
               </section>
 
+              <section className="mt-5 grid gap-5 lg:grid-cols-2">
+                <TelemetryBackbonePanel receipt={latestReceipt || profile.telemetryReceipts?.[0]} result={result} pair={pair} />
+                <ValidatorLayerPanel receipt={latestReceipt || profile.telemetryReceipts?.[0]} />
+              </section>
+
+              <section className="mt-5 grid gap-5 lg:grid-cols-3">
+                <LiveTelemetryEnginePanel profile={profile} receipt={latestReceipt || profile.telemetryReceipts?.[0]} />
+                <TelemetryConsole receipt={latestReceipt || profile.telemetryReceipts?.[0]} />
+                <TelemetryDiscoveryAssistant pair={pair} result={result} receipt={latestReceipt || profile.telemetryReceipts?.[0]} />
+              </section>
+
+              <section className="mt-5 grid gap-5 lg:grid-cols-2">
+                <TelemetryArchitecturePanel />
+                <TelemetryUpgradeMatrix />
+              </section>
+
               <section className="mt-4 grid gap-4 md:grid-cols-2 xl:grid-cols-6 sm:mt-5 sm:gap-5">
                 <ProfilePanel profile={profile} elements={elements} onProfileUpdate={updateProfile} onReset={resetProfile} />
                 <MockWalletPanel
@@ -1048,11 +1320,12 @@ export default function App() {
               <section className="mt-5 grid gap-5 lg:grid-cols-2">
                 <ManifestoPanel />
                 <RoadmapPanel />
+                <TelemetryRoadmapPanel />
               </section>
 
               <footer className="mt-5 rounded-[2.5rem] border border-white/10 bg-slate-950/70 p-6 text-center shadow-[0_0_80px_rgba(0,0,0,.25)]">
                 <div className="text-[10px] font-black uppercase tracking-[0.4em] text-cyan-300">ElementOS Public Demo</div>
-                <h2 className="mt-3 text-3xl font-black text-white sm:text-5xl">Persist discoveries. Build identity. Hunt ZDAR.</h2>
+                <h2 className="mt-3 text-3xl font-black text-white sm:text-5xl">Persist discoveries. Validate telemetry. Hunt ZDAR.</h2>
                 <p className="mx-auto mt-3 max-w-2xl text-sm leading-6 text-slate-300">Frontend-only MVP. No real transactions, no real wallet connection, no investment offer, and no scientific validation.</p>
               </footer>
             </>
