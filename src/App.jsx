@@ -150,7 +150,7 @@ function RarityBadge({ result }) {
 
 function TopNav({ onLaunch, showApp, walletConnected }) {
   return (
-    <nav className="sticky top-4 z-50 mx-auto mb-5 flex max-w-7xl items-center justify-between rounded-3xl border border-white/10 bg-slate-950/70 px-5 py-3 shadow-[0_20px_80px_rgba(0,0,0,.35)] backdrop-blur-2xl">
+    <nav className="sticky top-2 z-50 mx-auto mb-4 flex max-w-7xl items-center justify-between gap-3 rounded-3xl border border-white/10 bg-slate-950/70 px-3 py-3 sm:top-4 sm:mb-5 sm:px-5 shadow-[0_20px_80px_rgba(0,0,0,.35)] backdrop-blur-2xl">
       <div className="flex items-center gap-3">
         <div className="grid h-10 w-10 place-items-center rounded-2xl border border-cyan-300/30 bg-cyan-300/10 font-black text-cyan-100 shadow-[0_0_28px_rgba(34,211,238,.25)]">E</div>
         <div>
@@ -177,7 +177,7 @@ function CTAFooter({ onFindZDAR, onRun, walletConnected }) {
   return (
     <section className="mt-5 rounded-[2.5rem] border border-fuchsia-300/20 bg-gradient-to-r from-cyan-500/10 via-fuchsia-500/10 to-blue-500/10 p-8 text-center shadow-[0_0_90px_rgba(217,70,239,.16)]">
       <div className="text-xs font-black uppercase tracking-[0.38em] text-fuchsia-200">Ready for a legendary alignment?</div>
-      <h2 className="mt-3 text-4xl font-black tracking-tight text-white md:text-6xl">Discover your first ZDAR.</h2>
+      <h2 className="mt-3 text-3xl font-black tracking-tight text-white sm:text-4xl md:text-6xl">Discover your first ZDAR.</h2>
       <p className="mx-auto mt-3 max-w-2xl text-slate-300">Pick a pair, run the simulation, and generate a shareable alignment result from the ARM network.</p>
       <div className="mt-6 flex flex-wrap justify-center gap-3">
         <button onClick={onFindZDAR} className="rounded-2xl border border-fuchsia-300/40 bg-fuchsia-500/15 px-6 py-4 font-black text-fuchsia-100 shadow-[0_0_35px_rgba(217,70,239,.2)] transition hover:scale-[1.03]">⚡ Find ZDAR</button>
@@ -190,9 +190,9 @@ function CTAFooter({ onFindZDAR, onRun, walletConnected }) {
 
 function Metric({ label, value, sub }) {
   return (
-    <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-slate-950/55 p-4 shadow-[inset_0_1px_0_rgba(255,255,255,.06)]">
+    <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-slate-950/55 p-3 sm:p-4 shadow-[inset_0_1px_0_rgba(255,255,255,.06)]">
       <div className="text-[10px] uppercase tracking-[0.24em] text-slate-400">{label}</div>
-      <div className="mt-1 text-2xl font-black text-white tabular-nums">{value}</div>
+      <div className="mt-1 text-xl font-black text-white tabular-nums sm:text-2xl">{value}</div>
       {sub && <div className="mt-1 text-xs text-cyan-200/70">{sub}</div>}
     </div>
   );
@@ -200,7 +200,7 @@ function Metric({ label, value, sub }) {
 
 function Card({ title, kicker, children, className = "" }) {
   return (
-    <div className={`group relative overflow-hidden rounded-[2rem] border border-white/10 bg-white/[0.07] p-5 shadow-[0_24px_80px_rgba(0,0,0,.35),inset_0_1px_0_rgba(255,255,255,.08)] backdrop-blur-2xl transition duration-300 hover:border-cyan-300/25 ${className}`}><ShineLayer />
+    <div className={`group relative overflow-hidden rounded-[1.5rem] border border-white/10 bg-white/[0.07] p-4 sm:rounded-[2rem] sm:p-5 shadow-[0_24px_80px_rgba(0,0,0,.35),inset_0_1px_0_rgba(255,255,255,.08)] backdrop-blur-2xl transition duration-300 hover:border-cyan-300/25 ${className}`}><ShineLayer />
       {kicker && <div className="mb-1 text-[10px] uppercase tracking-[0.32em] text-cyan-300">{kicker}</div>}
       <h2 className="text-xl font-black tracking-tight text-white">{title}</h2>
       {children}
@@ -231,7 +231,7 @@ function ElementSelect({ value, onChange, elements, label }) {
       <select
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="w-full appearance-none rounded-2xl border border-cyan-300/20 bg-slate-950/90 px-4 py-4 font-bold text-cyan-50 shadow-[inset_0_1px_0_rgba(255,255,255,.06),0_0_25px_rgba(34,211,238,.08)] outline-none transition hover:border-cyan-300/40 focus:border-fuchsia-300/50 focus:ring-2 focus:ring-fuchsia-300/20"
+        className="w-full appearance-none rounded-2xl border border-cyan-300/20 bg-slate-950/90 px-3 py-3 sm:px-4 sm:py-4 font-bold text-cyan-50 shadow-[inset_0_1px_0_rgba(255,255,255,.06),0_0_25px_rgba(34,211,238,.08)] outline-none transition hover:border-cyan-300/40 focus:border-fuchsia-300/50 focus:ring-2 focus:ring-fuchsia-300/20"
       >
         {elements.map((e) => (
           <option key={e.sym} value={e.sym} className="bg-slate-950 text-cyan-50">
@@ -245,17 +245,17 @@ function ElementSelect({ value, onChange, elements, label }) {
 
 function LandingPage({ onLaunch }) {
   return (
-    <section className="relative overflow-hidden rounded-[2.75rem] border border-cyan-300/20 bg-white/[0.065] p-8 shadow-[0_30px_140px_rgba(0,0,0,.5)] backdrop-blur-2xl">
+    <section className="relative overflow-hidden rounded-[1.8rem] border border-cyan-300/20 bg-white/[0.065] p-4 sm:rounded-[2.75rem] sm:p-8 shadow-[0_30px_140px_rgba(0,0,0,.5)] backdrop-blur-2xl">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(34,211,238,.22),transparent_32%),radial-gradient(circle_at_85%_35%,rgba(217,70,239,.18),transparent_30%)]" />
       <div className="relative grid gap-8 lg:grid-cols-[1.05fr_.95fr] lg:items-center">
         <div>
           <div className="inline-flex rounded-full border border-cyan-300/30 bg-cyan-300/10 px-4 py-2 text-xs font-black uppercase tracking-[0.35em] text-cyan-200">
             {UI.appName}
           </div>
-          <h1 className="mt-6 bg-gradient-to-r from-white via-cyan-200 to-fuchsia-300 bg-clip-text text-6xl font-black leading-[0.9] tracking-tight text-transparent md:text-8xl">
+          <h1 className="mt-5 bg-gradient-to-r from-white via-cyan-200 to-fuchsia-300 bg-clip-text text-4xl font-black leading-[0.95] tracking-tight text-transparent sm:text-6xl md:text-8xl">
             {UI.headline}
           </h1>
-          <p className="mt-6 max-w-3xl text-xl leading-8 text-slate-300">{UI.sub}</p>
+          <p className="mt-4 max-w-3xl text-base leading-7 text-slate-300 sm:mt-6 sm:text-xl sm:leading-8">{UI.sub}</p>
           <div className="mt-5 flex flex-wrap gap-2">
             <StatusPill tone="cyan">SimulationFi</StatusPill>
             <StatusPill tone="fuchsia">ARM Engine</StatusPill>
@@ -274,10 +274,10 @@ function LandingPage({ onLaunch }) {
           </div>
         </div>
 
-        <div className="relative min-h-[520px] overflow-hidden rounded-[2.5rem] border border-white/10 bg-slate-950/70 p-5 shadow-[0_0_100px_rgba(34,211,238,.18)]">
+        <div className="relative min-h-[360px] overflow-hidden rounded-[1.8rem] border border-white/10 bg-slate-950/70 p-4 sm:min-h-[520px] sm:rounded-[2.5rem] sm:p-5 shadow-[0_0_100px_rgba(34,211,238,.18)]">
           <div className="absolute inset-16 rounded-full border border-cyan-300/15 shadow-[0_0_70px_rgba(34,211,238,.18)] [transform:rotateX(64deg)_rotateZ(12deg)]" />
           <div className="absolute inset-24 rounded-full border border-fuchsia-300/15 shadow-[0_0_70px_rgba(217,70,239,.14)] [transform:rotateX(28deg)_rotateY(45deg)]" />
-          <div className="absolute left-1/2 top-1/2 flex h-36 w-36 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-cyan-200 bg-cyan-300/15 text-6xl font-black shadow-[0_0_80px_rgba(34,211,238,.75)]">Al</div>
+          <div className="absolute left-1/2 top-1/2 flex h-24 w-24 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-cyan-200 bg-cyan-300/15 text-4xl font-black sm:h-36 sm:w-36 sm:text-6xl shadow-[0_0_80px_rgba(34,211,238,.75)]">Al</div>
           <div className="absolute bottom-5 left-5 right-5 rounded-2xl border border-fuchsia-300/25 bg-fuchsia-500/10 p-4 text-fuchsia-100 shadow-[0_0_50px_rgba(217,70,239,.22)]">
             <div className="text-xs uppercase tracking-[.3em]">Live Result</div>
             <div className="text-2xl font-black">Fe / Ru → ZDAR Legendary</div>
@@ -315,7 +315,7 @@ function LiveFeedPanel({ feed }) {
 
 function MockWalletPanel({ walletConnected, walletAddress, elm, credits, stakedElm, onConnect, onDisconnect, onTopUp, onStake, onBuyCredits }) {
   return (
-    <Card title="Wallet" kicker="testnet wallet" className="lg:col-span-2">
+    <Card title="Wallet" kicker="testnet wallet" className="md:col-span-2 xl:col-span-2">
       <div className="mt-4 grid gap-4">
         <div className={`rounded-3xl border p-5 ${walletConnected ? "border-emerald-300/30 bg-emerald-500/10" : "border-yellow-300/30 bg-yellow-500/10"}`}>
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
@@ -365,29 +365,29 @@ function OrbitalAlignment({ result, pair }) {
       : "bg-cyan-300/35 shadow-[0_0_25px_rgba(34,211,238,.35)]";
 
   return (
-    <div className="relative mt-4 h-[450px] overflow-hidden rounded-[2rem] border border-white/10 bg-slate-950 shadow-[0_0_90px_rgba(34,211,238,.16)]">
+    <div className="relative mt-4 h-[360px] overflow-hidden rounded-[1.6rem] border border-white/10 bg-slate-950 sm:h-[450px] sm:rounded-[2rem] shadow-[0_0_90px_rgba(34,211,238,.16)]">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_28%_50%,rgba(249,115,22,.18),transparent_28%),radial-gradient(circle_at_72%_50%,rgba(34,211,238,.18),transparent_28%),radial-gradient(circle_at_50%_50%,rgba(217,70,239,.16),transparent_22%)]" />
 
-      <div className="absolute left-[25%] top-1/2 h-60 w-60 -translate-x-1/2 -translate-y-1/2 rounded-full border border-orange-300/20 shadow-[0_0_55px_rgba(249,115,22,.25)] [transform:translate(-50%,-50%)_rotateX(62deg)_rotateZ(-18deg)]" />
-      <div className="absolute left-[25%] top-1/2 h-28 w-28 -translate-x-1/2 -translate-y-1/2 rounded-full bg-orange-400/20 shadow-[0_0_70px_rgba(249,115,22,.8)]" />
+      <div className="absolute left-[25%] top-1/2 h-40 w-40 sm:h-60 sm:w-60 -translate-x-1/2 -translate-y-1/2 rounded-full border border-orange-300/20 shadow-[0_0_55px_rgba(249,115,22,.25)] [transform:translate(-50%,-50%)_rotateX(62deg)_rotateZ(-18deg)]" />
+      <div className="absolute left-[25%] top-1/2 h-20 w-20 sm:h-28 sm:w-28 -translate-x-1/2 -translate-y-1/2 rounded-full bg-orange-400/20 shadow-[0_0_70px_rgba(249,115,22,.8)]" />
       <div className="absolute left-[25%] top-1/2 -translate-x-1/2 -translate-y-1/2 text-center">
-        <div className="text-4xl font-black text-orange-100">{left}</div>
+        <div className="text-2xl font-black text-orange-100 sm:text-4xl">{left}</div>
         <div className="text-[10px] uppercase tracking-[.25em] text-orange-200/70">primary sphere</div>
       </div>
 
-      <div className="absolute right-[25%] top-1/2 h-60 w-60 translate-x-1/2 -translate-y-1/2 rounded-full border border-cyan-300/20 shadow-[0_0_55px_rgba(34,211,238,.25)] [transform:translate(50%,-50%)_rotateX(62deg)_rotateZ(18deg)]" />
-      <div className="absolute right-[25%] top-1/2 h-28 w-28 translate-x-1/2 -translate-y-1/2 rounded-full bg-cyan-400/20 shadow-[0_0_70px_rgba(34,211,238,.8)]" />
+      <div className="absolute right-[25%] top-1/2 h-40 w-40 sm:h-60 sm:w-60 translate-x-1/2 -translate-y-1/2 rounded-full border border-cyan-300/20 shadow-[0_0_55px_rgba(34,211,238,.25)] [transform:translate(50%,-50%)_rotateX(62deg)_rotateZ(18deg)]" />
+      <div className="absolute right-[25%] top-1/2 h-20 w-20 sm:h-28 sm:w-28 translate-x-1/2 -translate-y-1/2 rounded-full bg-cyan-400/20 shadow-[0_0_70px_rgba(34,211,238,.8)]" />
       <div className="absolute right-[25%] top-1/2 translate-x-1/2 -translate-y-1/2 text-center">
-        <div className="text-4xl font-black text-cyan-100">{right}</div>
+        <div className="text-2xl font-black text-cyan-100 sm:text-4xl">{right}</div>
         <div className="text-[10px] uppercase tracking-[.25em] text-cyan-200/70">secondary sphere</div>
       </div>
 
       <div className={`absolute left-1/2 top-1/2 ${beamWidth} -translate-x-1/2 -translate-y-1/2 rounded-full transition-all duration-700 ${beamGlow}`} />
-      <div className={`absolute left-1/2 top-1/2 h-16 w-16 -translate-x-1/2 -translate-y-1/2 rounded-full transition-all duration-700 ${result.zdar ? "scale-125 bg-fuchsia-300 shadow-[0_0_110px_rgba(217,70,239,1)]" : "bg-cyan-300 shadow-[0_0_55px_rgba(34,211,238,.75)]"}`} />
+      <div className={`absolute left-1/2 top-1/2 h-12 w-12 sm:h-16 sm:w-16 -translate-x-1/2 -translate-y-1/2 rounded-full transition-all duration-700 ${result.zdar ? "scale-125 bg-fuchsia-300 shadow-[0_0_110px_rgba(217,70,239,1)]" : "bg-cyan-300 shadow-[0_0_55px_rgba(34,211,238,.75)]"}`} />
 
       <div className="absolute left-1/2 top-[37%] -translate-x-1/2 text-center">
         <div className="text-[10px] uppercase tracking-[.35em] text-slate-300">Spherical Orbital Alignment</div>
-        <div className="mt-1 text-4xl font-black text-white">{result.stability}%</div>
+        <div className="mt-1 text-3xl font-black text-white sm:text-4xl">{result.stability}%</div>
       </div>
 
       <div className="absolute bottom-5 left-1/2 -translate-x-1/2 rounded-2xl border border-yellow-300/30 bg-yellow-400/10 px-6 py-3 text-center shadow-[0_0_30px_rgba(250,204,21,.2)]">
@@ -404,7 +404,7 @@ function OrbitalSystem({ elements, pair, setPairAt, settings, result }) {
   const featured = elements.filter((e) => e.sym === origin.sym || e.influence > 55 || active.has(e.sym)).slice(0, 42);
 
   return (
-    <div className="relative mt-4 aspect-square max-h-[720px] overflow-hidden rounded-[3rem] border border-cyan-300/20 bg-slate-950 shadow-[0_0_120px_rgba(34,211,238,0.22)]">
+    <div className="relative mt-4 h-[420px] overflow-hidden rounded-[2rem] border border-cyan-300/20 bg-slate-950 sm:aspect-square sm:h-auto sm:max-h-[720px] sm:rounded-[3rem] shadow-[0_0_120px_rgba(34,211,238,0.22)]">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(34,211,238,.26),rgba(147,51,234,.13)_30%,rgba(2,6,23,.98)_72%)]" />
       <div className="absolute inset-12 rounded-full border border-cyan-300/15 [transform:rotateX(68deg)_rotateZ(14deg)]" />
       <div className="absolute inset-20 rounded-full border border-fuchsia-300/15 [transform:rotateX(24deg)_rotateY(55deg)]" />
@@ -435,10 +435,10 @@ function OrbitalSystem({ elements, pair, setPairAt, settings, result }) {
 
       <button
         onClick={() => setPairAt(0, origin.sym)}
-        className="absolute left-1/2 top-1/2 z-40 flex h-36 w-36 -translate-x-1/2 -translate-y-1/2 flex-col items-center justify-center rounded-full border border-cyan-200 bg-cyan-300/15 text-cyan-50 shadow-[0_0_90px_rgba(34,211,238,.9)] backdrop-blur-xl transition hover:scale-105"
+        className="absolute left-1/2 top-1/2 z-40 flex h-24 w-24 -translate-x-1/2 -translate-y-1/2 flex-col items-center justify-center rounded-full sm:h-36 sm:w-36 border border-cyan-200 bg-cyan-300/15 text-cyan-50 shadow-[0_0_90px_rgba(34,211,238,.9)] backdrop-blur-xl transition hover:scale-105"
       >
         <div className="text-xs uppercase tracking-[0.3em]">ARM Origin</div>
-        <div className="text-6xl font-black">{origin.sym}</div>
+        <div className="text-4xl font-black sm:text-6xl">{origin.sym}</div>
         <div className="text-xs text-cyan-200">core model</div>
       </button>
 
@@ -565,7 +565,7 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen overflow-hidden bg-slate-950 p-5 text-white">
+    <div className="min-h-screen overflow-hidden bg-slate-950 p-3 text-white sm:p-5">
       <style>{`
         @keyframes zdarPulse {
           0%, 100% { transform: scale(1); filter: brightness(1); }
@@ -597,22 +597,22 @@ export default function App() {
       {result.zdar && <div className="pointer-events-none fixed inset-0 z-10 bg-fuchsia-500/20 zdar-flash" />}
 
       <TopNav onLaunch={() => setShowApp(true)} showApp={showApp} walletConnected={walletConnected} />
-      <div className="relative mx-auto max-w-7xl">
+      <div className="relative z-20 mx-auto max-w-7xl">
         {!showApp ? (
           <LandingPage onLaunch={() => setShowApp(true)} />
         ) : (
           <>
             <GhostButton onClick={() => setShowApp(false)} className="mb-4 px-4 py-2">← Back to Landing</GhostButton>
 
-            <header className="rounded-[2.5rem] border border-cyan-300/20 bg-white/[0.065] p-7 shadow-[0_30px_120px_rgba(0,0,0,.45)] backdrop-blur-2xl">
+            <header className="rounded-[1.8rem] border border-cyan-300/20 bg-white/[0.065] p-4 sm:rounded-[2.5rem] sm:p-7 shadow-[0_30px_120px_rgba(0,0,0,.45)] backdrop-blur-2xl">
               <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
                 <div>
                   <div className="text-xs uppercase tracking-[0.5em] text-cyan-300">ElementOS — ARM Simulation Network</div>
-                  <h1 className="mt-2 bg-gradient-to-r from-white via-cyan-100 to-fuchsia-200 bg-clip-text text-6xl font-black tracking-tight text-transparent md:text-8xl">ARM CLOUD</h1>
+                  <h1 className="mt-2 bg-gradient-to-r from-white via-cyan-100 to-fuchsia-200 bg-clip-text text-4xl font-black tracking-tight text-transparent sm:text-6xl md:text-8xl">ARM CLOUD</h1>
                   <p className="mt-3 max-w-4xl text-lg text-slate-300">A crypto-native simulation network with ELM gas, spherical ZDAR orbitals, and shareable element-pair results.</p>
                   <div className="mt-4 flex flex-wrap gap-2"><StatusPill tone="emerald">LIVE NETWORK</StatusPill><StatusPill tone="cyan">118 ELEMENTS</StatusPill><StatusPill tone="fuchsia">ZDAR ENABLED</StatusPill></div>
                 </div>
-                <div className="grid min-w-[360px] gap-3">
+                <div className="grid w-full gap-3 sm:min-w-[360px] lg:w-auto">
                   <Metric label="Current Pair" value={pair.join(" / ")} sub="live simulation pair" />
                   <Metric label="Wallet Balance" value={elm.toLocaleString()} sub="testnet ELM" />
                   <Metric label="Wallet" value={walletConnected ? "Connected" : "Offline"} sub={walletConnected ? walletAddress : "connect to run"} />
@@ -620,7 +620,7 @@ export default function App() {
               </div>
             </header>
 
-            <section className="mt-5 grid gap-3 md:grid-cols-3 xl:grid-cols-6">
+            <section className="mt-4 grid grid-cols-2 gap-3 md:grid-cols-3 xl:grid-cols-6 sm:mt-5">
               <Metric label="Explorer Level" value={level} sub={`${xp} XP`} />
               <Metric label="Simulation Credits" value={credits} />
               <Metric label="Staked ELM" value={stakedElm.toLocaleString()} />
@@ -629,7 +629,7 @@ export default function App() {
               <Metric label="Gas Mode" value="Testnet" />
             </section>
 
-            <section className="mt-5 grid gap-5 lg:grid-cols-[1.18fr_.82fr]">
+            <section className="mt-4 grid gap-4 xl:grid-cols-[1.18fr_.82fr] sm:mt-5 sm:gap-5">
               <Card
                 title="ARM Orbital Network"
                 kicker="3D element map"
@@ -667,7 +667,7 @@ export default function App() {
                 {result.zdar && (
                   <div className="mt-4 rounded-[2rem] border border-fuchsia-300 bg-fuchsia-500/20 p-6 text-fuchsia-100 shadow-[0_0_90px_rgba(217,70,239,.7)]">
                     <div className="text-xs uppercase tracking-[0.4em]">⚡ ZDAR DETECTED</div>
-                    <div className="mt-2 text-4xl font-black">Legendary Alignment</div>
+                    <div className="mt-2 text-3xl font-black sm:text-4xl">Legendary Alignment</div>
                     <p className="mt-2 text-sm text-fuchsia-100/80">
                       {pair.join(" / ")} → {result.stability}% stability. Perfect alignment detected.
                     </p>
@@ -696,7 +696,7 @@ export default function App() {
               </Card>
             </section>
 
-            <section className="mt-5 grid gap-5 lg:grid-cols-5">
+            <section className="mt-4 grid gap-4 md:grid-cols-2 xl:grid-cols-5 sm:mt-5 sm:gap-5">
               <MockWalletPanel
                 walletConnected={walletConnected}
                 walletAddress={walletAddress}
