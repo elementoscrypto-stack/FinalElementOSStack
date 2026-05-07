@@ -112,6 +112,82 @@ function ParticleField() {
   );
 }
 
+
+function ShineLayer() {
+  return (
+    <div className="pointer-events-none absolute inset-0 overflow-hidden rounded-[inherit]">
+      <div className="absolute -left-1/2 top-0 h-full w-1/2 -skew-x-12 bg-gradient-to-r from-transparent via-white/10 to-transparent opacity-40 transition-all duration-700 group-hover:left-full" />
+    </div>
+  );
+}
+
+function StatusPill({ children, tone = "cyan" }) {
+  const tones = {
+    cyan: "border-cyan-300/30 bg-cyan-300/10 text-cyan-100",
+    fuchsia: "border-fuchsia-300/30 bg-fuchsia-300/10 text-fuchsia-100",
+    emerald: "border-emerald-300/30 bg-emerald-300/10 text-emerald-100",
+    yellow: "border-yellow-300/30 bg-yellow-300/10 text-yellow-100",
+  };
+  return (
+    <span className={`rounded-full border px-3 py-1.5 text-[10px] font-black uppercase tracking-[0.22em] ${tones[tone] || tones.cyan}`}>
+      {children}
+    </span>
+  );
+}
+
+function RarityBadge({ result }) {
+  const cls = result.zdar
+    ? "border-fuchsia-300/50 bg-fuchsia-400/20 text-fuchsia-100 shadow-[0_0_30px_rgba(217,70,239,.25)]"
+    : result.stability > 84
+      ? "border-purple-300/40 bg-purple-400/15 text-purple-100"
+      : result.stability > 68
+        ? "border-cyan-300/40 bg-cyan-400/15 text-cyan-100"
+        : result.stability > 42
+          ? "border-yellow-300/40 bg-yellow-400/15 text-yellow-100"
+          : "border-slate-300/30 bg-slate-400/10 text-slate-200";
+  return <div className={`inline-flex rounded-full border px-4 py-2 text-xs font-black uppercase tracking-[0.18em] ${cls}`}>{result.rarity}</div>;
+}
+
+function TopNav({ onLaunch, showApp, walletConnected }) {
+  return (
+    <nav className="sticky top-4 z-50 mx-auto mb-5 flex max-w-7xl items-center justify-between rounded-3xl border border-white/10 bg-slate-950/70 px-5 py-3 shadow-[0_20px_80px_rgba(0,0,0,.35)] backdrop-blur-2xl">
+      <div className="flex items-center gap-3">
+        <div className="grid h-10 w-10 place-items-center rounded-2xl border border-cyan-300/30 bg-cyan-300/10 font-black text-cyan-100 shadow-[0_0_28px_rgba(34,211,238,.25)]">E</div>
+        <div>
+          <div className="text-sm font-black tracking-tight">ElementOS</div>
+          <div className="text-[10px] uppercase tracking-[0.25em] text-slate-400">ARM Network</div>
+        </div>
+      </div>
+      <div className="hidden items-center gap-2 md:flex">
+        <StatusPill tone="emerald">Live Network</StatusPill>
+        <StatusPill tone="cyan">118 Elements</StatusPill>
+        <StatusPill tone="fuchsia">ZDAR Enabled</StatusPill>
+        <StatusPill tone={walletConnected ? "emerald" : "yellow"}>{walletConnected ? "Wallet Online" : "Testnet"}</StatusPill>
+      </div>
+      {!showApp && (
+        <button onClick={onLaunch} className="rounded-2xl bg-cyan-300 px-4 py-2 text-sm font-black text-slate-950 shadow-[0_0_30px_rgba(34,211,238,.35)] transition hover:scale-[1.03]">
+          Launch App
+        </button>
+      )}
+    </nav>
+  );
+}
+
+function CTAFooter({ onFindZDAR, onRun, walletConnected }) {
+  return (
+    <section className="mt-5 rounded-[2.5rem] border border-fuchsia-300/20 bg-gradient-to-r from-cyan-500/10 via-fuchsia-500/10 to-blue-500/10 p-8 text-center shadow-[0_0_90px_rgba(217,70,239,.16)]">
+      <div className="text-xs font-black uppercase tracking-[0.38em] text-fuchsia-200">Ready for a legendary alignment?</div>
+      <h2 className="mt-3 text-4xl font-black tracking-tight text-white md:text-6xl">Discover your first ZDAR.</h2>
+      <p className="mx-auto mt-3 max-w-2xl text-slate-300">Pick a pair, run the simulation, and generate a shareable alignment result from the ARM network.</p>
+      <div className="mt-6 flex flex-wrap justify-center gap-3">
+        <button onClick={onFindZDAR} className="rounded-2xl border border-fuchsia-300/40 bg-fuchsia-500/15 px-6 py-4 font-black text-fuchsia-100 shadow-[0_0_35px_rgba(217,70,239,.2)] transition hover:scale-[1.03]">⚡ Find ZDAR</button>
+        <button disabled={!walletConnected} onClick={onRun} className="rounded-2xl bg-cyan-300 px-6 py-4 font-black text-slate-950 shadow-[0_0_35px_rgba(34,211,238,.35)] transition hover:scale-[1.03] disabled:opacity-50">🚀 Run Simulation</button>
+      </div>
+    </section>
+  );
+}
+
+
 function Metric({ label, value, sub }) {
   return (
     <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-slate-950/55 p-4 shadow-[inset_0_1px_0_rgba(255,255,255,.06)]">
@@ -124,7 +200,7 @@ function Metric({ label, value, sub }) {
 
 function Card({ title, kicker, children, className = "" }) {
   return (
-    <div className={`rounded-[2rem] border border-white/10 bg-white/[0.07] p-5 shadow-[0_24px_80px_rgba(0,0,0,.35),inset_0_1px_0_rgba(255,255,255,.08)] backdrop-blur-2xl ${className}`}>
+    <div className={`group relative overflow-hidden rounded-[2rem] border border-white/10 bg-white/[0.07] p-5 shadow-[0_24px_80px_rgba(0,0,0,.35),inset_0_1px_0_rgba(255,255,255,.08)] backdrop-blur-2xl transition duration-300 hover:border-cyan-300/25 ${className}`}><ShineLayer />
       {kicker && <div className="mb-1 text-[10px] uppercase tracking-[0.32em] text-cyan-300">{kicker}</div>}
       <h2 className="text-xl font-black tracking-tight text-white">{title}</h2>
       {children}
@@ -180,6 +256,12 @@ function LandingPage({ onLaunch }) {
             {UI.headline}
           </h1>
           <p className="mt-6 max-w-3xl text-xl leading-8 text-slate-300">{UI.sub}</p>
+          <div className="mt-5 flex flex-wrap gap-2">
+            <StatusPill tone="cyan">SimulationFi</StatusPill>
+            <StatusPill tone="fuchsia">ARM Engine</StatusPill>
+            <StatusPill tone="emerald">ELM Gas</StatusPill>
+            <StatusPill tone="yellow">ZDAR Rarity</StatusPill>
+          </div>
           <div className="mt-7 flex flex-wrap gap-3">
             <button onClick={onLaunch} className="rounded-2xl bg-cyan-300 px-6 py-4 text-lg font-black text-slate-950 shadow-[0_0_40px_rgba(34,211,238,.35)] transition hover:scale-[1.03]">
               {UI.launch}
@@ -408,6 +490,7 @@ export default function App() {
   const [xp, setXp] = useState(0);
   const [level, setLevel] = useState(1);
   const [feed, setFeed] = useState([]);
+  const [scanning, setScanning] = useState(false);
   const [liveStream, setLiveStream] = useState(LIVE_EVENT_TEMPLATES.slice(0, 5));
 
   const elements = useMemo(() => ELEMENTS.map((e) => buildElement(e, settings)), [settings]);
@@ -438,19 +521,23 @@ export default function App() {
     if (!walletConnected) return setShareText("Connect wallet before running simulations.");
     if (elm < result.cost && credits <= 0) return setShareText("Not enough ELM or credits. Add funds to continue.");
 
-    if (credits > 0) setCredits((c) => c - 1);
-    else setElm((e) => e - result.cost);
+    setScanning(true);
+    window.setTimeout(() => {
+      if (credits > 0) setCredits((c) => c - 1);
+      else setElm((e) => e - result.cost);
 
-    setElm((e) => e + (result.zdar ? 20 : 2));
+      setElm((e) => e + (result.zdar ? 20 : 2));
 
-    const newXp = xp + result.stability;
-    setXp(newXp);
-    if (newXp >= level * 500) setLevel((l) => l + 1);
+      const newXp = xp + result.stability;
+      setXp(newXp);
+      if (newXp >= level * 500) setLevel((l) => l + 1);
 
-    const res = { ...result, pair: [...pair], id: `SIM-${pair.join("-")}-${Date.now().toString().slice(-5)}` };
-    setHistory((h) => [res, ...h].slice(0, 12));
+      const res = { ...result, pair: [...pair], id: `SIM-${pair.join("-")}-${Date.now().toString().slice(-5)}` };
+      setHistory((h) => [res, ...h].slice(0, 12));
 
-    if (result.zdar) setFeed((f) => [`⚡ ${pair.join(" / ")} hit ZDAR Legendary (${result.stability}%)`, ...f].slice(0, 10));
+      if (result.zdar) setFeed((f) => [`⚡ ${pair.join(" / ")} hit ZDAR Legendary (${result.stability}%)`, ...f].slice(0, 10));
+      setScanning(false);
+    }, 700);
   }
 
   function discoverZDAR() {
@@ -509,6 +596,7 @@ export default function App() {
       <ParticleField />
       {result.zdar && <div className="pointer-events-none fixed inset-0 z-10 bg-fuchsia-500/20 zdar-flash" />}
 
+      <TopNav onLaunch={() => setShowApp(true)} showApp={showApp} walletConnected={walletConnected} />
       <div className="relative mx-auto max-w-7xl">
         {!showApp ? (
           <LandingPage onLaunch={() => setShowApp(true)} />
@@ -522,6 +610,7 @@ export default function App() {
                   <div className="text-xs uppercase tracking-[0.5em] text-cyan-300">ElementOS — ARM Simulation Network</div>
                   <h1 className="mt-2 bg-gradient-to-r from-white via-cyan-100 to-fuchsia-200 bg-clip-text text-6xl font-black tracking-tight text-transparent md:text-8xl">ARM CLOUD</h1>
                   <p className="mt-3 max-w-4xl text-lg text-slate-300">A crypto-native simulation network with ELM gas, spherical ZDAR orbitals, and shareable element-pair results.</p>
+                  <div className="mt-4 flex flex-wrap gap-2"><StatusPill tone="emerald">LIVE NETWORK</StatusPill><StatusPill tone="cyan">118 ELEMENTS</StatusPill><StatusPill tone="fuchsia">ZDAR ENABLED</StatusPill></div>
                 </div>
                 <div className="grid min-w-[360px] gap-3">
                   <Metric label="Current Pair" value={pair.join(" / ")} sub="live simulation pair" />
@@ -563,7 +652,17 @@ export default function App() {
                   <Metric label="Gas Fee" value={credits > 0 ? "1 Credit" : `${result.cost} ELM`} />
                 </div>
 
+                {scanning && (
+                  <div className="mt-4 rounded-[2rem] border border-cyan-300/30 bg-cyan-500/10 p-4 text-cyan-100 shadow-[0_0_40px_rgba(34,211,238,.22)]">
+                    <div className="text-xs font-black uppercase tracking-[0.32em]">Scanning ARM field...</div>
+                    <div className="mt-3 h-2 overflow-hidden rounded-full bg-slate-800">
+                      <div className="h-full w-2/3 animate-pulse rounded-full bg-gradient-to-r from-cyan-300 to-fuchsia-300" />
+                    </div>
+                  </div>
+                )}
+
                 <OrbitalAlignment result={result} pair={pair} />
+                <div className="mt-4"><RarityBadge result={result} /></div>
 
                 {result.zdar && (
                   <div className="mt-4 rounded-[2rem] border border-fuchsia-300 bg-fuchsia-500/20 p-6 text-fuchsia-100 shadow-[0_0_90px_rgba(217,70,239,.7)]">
@@ -584,7 +683,7 @@ export default function App() {
                 <LatticeOutput result={result} />
 
                 <div className="mt-5 grid gap-2">
-                  <PrimaryButton disabled={!walletConnected} onClick={run}>🚀 Run Simulation</PrimaryButton>
+                  <PrimaryButton disabled={!walletConnected || scanning} onClick={run}>{scanning ? "Scanning..." : "🚀 Run Simulation"}</PrimaryButton>
                   <GhostButton onClick={discoverZDAR} className="border-fuchsia-300/40 bg-fuchsia-500/15 text-fuchsia-100">⚡ Find Legendary Alignment</GhostButton>
                   <GhostButton onClick={randomPair}>🎲 Discover</GhostButton>
                   <GhostButton onClick={favorite}>⭐ Save Pair</GhostButton>
@@ -644,7 +743,7 @@ export default function App() {
 
               <Card title="🧾 Activity" kicker="simulation ledger">
                 <div className="mt-4 grid max-h-80 gap-2 overflow-auto">
-                  {history.length === 0 ? <p className="text-sm text-slate-400">No simulations yet.</p> : history.map((h) => (
+                  {history.length === 0 ? <p className="text-sm text-slate-400">Run your first simulation to generate an activity record.</p> : history.map((h) => (
                     <div key={h.id} className="rounded-xl border border-white/10 bg-white/5 p-2 text-sm"><b>{h.id}</b><br />{h.pair.join(" / ")} → {h.stability}% {h.zdar ? "⚡" : ""}</div>
                   ))}
                 </div>
@@ -652,10 +751,12 @@ export default function App() {
 
               <LiveFeedPanel feed={[...feed, ...liveStream]} /></section>
 
+            <CTAFooter onFindZDAR={discoverZDAR} onRun={run} walletConnected={walletConnected} />
+
             <section className="mt-5">
               <Card title="⭐ Saved Pairs" kicker="watchlist">
                 <div className="mt-4 flex flex-wrap gap-2">
-                  {favorites.length === 0 ? <p className="text-sm text-slate-400">No saved pairs yet.</p> : favorites.map((f) => (
+                  {favorites.length === 0 ? <p className="text-sm text-slate-400">Save your favourite pairings to build a personal watchlist.</p> : favorites.map((f) => (
                     <span key={f} className="rounded-xl bg-white/10 px-3 py-2 text-sm">{f}</span>
                   ))}
                 </div>
