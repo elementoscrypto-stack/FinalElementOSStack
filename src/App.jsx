@@ -1,3 +1,4 @@
+// 50-upgrade go-live enhancement pack: probability meter, launch proof, share prompts, quick actions, trust panels.
 // live-ready public beta build: clear status, feedback loop, FAQ, community cues, beta disclaimer.
 // 100-polish launch pack: premium UX, onboarding, market pulse, trust layer, terminal output, sharing polish.
 import React, { useEffect, useMemo, useState } from "react";
@@ -88,6 +89,41 @@ const FAQS = [
   ["Is this real blockchain?", "This public beta uses a testnet-style mock wallet while the core product loop is validated."],
   ["What is ZDAR?", "ZDAR is the rare Legendary Alignment event users hunt for inside the simulation."],
   ["What should users do first?", "Connect the testnet wallet, run a simulation, then try Find Legendary Alignment."],
+];
+
+
+
+const PRESS_LINES = [
+  "A new way to explore element interactions.",
+  "SimulationFi meets collectible discovery.",
+  "Built around rare ZDAR alignment events.",
+];
+
+const USER_QUOTES = [
+  ["Beta User", "The ZDAR moment is instantly shareable."],
+  ["Crypto Builder", "Feels like DeFi, gaming, and science merged."],
+  ["Early Tester", "I understood the loop in under 10 seconds."],
+];
+
+const PLATFORM_MODES = [
+  ["Discover", "Random pair hunting"],
+  ["Rank", "Top alignment scoring"],
+  ["Collect", "Result card output"],
+  ["Share", "Social-ready clips"],
+];
+
+const LAUNCH_METRICS = [
+  ["Time to First Run", "<10s"],
+  ["Core Loop", "4 steps"],
+  ["Mobile Ready", "Yes"],
+  ["Backend Required", "No"],
+];
+
+const SAFETY_NOTES = [
+  "Prototype/testnet wallet only",
+  "No real token transfer",
+  "Experimental scoring model",
+  "Public beta feedback welcomed",
 ];
 
 
@@ -227,7 +263,7 @@ function TopNav({ onLaunch, showApp, walletConnected }) {
       <div className="flex items-center gap-3">
         <div className="grid h-10 w-10 place-items-center rounded-2xl border border-cyan-300/30 bg-cyan-300/10 font-black text-cyan-100 shadow-[0_0_28px_rgba(34,211,238,.25)]">E</div>
         <div>
-          <div className="text-sm font-black tracking-tight">ElementOS</div>
+          <div className="flex items-center gap-2 text-sm font-black tracking-tight"><span className="h-2 w-2 rounded-full bg-emerald-300 signal-blink shadow-[0_0_12px_rgba(110,231,183,.9)]" />ElementOS</div>
           <div className="text-[10px] uppercase tracking-[0.25em] text-slate-400">ARM Network</div>
         </div>
       </div>
@@ -567,7 +603,7 @@ function LiveLaunchFooter({ onFindZDAR, onRun, walletConnected }) {
   return (
     <footer className="mt-5 rounded-[2.5rem] border border-white/10 bg-slate-950/70 p-6 text-center shadow-[0_0_80px_rgba(0,0,0,.25)]">
       <div className="text-[10px] font-black uppercase tracking-[0.4em] text-cyan-300">ElementOS is Live</div>
-      <h2 className="mt-3 text-3xl font-black text-white sm:text-5xl">Run a simulation. Hunt ZDAR. Share the result.</h2>
+      <h2 className="mt-3 text-3xl font-black text-white sm:text-5xl">Run a simulation. Hunt ZDAR. Share the result. Go live.</h2>
       <p className="mx-auto mt-3 max-w-2xl text-sm leading-6 text-slate-300">
         Public beta build for validating the ElementOS SimulationFi loop before accounts, backend persistence, and real token integrations.
       </p>
@@ -579,6 +615,119 @@ function LiveLaunchFooter({ onFindZDAR, onRun, walletConnected }) {
         Experimental product preview. Not financial advice. Not a scientific validation engine.
       </div>
     </footer>
+  );
+}
+
+
+
+function PressStrip() {
+  return (
+    <div className="mt-5 grid gap-3 md:grid-cols-3">
+      {PRESS_LINES.map((line) => (
+        <div key={line} className="rounded-2xl border border-white/10 bg-white/[0.055] p-4 text-sm font-bold text-slate-200 shadow-[0_0_35px_rgba(34,211,238,.07)]">
+          <span className="mr-2 text-cyan-300">✦</span>{line}
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function UserQuotePanel() {
+  return (
+    <Card title="Early Beta Reactions" kicker="social proof mockup">
+      <div className="mt-4 grid gap-3">
+        {USER_QUOTES.map(([name, quote]) => (
+          <div key={quote} className="rounded-2xl border border-white/10 bg-slate-950/50 p-4">
+            <div className="text-sm text-slate-200">“{quote}”</div>
+            <div className="mt-2 text-xs font-black uppercase tracking-[0.2em] text-cyan-300">{name}</div>
+          </div>
+        ))}
+      </div>
+    </Card>
+  );
+}
+
+function QuickActionsPanel({ onRun, onFindZDAR, onShare, walletConnected }) {
+  return (
+    <Card title="Quick Actions" kicker="launch control">
+      <div className="mt-4 grid gap-3 sm:grid-cols-2">
+        <button disabled={!walletConnected} onClick={onRun} className="rounded-2xl bg-cyan-300 p-4 font-black text-slate-950 shadow-[0_0_35px_rgba(34,211,238,.32)] transition hover:scale-[1.02] disabled:opacity-50">🚀 Run</button>
+        <button onClick={onFindZDAR} className="rounded-2xl border border-fuchsia-300/40 bg-fuchsia-500/20 p-4 font-black text-fuchsia-100 shadow-[0_0_35px_rgba(217,70,239,.18)] transition hover:scale-[1.02]">⚡ ZDAR</button>
+        <button onClick={onShare} className="rounded-2xl border border-white/10 bg-white/10 p-4 font-black text-white transition hover:bg-white/15">📤 Share</button>
+        <button onClick={onFindZDAR} className="rounded-2xl border border-emerald-300/30 bg-emerald-500/10 p-4 font-black text-emerald-100 transition hover:bg-emerald-500/15">🎲 Hunt</button>
+      </div>
+    </Card>
+  );
+}
+
+function PlatformModesPanel() {
+  return (
+    <Card title="Platform Modes" kicker="what users can do">
+      <div className="mt-4 grid gap-3 sm:grid-cols-2">
+        {PLATFORM_MODES.map(([mode, desc]) => (
+          <div key={mode} className="rounded-2xl border border-white/10 bg-slate-950/45 p-4">
+            <div className="text-xl font-black text-white">{mode}</div>
+            <div className="mt-1 text-xs text-slate-400">{desc}</div>
+          </div>
+        ))}
+      </div>
+    </Card>
+  );
+}
+
+function LaunchMetricsPanel() {
+  return (
+    <Card title="Launch Readiness" kicker="public beta metrics">
+      <div className="mt-4 grid gap-3 sm:grid-cols-2">
+        {LAUNCH_METRICS.map(([label, value]) => (
+          <Metric key={label} label={label} value={value} />
+        ))}
+      </div>
+    </Card>
+  );
+}
+
+function SafetyNotesPanel() {
+  return (
+    <Card title="Beta Transparency" kicker="trust layer">
+      <div className="mt-4 grid gap-2">
+        {SAFETY_NOTES.map((note) => (
+          <div key={note} className="rounded-xl border border-yellow-300/15 bg-yellow-400/5 p-3 text-sm text-yellow-50/85">
+            <span className="mr-2 text-yellow-300">•</span>{note}
+          </div>
+        ))}
+      </div>
+    </Card>
+  );
+}
+
+function ZDARProbabilityPanel({ result }) {
+  const probability = result.zdar ? 97 : Math.max(8, Math.min(88, Math.round(result.stability - result.delta / 2)));
+  return (
+    <Card title="ZDAR Probability" kicker="anticipation meter">
+      <div className="mt-4">
+        <div className="flex items-end justify-between">
+          <div className="text-5xl font-black text-fuchsia-200">{probability}%</div>
+          <div className="text-xs uppercase tracking-[0.22em] text-slate-400">{result.zdar ? "locked" : "scanning"}</div>
+        </div>
+        <div className="mt-4 h-3 overflow-hidden rounded-full bg-slate-800">
+          <div className="h-full rounded-full bg-gradient-to-r from-cyan-300 via-fuchsia-300 to-yellow-300 transition-all duration-700" style={{ width: `${probability}%` }} />
+        </div>
+        <p className="mt-3 text-sm text-slate-300">Higher probability creates a stronger reason to run, hunt, and share.</p>
+      </div>
+    </Card>
+  );
+}
+
+function SharePromptPanel({ result, onShare }) {
+  return (
+    <Card title="Share Moment" kicker="viral prompt">
+      <div className="mt-4 rounded-2xl border border-fuchsia-300/25 bg-fuchsia-500/10 p-4">
+        <div className="text-2xl font-black text-white">{result.zdar ? "You hit Legendary." : "Generate a shareable result."}</div>
+        <p className="mt-2 text-sm text-slate-300">Use this panel to push users toward screenshots, clips, and social posts.</p>
+        <button onClick={onShare} className="mt-4 w-full rounded-2xl bg-fuchsia-300 p-4 font-black text-slate-950 shadow-[0_0_35px_rgba(217,70,239,.35)] transition hover:scale-[1.02]">📤 Prepare Share Text</button>
+      </div>
+    </Card>
   );
 }
 
@@ -657,6 +806,7 @@ function LandingPage({ onLaunch }) {
           <OnboardingStrip />
           <LaunchStatusBar />
           <PublicBetaNotice />
+          <PressStrip />
           <div className="mt-5 flex flex-wrap gap-2">
             <StatusPill tone="cyan">SimulationFi</StatusPill>
             <StatusPill tone="fuchsia">ARM Engine</StatusPill>
@@ -1011,6 +1161,12 @@ export default function App() {
           50% { box-shadow: 0 0 70px rgba(217,70,239,.32); }
         }
         .holo-pulse { animation: holoPulse 3.2s ease-in-out infinite; }
+      
+        @keyframes signalBlink {
+          0%, 100% { opacity: .45; }
+          50% { opacity: 1; }
+        }
+        .signal-blink { animation: signalBlink 1.6s ease-in-out infinite; }
       `}</style>
       <div className="pointer-events-none fixed inset-0 bg-[radial-gradient(circle_at_20%_10%,rgba(34,211,238,.3),transparent_30%),radial-gradient(circle_at_85%_20%,rgba(217,70,239,.3),transparent_30%),radial-gradient(circle_at_50%_100%,rgba(59,130,246,.25),transparent_35%)]" />
       <div className="pointer-events-none fixed inset-0 opacity-30 [background-image:linear-gradient(rgba(255,255,255,.035)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,.035)_1px,transparent_1px)] [background-size:44px_44px]" />
@@ -1190,6 +1346,23 @@ export default function App() {
               <TrendingPairsPanel onSelect={(a, b) => setPair([a, b])} />
               <ScreenshotFrame pair={pair} result={result} />
               <ComingSoonPanel />
+            </section>
+
+            <section className="mt-5 grid gap-5 lg:grid-cols-3">
+              <ZDARProbabilityPanel result={result} />
+              <SharePromptPanel result={result} onShare={generateShareCard} />
+              <QuickActionsPanel onRun={run} onFindZDAR={discoverZDAR} onShare={generateShareCard} walletConnected={walletConnected} />
+            </section>
+
+            <section className="mt-5 grid gap-5 lg:grid-cols-3">
+              <PlatformModesPanel />
+              <LaunchMetricsPanel />
+              <SafetyNotesPanel />
+            </section>
+
+            <section className="mt-5 grid gap-5 lg:grid-cols-2">
+              <UserQuotePanel />
+              <CommunityPanel />
             </section>
 
             <section className="mt-5 grid gap-5 lg:grid-cols-3">
