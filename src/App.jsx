@@ -1,3 +1,4 @@
+// 100-polish launch pack: premium UX, onboarding, market pulse, trust layer, terminal output, sharing polish.
 import React, { useEffect, useMemo, useState } from "react";
 
 const UI = {
@@ -17,6 +18,54 @@ const PARTICLES = Array.from({ length: 48 }, (_, i) => ({
   duration: 7 + (i % 9),
   tone: i % 3 === 0 ? "bg-fuchsia-300" : i % 3 === 1 ? "bg-cyan-300" : "bg-blue-300",
 }));
+
+
+const MARKET_STATS = [
+  ["ELM Price", "$0.284", "+12.4%"],
+  ["24h Volume", "$2.1M", "mock"],
+  ["Sim Runs", "2.4M", "network"],
+  ["ZDAR Events", "12,904", "global"],
+];
+
+const FEATURE_PILLS = [
+  "SimulationFi", "ARM Engine", "ELM Gas", "ZDAR Rarity",
+  "118 Elements", "Live Network", "Mobile Ready", "Shareable Results"
+];
+
+const LAUNCH_CHECKLIST = ["Pick two elements", "Run simulation", "Trigger ZDAR", "Share the result"];
+
+const PROOF_POINTS = [
+  "Live deployed MVP",
+  "Responsive desktop + mobile UI",
+  "Crypto-native wallet flow",
+  "Cinematic ZDAR mechanic"
+];
+
+
+const TRENDING_PAIRS = [
+  ["Fe / Ru", "ZDAR Legendary", "98%"],
+  ["Ti / W", "Epic", "91%"],
+  ["Al / Pt", "Rare", "87%"],
+  ["Si / C", "Prime Lattice", "84%"],
+];
+
+const COMING_SOON = [
+  "Structure Marketplace",
+  "Ranked Discoveries",
+  "ELM Staking Seasons",
+  "Global ARM Index",
+  "Creator Simulation Cards",
+  "Public ZDAR Challenges",
+];
+
+const ARM_AI_LINES = [
+  "Pair stability is trending upward.",
+  "Orbital distance suggests a possible rarity spike.",
+  "ARM field lock is stable.",
+  "ZDAR probability rises when angular delta compresses.",
+  "This pair is suitable for a shareable simulation card.",
+];
+
 
 const RAW_ELEMENTS = [
   "1|H|Hydrogen|20|Nonmetal","2|He|Helium|90|Noble Gas","3|Li|Lithium|20|Alkali Metal","4|Be|Beryllium|35|Alkaline Earth Metal","5|B|Boron|10|Metalloid","6|C|Carbon|45|Nonmetal","7|N|Nitrogen|60|Nonmetal","8|O|Oxygen|70|Nonmetal","9|F|Fluorine|80|Halogen","10|Ne|Neon|90|Noble Gas",
@@ -188,6 +237,231 @@ function CTAFooter({ onFindZDAR, onRun, walletConnected }) {
 }
 
 
+
+function AnimatedGlowDivider() {
+  return <div className="my-5 h-px w-full bg-gradient-to-r from-transparent via-cyan-300/40 to-transparent shadow-[0_0_30px_rgba(34,211,238,.25)]" />;
+}
+
+function OnboardingStrip() {
+  return (
+    <div className="mt-5 grid gap-3 sm:grid-cols-4">
+      {LAUNCH_CHECKLIST.map((item, index) => (
+        <div key={item} className="rounded-2xl border border-white/10 bg-slate-950/50 p-3">
+          <div className="text-[10px] font-black uppercase tracking-[0.26em] text-cyan-300">Step {index + 1}</div>
+          <div className="mt-1 text-sm font-bold text-white">{item}</div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function MarketPanel() {
+  return (
+    <Card title="ELM Market Pulse" kicker="mock ecosystem signal">
+      <div className="mt-4 grid gap-3 sm:grid-cols-2">
+        {MARKET_STATS.map(([label, value, sub]) => <Metric key={label} label={label} value={value} sub={sub} />)}
+      </div>
+    </Card>
+  );
+}
+
+function TrustPanel() {
+  return (
+    <Card title="Why ElementOS Feels Different" kicker="launch-ready positioning">
+      <div className="mt-4 grid gap-3">
+        {PROOF_POINTS.map((point) => (
+          <div key={point} className="rounded-2xl border border-white/10 bg-slate-950/45 p-3 text-sm text-slate-200">
+            <span className="mr-2 text-emerald-300">✓</span>{point}
+          </div>
+        ))}
+      </div>
+    </Card>
+  );
+}
+
+function LaunchBanner({ onFindZDAR }) {
+  return (
+    <div className="mt-5 rounded-[2rem] border border-cyan-300/20 bg-cyan-500/10 p-4 shadow-[0_0_60px_rgba(34,211,238,.12)]">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div>
+          <div className="text-[10px] font-black uppercase tracking-[0.34em] text-cyan-200">Launch Mode</div>
+          <div className="mt-1 text-lg font-black text-white">Your first viral moment is one ZDAR away.</div>
+        </div>
+        <button onClick={onFindZDAR} className="rounded-2xl border border-fuchsia-300/40 bg-fuchsia-500/20 px-5 py-3 font-black text-fuchsia-100 shadow-[0_0_35px_rgba(217,70,239,.22)] transition hover:scale-[1.03]">
+          ⚡ Prime ZDAR
+        </button>
+      </div>
+    </div>
+  );
+}
+
+function FeatureRibbon() {
+  return (
+    <div className="mt-5 flex flex-wrap gap-2">
+      {FEATURE_PILLS.map((pill, index) => (
+        <span key={pill} className={`rounded-full border px-3 py-2 text-[10px] font-black uppercase tracking-[0.2em] ${
+          index % 4 === 0 ? "border-cyan-300/30 bg-cyan-300/10 text-cyan-100" :
+          index % 4 === 1 ? "border-fuchsia-300/30 bg-fuchsia-300/10 text-fuchsia-100" :
+          index % 4 === 2 ? "border-emerald-300/30 bg-emerald-300/10 text-emerald-100" :
+          "border-yellow-300/30 bg-yellow-300/10 text-yellow-100"
+        }`}>{pill}</span>
+      ))}
+    </div>
+  );
+}
+
+function MiniTerminal({ pair, result }) {
+  return (
+    <div className="mt-4 rounded-2xl border border-emerald-300/20 bg-black/50 p-4 font-mono text-xs text-emerald-100 shadow-[0_0_35px_rgba(16,185,129,.12)]">
+      <div>&gt; arm.scan --pair {pair.join("/")}</div>
+      <div>&gt; stability: {result.stability}%</div>
+      <div>&gt; rarity: {result.rarity}</div>
+      <div>&gt; gas: {result.cost} ELM</div>
+    </div>
+  );
+}
+
+
+function NetworkStatsPanel({ history, feed, result }) {
+  const simsToday = 18420 + history.length * 17;
+  const online = 128 + feed.length * 3;
+  const zdarGlobal = 12904 + feed.length;
+  const streak = result.zdar ? 7 : 3;
+
+  return (
+    <section className="mt-5 grid gap-3 md:grid-cols-4">
+      <Metric label="Users Online" value={online.toLocaleString()} sub="mock live network" />
+      <Metric label="Simulations Today" value={simsToday.toLocaleString()} sub="global activity" />
+      <Metric label="Global ZDAR" value={zdarGlobal.toLocaleString()} sub="legendary hits" />
+      <Metric label="ZDAR Streak" value={`${streak}x`} sub="active challenge" />
+    </section>
+  );
+}
+
+function CollectibleResultCard({ pair, result, shareText, onShare }) {
+  const id = `ZDAR-${Math.abs(pair.join("").split("").reduce((a, c) => a + c.charCodeAt(0), 0) * 137 + result.stability * 11)}`;
+  return (
+    <Card title="Collectible Result Card" kicker="share-ready output">
+      <div className={`mt-4 overflow-hidden rounded-[2rem] border p-5 ${
+        result.zdar
+          ? "border-fuchsia-300/50 bg-fuchsia-500/15 shadow-[0_0_70px_rgba(217,70,239,.32)]"
+          : "border-cyan-300/25 bg-cyan-500/10"
+      }`}>
+        <div className="flex items-start justify-between gap-3">
+          <div>
+            <div className="text-[10px] font-black uppercase tracking-[0.34em] text-slate-300">Simulation Card</div>
+            <div className="mt-2 text-3xl font-black text-white">{pair.join(" / ")}</div>
+          </div>
+          <div className="rounded-2xl border border-white/10 bg-slate-950/60 px-3 py-2 text-right font-mono text-xs text-cyan-100">
+            {id}
+          </div>
+        </div>
+        <div className="mt-5 grid gap-3 sm:grid-cols-3">
+          <Metric label="Stability" value={`${result.stability}%`} />
+          <Metric label="Rarity" value={result.zdar ? "ZDAR" : result.rarity.split(" ")[0]} />
+          <Metric label="Structure" value={result.structure.split(" ")[0]} />
+        </div>
+        <div className="mt-5 rounded-2xl border border-white/10 bg-black/30 p-4 text-sm text-slate-200">
+          {result.zdar
+            ? "Legendary alignment detected. This card is optimized for screenshots and social sharing."
+            : "Run more simulations or hunt ZDAR to generate a legendary share card."}
+        </div>
+        <button onClick={onShare} className="mt-4 w-full rounded-2xl bg-cyan-300 p-4 font-black text-slate-950 shadow-[0_0_40px_rgba(34,211,238,.35)] transition hover:scale-[1.02]">
+          📤 Generate Share Text
+        </button>
+        {shareText && <div className="mt-3 rounded-2xl border border-cyan-300/20 bg-slate-950/70 p-3 text-xs text-cyan-100">{shareText}</div>}
+      </div>
+    </Card>
+  );
+}
+
+function ARMAIPanel({ pair, result }) {
+  const advice = result.zdar
+    ? "ARM AI: ZDAR lock confirmed. This is a prime share event."
+    : result.stability > 75
+      ? "ARM AI: Strong candidate. Run again or compare against nearby transition metals."
+      : "ARM AI: Stability is forming. Try Discover or Find Legendary Alignment.";
+
+  return (
+    <Card title="ARM AI Analyst" kicker="predictive assistant">
+      <div className="mt-4 rounded-2xl border border-emerald-300/20 bg-emerald-500/10 p-4 text-emerald-100 shadow-[0_0_35px_rgba(16,185,129,.12)]">
+        <div className="text-[10px] font-black uppercase tracking-[0.3em] text-emerald-200">Live Interpretation</div>
+        <div className="mt-2 text-lg font-black">{advice}</div>
+        <div className="mt-3 text-sm text-emerald-100/75">
+          {pair.join(" / ")} currently resolves at {result.stability}% stability with {result.delta}° angular delta.
+        </div>
+      </div>
+      <div className="mt-4 grid gap-2">
+        {ARM_AI_LINES.slice(0, 4).map((line) => (
+          <div key={line} className="rounded-xl border border-white/10 bg-slate-950/45 p-3 text-sm text-slate-300">
+            <span className="mr-2 text-cyan-300">›</span>{line}
+          </div>
+        ))}
+      </div>
+    </Card>
+  );
+}
+
+function TrendingPairsPanel({ onSelect }) {
+  return (
+    <Card title="Trending Pairs" kicker="network discovery map">
+      <div className="mt-4 grid gap-3">
+        {TRENDING_PAIRS.map(([pair, rarity, score]) => {
+          const [a, b] = pair.split(" / ");
+          return (
+            <button key={pair} onClick={() => onSelect(a, b)} className="rounded-2xl border border-white/10 bg-slate-950/45 p-3 text-left transition hover:border-cyan-300/30 hover:bg-white/10">
+              <div className="flex items-center justify-between gap-3">
+                <div>
+                  <div className="font-black text-white">{pair}</div>
+                  <div className="text-xs text-slate-400">{rarity}</div>
+                </div>
+                <div className="text-xl font-black text-cyan-200">{score}</div>
+              </div>
+            </button>
+          );
+        })}
+      </div>
+    </Card>
+  );
+}
+
+function ComingSoonPanel() {
+  return (
+    <Card title="Coming Soon" kicker="ecosystem roadmap">
+      <div className="mt-4 grid gap-2 sm:grid-cols-2">
+        {COMING_SOON.map((item) => (
+          <div key={item} className="rounded-2xl border border-white/10 bg-white/5 p-3 text-sm font-bold text-slate-200">
+            <span className="mr-2 text-fuchsia-300">✦</span>{item}
+          </div>
+        ))}
+      </div>
+    </Card>
+  );
+}
+
+function ScreenshotFrame({ pair, result }) {
+  return (
+    <Card title="Screenshot Frame" kicker="social-ready preview">
+      <div className="mt-4 rounded-[2rem] border border-cyan-300/20 bg-gradient-to-br from-slate-950 via-cyan-950/30 to-fuchsia-950/30 p-5 shadow-[0_0_70px_rgba(34,211,238,.16)]">
+        <div className="flex items-center justify-between">
+          <div className="text-xs font-black uppercase tracking-[0.3em] text-cyan-200">ElementOS</div>
+          <div className="rounded-full border border-emerald-300/30 bg-emerald-300/10 px-3 py-1 text-[10px] font-black uppercase tracking-[0.2em] text-emerald-100">Live</div>
+        </div>
+        <div className="mt-8 text-center">
+          <div className="text-5xl font-black text-white">{pair.join(" / ")}</div>
+          <div className="mt-3 text-xl font-black text-fuchsia-200">{result.rarity}</div>
+          <div className="mt-2 text-4xl font-black text-cyan-200">{result.stability}%</div>
+          <div className="mt-1 text-xs uppercase tracking-[0.3em] text-slate-400">stability score</div>
+        </div>
+        <div className="mt-8 h-2 overflow-hidden rounded-full bg-slate-800">
+          <div className="h-full rounded-full bg-gradient-to-r from-cyan-300 to-fuchsia-300" style={{ width: `${result.stability}%` }} />
+        </div>
+      </div>
+    </Card>
+  );
+}
+
+
 function Metric({ label, value, sub }) {
   return (
     <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-slate-950/55 p-3 sm:p-4 shadow-[inset_0_1px_0_rgba(255,255,255,.06)]">
@@ -249,6 +523,8 @@ function LandingPage({ onLaunch }) {
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(34,211,238,.22),transparent_32%),radial-gradient(circle_at_85%_35%,rgba(217,70,239,.18),transparent_30%)]" />
       <div className="relative grid gap-8 lg:grid-cols-[1.05fr_.95fr] lg:items-center">
         <div>
+          <div className="mb-3 inline-flex rounded-full border border-fuchsia-300/30 bg-fuchsia-300/10 px-4 py-2 text-[10px] font-black uppercase tracking-[0.35em] text-fuchsia-100">PRE-ONBOARDING LAUNCH BUILD</div>
+          <br />
           <div className="inline-flex rounded-full border border-cyan-300/30 bg-cyan-300/10 px-4 py-2 text-xs font-black uppercase tracking-[0.35em] text-cyan-200">
             {UI.appName}
           </div>
@@ -256,6 +532,8 @@ function LandingPage({ onLaunch }) {
             {UI.headline}
           </h1>
           <p className="mt-4 max-w-3xl text-base leading-7 text-slate-300 sm:mt-6 sm:text-xl sm:leading-8">{UI.sub}</p>
+          <FeatureRibbon />
+          <OnboardingStrip />
           <div className="mt-5 flex flex-wrap gap-2">
             <StatusPill tone="cyan">SimulationFi</StatusPill>
             <StatusPill tone="fuchsia">ARM Engine</StatusPill>
@@ -274,7 +552,7 @@ function LandingPage({ onLaunch }) {
           </div>
         </div>
 
-        <div className="relative min-h-[360px] overflow-hidden rounded-[1.8rem] border border-white/10 bg-slate-950/70 p-4 sm:min-h-[520px] sm:rounded-[2.5rem] sm:p-5 shadow-[0_0_100px_rgba(34,211,238,.18)]">
+        <div className="relative min-h-[360px] overflow-hidden slow-float rounded-[1.8rem] border border-white/10 bg-slate-950/70 p-4 sm:min-h-[520px] sm:rounded-[2.5rem] sm:p-5 shadow-[0_0_100px_rgba(34,211,238,.18)]">
           <div className="absolute inset-16 rounded-full border border-cyan-300/15 shadow-[0_0_70px_rgba(34,211,238,.18)] [transform:rotateX(64deg)_rotateZ(12deg)]" />
           <div className="absolute inset-24 rounded-full border border-fuchsia-300/15 shadow-[0_0_70px_rgba(217,70,239,.14)] [transform:rotateX(28deg)_rotateY(45deg)]" />
           <div className="absolute left-1/2 top-1/2 flex h-24 w-24 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-cyan-200 bg-cyan-300/15 text-4xl font-black sm:h-36 sm:w-36 sm:text-6xl shadow-[0_0_80px_rgba(34,211,238,.75)]">Al</div>
@@ -487,6 +765,7 @@ export default function App() {
   const [history, setHistory] = useState([]);
   const [favorites, setFav] = useState([]);
   const [shareText, setShareText] = useState("");
+  const [copied, setCopied] = useState(false);
   const [xp, setXp] = useState(0);
   const [level, setLevel] = useState(1);
   const [feed, setFeed] = useState([]);
@@ -557,10 +836,17 @@ export default function App() {
   }
 
   function generateShareCard() {
-    const text = `I just discovered a ZDAR alignment on ElementOS ⚡\n\n${pair.join(" / ")} → ${result.stability}% stability\n\nTry it:\n${window.location.href}`;
+    const text = `I just triggered a Legendary ZDAR alignment on ElementOS ⚡\n\n${pair.join(" / ")} → ${result.stability}% stability\n\nTry it:\n${window.location.href}`;
     setShareText(text);
+    setCopied(false);
+
     if (navigator.share) {
       navigator.share({ title: "ElementOS ZDAR Alignment", text, url: window.location.href }).catch(() => {});
+    } else if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(() => {
+        setCopied(true);
+        window.setTimeout(() => setCopied(false), 1600);
+      }).catch(() => {});
     }
   }
 
@@ -590,6 +876,18 @@ export default function App() {
         .zdar-flash {
           animation: zdarFlash 1.2s ease-in-out infinite;
         }
+      
+        @keyframes slowFloat {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(-6px); }
+        }
+        .slow-float { animation: slowFloat 5s ease-in-out infinite; }
+      
+        @keyframes holoPulse {
+          0%, 100% { box-shadow: 0 0 24px rgba(34,211,238,.18); }
+          50% { box-shadow: 0 0 70px rgba(217,70,239,.32); }
+        }
+        .holo-pulse { animation: holoPulse 3.2s ease-in-out infinite; }
       `}</style>
       <div className="pointer-events-none fixed inset-0 bg-[radial-gradient(circle_at_20%_10%,rgba(34,211,238,.3),transparent_30%),radial-gradient(circle_at_85%_20%,rgba(217,70,239,.3),transparent_30%),radial-gradient(circle_at_50%_100%,rgba(59,130,246,.25),transparent_35%)]" />
       <div className="pointer-events-none fixed inset-0 opacity-30 [background-image:linear-gradient(rgba(255,255,255,.035)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,.035)_1px,transparent_1px)] [background-size:44px_44px]" />
@@ -604,7 +902,7 @@ export default function App() {
           <>
             <GhostButton onClick={() => setShowApp(false)} className="mb-4 px-4 py-2">← Back to Landing</GhostButton>
 
-            <header className="rounded-[1.8rem] border border-cyan-300/20 bg-white/[0.065] p-4 sm:rounded-[2.5rem] sm:p-7 shadow-[0_30px_120px_rgba(0,0,0,.45)] backdrop-blur-2xl">
+            <header className="holo-pulse rounded-[1.8rem] border border-cyan-300/20 bg-white/[0.065] p-4 sm:rounded-[2.5rem] sm:p-7 shadow-[0_30px_120px_rgba(0,0,0,.45)] backdrop-blur-2xl">
               <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
                 <div>
                   <div className="text-xs uppercase tracking-[0.5em] text-cyan-300">ElementOS — ARM Simulation Network</div>
@@ -620,6 +918,8 @@ export default function App() {
               </div>
             </header>
 
+            <LaunchBanner onFindZDAR={discoverZDAR} />
+
             <section className="mt-4 grid grid-cols-2 gap-3 md:grid-cols-3 xl:grid-cols-6 sm:mt-5">
               <Metric label="Explorer Level" value={level} sub={`${xp} XP`} />
               <Metric label="Simulation Credits" value={credits} />
@@ -628,6 +928,8 @@ export default function App() {
               <Metric label="Live Network" value="Online" sub="activity stream" />
               <Metric label="Gas Mode" value="Testnet" />
             </section>
+
+            <NetworkStatsPanel history={history} feed={feed} result={result} />
 
             <section className="mt-4 grid gap-4 xl:grid-cols-[1.18fr_.82fr] sm:mt-5 sm:gap-5">
               <Card
@@ -663,6 +965,7 @@ export default function App() {
 
                 <OrbitalAlignment result={result} pair={pair} />
                 <div className="mt-4"><RarityBadge result={result} /></div>
+                <MiniTerminal pair={pair} result={result} />
 
                 {result.zdar && (
                   <div className="mt-4 rounded-[2rem] border border-fuchsia-300 bg-fuchsia-500/20 p-6 text-fuchsia-100 shadow-[0_0_90px_rgba(217,70,239,.7)]">
@@ -750,6 +1053,21 @@ export default function App() {
               </Card>
 
               <LiveFeedPanel feed={[...feed, ...liveStream]} /></section>
+
+            <NetworkStatsPanel history={history} feed={feed} result={result} />
+
+            <section className="mt-5 grid gap-5 lg:grid-cols-2"><MarketPanel /><TrustPanel /></section>
+
+            <section className="mt-5 grid gap-5 lg:grid-cols-2">
+              <CollectibleResultCard pair={pair} result={result} shareText={shareText} onShare={generateShareCard} />
+              <ARMAIPanel pair={pair} result={result} />
+            </section>
+
+            <section className="mt-5 grid gap-5 lg:grid-cols-3">
+              <TrendingPairsPanel onSelect={(a, b) => setPair([a, b])} />
+              <ScreenshotFrame pair={pair} result={result} />
+              <ComingSoonPanel />
+            </section>
 
             <CTAFooter onFindZDAR={discoverZDAR} onRun={run} walletConnected={walletConnected} />
 
