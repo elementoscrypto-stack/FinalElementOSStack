@@ -1,3 +1,4 @@
+// live-ready public beta build: clear status, feedback loop, FAQ, community cues, beta disclaimer.
 // 100-polish launch pack: premium UX, onboarding, market pulse, trust layer, terminal output, sharing polish.
 import React, { useEffect, useMemo, useState } from "react";
 
@@ -64,6 +65,29 @@ const ARM_AI_LINES = [
   "ARM field lock is stable.",
   "ZDAR probability rises when angular delta compresses.",
   "This pair is suitable for a shareable simulation card.",
+];
+
+
+
+const LAUNCH_STATUS = [
+  ["Public Beta", "Live"],
+  ["Network", "Online"],
+  ["Build", "Launch Ready"],
+  ["Access", "Open"],
+];
+
+const COMMUNITY_LINKS = [
+  ["X / Twitter", "Share ZDAR clips"],
+  ["Discord", "Community coming soon"],
+  ["Product Hunt", "Launch candidate"],
+  ["GitHub", "Public build ready"],
+];
+
+const FAQS = [
+  ["What is ElementOS?", "A crypto-native element simulation experience built around ARM, ELM gas, and ZDAR rarity events."],
+  ["Is this real blockchain?", "This public beta uses a testnet-style mock wallet while the core product loop is validated."],
+  ["What is ZDAR?", "ZDAR is the rare Legendary Alignment event users hunt for inside the simulation."],
+  ["What should users do first?", "Connect the testnet wallet, run a simulation, then try Find Legendary Alignment."],
 ];
 
 
@@ -215,7 +239,7 @@ function TopNav({ onLaunch, showApp, walletConnected }) {
       </div>
       {!showApp && (
         <button onClick={onLaunch} className="rounded-2xl bg-cyan-300 px-4 py-2 text-sm font-black text-slate-950 shadow-[0_0_30px_rgba(34,211,238,.35)] transition hover:scale-[1.03]">
-          Launch App
+          Enter App
         </button>
       )}
     </nav>
@@ -284,8 +308,8 @@ function LaunchBanner({ onFindZDAR }) {
     <div className="mt-5 rounded-[2rem] border border-cyan-300/20 bg-cyan-500/10 p-4 shadow-[0_0_60px_rgba(34,211,238,.12)]">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <div className="text-[10px] font-black uppercase tracking-[0.34em] text-cyan-200">Launch Mode</div>
-          <div className="mt-1 text-lg font-black text-white">Your first viral moment is one ZDAR away.</div>
+          <div className="text-[10px] font-black uppercase tracking-[0.34em] text-cyan-200">Public Launch Mode</div>
+          <div className="mt-1 text-lg font-black text-white">ElementOS is live. Your first viral moment is one ZDAR away.</div>
         </div>
         <button onClick={onFindZDAR} className="rounded-2xl border border-fuchsia-300/40 bg-fuchsia-500/20 px-5 py-3 font-black text-fuchsia-100 shadow-[0_0_35px_rgba(217,70,239,.22)] transition hover:scale-[1.03]">
           ⚡ Prime ZDAR
@@ -462,6 +486,103 @@ function ScreenshotFrame({ pair, result }) {
 }
 
 
+
+function LaunchStatusBar() {
+  return (
+    <section className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+      {LAUNCH_STATUS.map(([label, value]) => (
+        <div key={label} className="rounded-2xl border border-emerald-300/20 bg-emerald-500/10 p-4 shadow-[0_0_35px_rgba(16,185,129,.1)]">
+          <div className="text-[10px] font-black uppercase tracking-[0.3em] text-emerald-200">{label}</div>
+          <div className="mt-1 text-2xl font-black text-white">{value}</div>
+        </div>
+      ))}
+    </section>
+  );
+}
+
+function PublicBetaNotice() {
+  return (
+    <div className="mt-5 rounded-[2rem] border border-yellow-300/25 bg-yellow-400/10 p-4 text-yellow-50 shadow-[0_0_45px_rgba(250,204,21,.1)]">
+      <div className="text-[10px] font-black uppercase tracking-[0.32em] text-yellow-200">Public Beta Notice</div>
+      <p className="mt-2 text-sm text-yellow-50/85">
+        ElementOS is live as an experimental SimulationFi MVP. Wallet, ELM gas, market stats, and activity signals are prototype/testnet mechanics while the product loop is validated.
+      </p>
+    </div>
+  );
+}
+
+function FeedbackPanel() {
+  return (
+    <Card title="Public Beta Feedback" kicker="help shape ElementOS">
+      <div className="mt-4 rounded-2xl border border-cyan-300/20 bg-cyan-500/10 p-4">
+        <div className="text-lg font-black text-white">What should users tell us?</div>
+        <div className="mt-3 grid gap-2 text-sm text-slate-300">
+          <div>• Did you understand the product in 10 seconds?</div>
+          <div>• Did ZDAR feel exciting?</div>
+          <div>• Would you share a result card?</div>
+          <div>• What confused you?</div>
+        </div>
+      </div>
+      <button
+        onClick={() => window.location.href = "mailto:hello@elementos.app?subject=ElementOS%20Beta%20Feedback"}
+        className="mt-4 w-full rounded-2xl bg-cyan-300 p-4 font-black text-slate-950 shadow-[0_0_35px_rgba(34,211,238,.3)] transition hover:scale-[1.02]"
+      >
+        Send Beta Feedback
+      </button>
+    </Card>
+  );
+}
+
+function CommunityPanel() {
+  return (
+    <Card title="Community Launch Channels" kicker="public growth layer">
+      <div className="mt-4 grid gap-3 sm:grid-cols-2">
+        {COMMUNITY_LINKS.map(([name, detail]) => (
+          <div key={name} className="rounded-2xl border border-white/10 bg-slate-950/45 p-4">
+            <div className="font-black text-white">{name}</div>
+            <div className="mt-1 text-xs text-slate-400">{detail}</div>
+          </div>
+        ))}
+      </div>
+    </Card>
+  );
+}
+
+function FAQPanel() {
+  return (
+    <Card title="New User FAQ" kicker="reduce launch confusion">
+      <div className="mt-4 grid gap-3">
+        {FAQS.map(([q, a]) => (
+          <details key={q} className="rounded-2xl border border-white/10 bg-slate-950/45 p-4">
+            <summary className="cursor-pointer font-black text-white">{q}</summary>
+            <p className="mt-2 text-sm leading-6 text-slate-300">{a}</p>
+          </details>
+        ))}
+      </div>
+    </Card>
+  );
+}
+
+function LiveLaunchFooter({ onFindZDAR, onRun, walletConnected }) {
+  return (
+    <footer className="mt-5 rounded-[2.5rem] border border-white/10 bg-slate-950/70 p-6 text-center shadow-[0_0_80px_rgba(0,0,0,.25)]">
+      <div className="text-[10px] font-black uppercase tracking-[0.4em] text-cyan-300">ElementOS is Live</div>
+      <h2 className="mt-3 text-3xl font-black text-white sm:text-5xl">Run a simulation. Hunt ZDAR. Share the result.</h2>
+      <p className="mx-auto mt-3 max-w-2xl text-sm leading-6 text-slate-300">
+        Public beta build for validating the ElementOS SimulationFi loop before accounts, backend persistence, and real token integrations.
+      </p>
+      <div className="mt-5 flex flex-wrap justify-center gap-3">
+        <button onClick={onFindZDAR} className="rounded-2xl border border-fuchsia-300/40 bg-fuchsia-500/20 px-5 py-3 font-black text-fuchsia-100 shadow-[0_0_35px_rgba(217,70,239,.22)] transition hover:scale-[1.03]">⚡ Find ZDAR</button>
+        <button disabled={!walletConnected} onClick={onRun} className="rounded-2xl bg-cyan-300 px-5 py-3 font-black text-slate-950 shadow-[0_0_35px_rgba(34,211,238,.35)] transition hover:scale-[1.03] disabled:opacity-50">🚀 Run Simulation</button>
+      </div>
+      <div className="mt-5 text-xs text-slate-500">
+        Experimental product preview. Not financial advice. Not a scientific validation engine.
+      </div>
+    </footer>
+  );
+}
+
+
 function Metric({ label, value, sub }) {
   return (
     <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-slate-950/55 p-3 sm:p-4 shadow-[inset_0_1px_0_rgba(255,255,255,.06)]">
@@ -523,7 +644,7 @@ function LandingPage({ onLaunch }) {
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(34,211,238,.22),transparent_32%),radial-gradient(circle_at_85%_35%,rgba(217,70,239,.18),transparent_30%)]" />
       <div className="relative grid gap-8 lg:grid-cols-[1.05fr_.95fr] lg:items-center">
         <div>
-          <div className="mb-3 inline-flex rounded-full border border-fuchsia-300/30 bg-fuchsia-300/10 px-4 py-2 text-[10px] font-black uppercase tracking-[0.35em] text-fuchsia-100">PRE-ONBOARDING LAUNCH BUILD</div>
+          <div className="mb-3 inline-flex rounded-full border border-fuchsia-300/30 bg-fuchsia-300/10 px-4 py-2 text-[10px] font-black uppercase tracking-[0.35em] text-fuchsia-100">PUBLIC BETA LIVE</div>
           <br />
           <div className="inline-flex rounded-full border border-cyan-300/30 bg-cyan-300/10 px-4 py-2 text-xs font-black uppercase tracking-[0.35em] text-cyan-200">
             {UI.appName}
@@ -534,6 +655,8 @@ function LandingPage({ onLaunch }) {
           <p className="mt-4 max-w-3xl text-base leading-7 text-slate-300 sm:mt-6 sm:text-xl sm:leading-8">{UI.sub}</p>
           <FeatureRibbon />
           <OnboardingStrip />
+          <LaunchStatusBar />
+          <PublicBetaNotice />
           <div className="mt-5 flex flex-wrap gap-2">
             <StatusPill tone="cyan">SimulationFi</StatusPill>
             <StatusPill tone="fuchsia">ARM Engine</StatusPill>
@@ -1069,7 +1192,13 @@ export default function App() {
               <ComingSoonPanel />
             </section>
 
-            <CTAFooter onFindZDAR={discoverZDAR} onRun={run} walletConnected={walletConnected} />
+            <section className="mt-5 grid gap-5 lg:grid-cols-3">
+              <FeedbackPanel />
+              <CommunityPanel />
+              <FAQPanel />
+            </section>
+
+            <LiveLaunchFooter onFindZDAR={discoverZDAR} onRun={run} walletConnected={walletConnected} />
 
             <section className="mt-5">
               <Card title="⭐ Saved Pairs" kicker="watchlist">
