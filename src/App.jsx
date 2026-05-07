@@ -207,8 +207,12 @@ function MockWalletPanel({ walletConnected, walletAddress, elm, credits, stakedE
 function OrbitalAlignment({ result, pair }) {
   const left = pair?.[0] || "Al";
   const right = pair?.[1] || "Fe";
-  const beamWidth = result.zdar ? "w-[74%]" : result.stability > 80 ? "w-[62%]" : "w-[48%]";
-  const beamGlow = result.zdar ? "bg-fuchsia-300 shadow-[0_0_80px_rgba(217,70,239,.95)]" : result.stability > 80 ? "bg-cyan-300/80 shadow-[0_0_45px_rgba(34,211,238,.75)]" : "bg-cyan-300/35 shadow-[0_0_25px_rgba(34,211,238,.35)]";
+  const beamWidth = result.zdar ? "w-[86%] h-[9px]" : result.stability > 80 ? "w-[62%] h-[5px]" : "w-[48%] h-[5px]";
+  const beamGlow = result.zdar
+    ? "bg-fuchsia-300 shadow-[0_0_140px_rgba(217,70,239,1)]"
+    : result.stability > 80
+      ? "bg-cyan-300/80 shadow-[0_0_45px_rgba(34,211,238,.75)]"
+      : "bg-cyan-300/35 shadow-[0_0_25px_rgba(34,211,238,.35)]";
 
   return (
     <div className="relative mt-4 h-[450px] overflow-hidden rounded-[2rem] border border-white/10 bg-slate-950 shadow-[0_0_90px_rgba(34,211,238,.16)]">
@@ -228,7 +232,7 @@ function OrbitalAlignment({ result, pair }) {
         <div className="text-[10px] uppercase tracking-[.25em] text-cyan-200/70">secondary sphere</div>
       </div>
 
-      <div className={`absolute left-1/2 top-1/2 h-[5px] ${beamWidth} -translate-x-1/2 -translate-y-1/2 rounded-full transition-all duration-700 ${beamGlow}`} />
+      <div className={`absolute left-1/2 top-1/2 ${beamWidth} -translate-x-1/2 -translate-y-1/2 rounded-full transition-all duration-700 ${beamGlow}`} />
       <div className={`absolute left-1/2 top-1/2 h-16 w-16 -translate-x-1/2 -translate-y-1/2 rounded-full transition-all duration-700 ${result.zdar ? "scale-125 bg-fuchsia-300 shadow-[0_0_110px_rgba(217,70,239,1)]" : "bg-cyan-300 shadow-[0_0_55px_rgba(34,211,238,.75)]"}`} />
 
       <div className="absolute left-1/2 top-[37%] -translate-x-1/2 text-center">
@@ -398,8 +402,28 @@ export default function App() {
 
   return (
     <div className="min-h-screen overflow-hidden bg-slate-950 p-5 text-white">
+      <style>{`
+        @keyframes zdarPulse {
+          0%, 100% { transform: scale(1); filter: brightness(1); }
+          50% { transform: scale(1.025); filter: brightness(1.35); }
+        }
+
+        @keyframes zdarFlash {
+          0%, 100% { opacity: 0; }
+          50% { opacity: .35; }
+        }
+
+        .zdar-active {
+          animation: zdarPulse 1.4s ease-in-out infinite;
+        }
+
+        .zdar-flash {
+          animation: zdarFlash 1.2s ease-in-out infinite;
+        }
+      `}</style>
       <div className="pointer-events-none fixed inset-0 bg-[radial-gradient(circle_at_20%_10%,rgba(34,211,238,.3),transparent_30%),radial-gradient(circle_at_85%_20%,rgba(217,70,239,.3),transparent_30%),radial-gradient(circle_at_50%_100%,rgba(59,130,246,.25),transparent_35%)]" />
       <div className="pointer-events-none fixed inset-0 opacity-30 [background-image:linear-gradient(rgba(255,255,255,.035)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,.035)_1px,transparent_1px)] [background-size:44px_44px]" />
+      {result.zdar && <div className="pointer-events-none fixed inset-0 z-10 bg-fuchsia-500/20 zdar-flash" />}
 
       <div className="relative mx-auto max-w-7xl">
         {!showApp ? (
@@ -433,7 +457,11 @@ export default function App() {
             </section>
 
             <section className="mt-5 grid gap-5 lg:grid-cols-[1.18fr_.82fr]">
-              <Card title="ARM Orbital Network" kicker="3D element map">
+              <Card
+                title="ARM Orbital Network"
+                kicker="3D element map"
+                className={result.zdar ? "zdar-active border-fuchsia-300/40 shadow-[0_0_120px_rgba(217,70,239,.45)]" : ""}
+              >
                 <OrbitalSystem elements={elements} pair={pair} setPairAt={setPairAt} settings={settings} result={result} />
               </Card>
 
