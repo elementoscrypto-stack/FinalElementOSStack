@@ -131,13 +131,13 @@ const SAFETY_NOTES = [
 
 const DEMO_TRUTH_TABLE = [
   ["Real Today", "Live website, responsive UI, interactive simulations, shareable result cards"],
-  ["Simulated Today", "Demo Wallet, ELM gas, activity feed, market stats, ARM Assistant output"],
+  ["Simulated Today", "Demo wallet, demo ELM gas, activity feed, market stats, ARM Assistant output"],
   ["Not Live Yet", "Real blockchain, user accounts, database persistence, token trading"],
   ["Next Step", "Tester feedback, analytics, saved runs, real authentication"],
 ];
 
 const DEMO_STEPS = [
-  ["1", "Connect Demo Demo Wallet", "Starts the testnet-style experience. No real wallet or transaction occurs."],
+  ["1", "Connect Demo Wallet", "Starts the testnet-style experience. No real wallet or transaction occurs."],
   ["2", "Run Simulation", "Spend demo ELM/credits and generate a result card."],
   ["3", "Hunt ZDAR", "Trigger the rare Legendary Alignment moment."],
   ["4", "Share Result", "Copy or share a demo result card for feedback."],
@@ -304,7 +304,7 @@ function TopNav({ onLaunch, showApp, walletConnected }) {
         <StatusPill tone="emerald">Simulated Demo Network</StatusPill>
         <StatusPill tone="cyan">118 Elements</StatusPill>
         <StatusPill tone="fuchsia">ZDAR Enabled</StatusPill>
-        <StatusPill tone={walletConnected ? "emerald" : "yellow"}>{walletConnected ? "Demo Demo Wallet" : "Testnet"}</StatusPill>
+        <StatusPill tone={walletConnected ? "emerald" : "yellow"}>{walletConnected ? "Demo Wallet" : "Testnet"}</StatusPill>
       </div>
       {!showApp && (
         <button onClick={onLaunch} className="rounded-2xl bg-cyan-300 px-4 py-2 text-sm font-black text-slate-950 shadow-[0_0_30px_rgba(34,211,238,.35)] transition hover:scale-[1.03]">
@@ -575,7 +575,7 @@ function PublicBetaNotice() {
     <div className="mt-5 rounded-[2rem] border border-yellow-300/25 bg-yellow-400/10 p-4 text-yellow-50 shadow-[0_0_45px_rgba(250,204,21,.1)]">
       <div className="text-[10px] font-black uppercase tracking-[0.32em] text-yellow-200">Public Demo Notice</div>
       <p className="mt-2 text-sm text-yellow-50/85">
-        ElementOS is live as an experimental SimulationFi MVP. Demo Wallet, ELM gas, market stats, and activity signals are prototype/testnet mechanics while the product loop is validated.
+        ElementOS is live as an experimental SimulationFi MVP. Demo wallet, demo ELM gas, market stats, and activity signals are prototype/testnet mechanics while the product loop is validated.
       </p>
     </div>
   );
@@ -808,7 +808,7 @@ function GuidedDemoPanel({ onConnect, onRun, onFindZDAR, onShare, walletConnecte
       </div>
       <div className="mt-4 grid gap-3 sm:grid-cols-2">
         <button onClick={onConnect} className="rounded-2xl bg-cyan-300 p-4 font-black text-slate-950 shadow-[0_0_35px_rgba(34,211,238,.3)] transition hover:scale-[1.02]">
-          {walletConnected ? "Demo Demo Wallet Connected" : "Connect Demo Demo Wallet"}
+          {walletConnected ? "Demo Wallet Connected" : "Connect Demo Wallet"}
         </button>
         <button disabled={!walletConnected} onClick={onRun} className="rounded-2xl border border-cyan-300/30 bg-cyan-500/10 p-4 font-black text-cyan-100 transition hover:bg-cyan-500/15 disabled:opacity-50">Run Demo Simulation</button>
         <button onClick={onFindZDAR} className="rounded-2xl border border-fuchsia-300/40 bg-fuchsia-500/20 p-4 font-black text-fuchsia-100 transition hover:scale-[1.02]">Find ZDAR</button>
@@ -999,18 +999,18 @@ function LiveFeedPanel({ feed }) {
   );
 }
 
-function MockDemo WalletPanel({ walletConnected, walletAddress, elm, credits, stakedElm, onConnect, onDisconnect, onTopUp, onStake, onBuyCredits }) {
+function MockWalletPanel({ walletConnected, walletAddress, elm, credits, stakedElm, onConnect, onDisconnect, onTopUp, onStake, onBuyCredits }) {
   return (
     <Card title="Demo Wallet" kicker="demo wallet" className="md:col-span-2 xl:col-span-2">
       <div className="mt-4 grid gap-4">
         <div className={`rounded-3xl border p-5 ${walletConnected ? "border-emerald-300/30 bg-emerald-500/10" : "border-yellow-300/30 bg-yellow-500/10"}`}>
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <div>
-              <div className="text-xs uppercase tracking-[0.25em] text-slate-300">Demo Demo Wallet Status</div>
+              <div className="text-xs uppercase tracking-[0.25em] text-slate-300">Demo Wallet Status</div>
               <div className="mt-1 text-3xl font-black">{walletConnected ? "Connected" : "Disconnected"}</div>
             </div>
             <div className={`rounded-full px-4 py-2 text-xs font-black uppercase tracking-[0.22em] ${walletConnected ? "bg-emerald-300/20 text-emerald-100" : "bg-yellow-300/20 text-yellow-100"}`}>
-              {walletConnected ? "Demo Mode Live" : "Demo Demo Wallet Required"}
+              {walletConnected ? "Demo Mode Live" : "Demo Wallet Required"}
             </div>
           </div>
           <div className="mt-4 rounded-2xl border border-white/10 bg-slate-950/60 p-3 font-mono text-xs text-cyan-100 break-all">
@@ -1168,8 +1168,8 @@ export default function App() {
   const [elm, setElm] = useState(2000000);
   const [credits, setCredits] = useState(5);
   const [stakedElm, setStakedElm] = useState(0);
-  const [walletConnected, setDemo WalletConnected] = useState(false);
-  const [walletAddress, setDemo WalletAddress] = useState("");
+  const [walletConnected, setWalletConnected] = useState(false);
+  const [walletAddress, setWalletAddress] = useState("");
   const [history, setHistory] = useState([]);
   const [favorites, setFav] = useState([]);
   const [shareText, setShareText] = useState("");
@@ -1199,9 +1199,9 @@ export default function App() {
     setPair((current) => current.map((value, i) => (i === index ? symbol : value)));
   }
 
-  function connectDemo Wallet() {
-    setDemo WalletConnected(true);
-    setDemo WalletAddress(`0xELM${Math.random().toString(16).slice(2, 8).toUpperCase()}...${Math.random().toString(16).slice(2, 6).toUpperCase()}`);
+  function connectWallet() {
+    setWalletConnected(true);
+    setWalletAddress(`0xELM${Math.random().toString(16).slice(2, 8).toUpperCase()}...${Math.random().toString(16).slice(2, 6).toUpperCase()}`);
   }
 
   function run() {
@@ -1328,7 +1328,7 @@ export default function App() {
                 </div>
                 <div className="grid w-full gap-3 sm:min-w-[360px] lg:w-auto">
                   <Metric label="Current Pair" value={pair.join(" / ")} sub="live simulation pair" />
-                  <Metric label="Demo Demo Demo ELM Balance" value={elm.toLocaleString()} sub="demo ELM" />
+                  <Metric label="Demo ELM Balance" value={elm.toLocaleString()} sub="demo ELM" />
                   <Metric label="Demo Wallet" value={walletConnected ? "Connected" : "Offline"} sub={walletConnected ? walletAddress : "connect to run"} />
                 </div>
               </div>
@@ -1433,16 +1433,16 @@ export default function App() {
             </section>
 
             <section className="mt-4 grid gap-4 md:grid-cols-2 xl:grid-cols-5 sm:mt-5 sm:gap-5">
-              <MockDemo WalletPanel
+              <MockWalletPanel
                 walletConnected={walletConnected}
                 walletAddress={walletAddress}
                 elm={elm}
                 credits={credits}
                 stakedElm={stakedElm}
-                onConnect={connectDemo Wallet}
+                onConnect={connectWallet}
                 onDisconnect={() => {
-                  setDemo WalletConnected(false);
-                  setDemo WalletAddress("");
+                  setWalletConnected(false);
+                  setWalletAddress("");
                 }}
                 onTopUp={() => walletConnected && setElm((e) => e + 500)}
                 onStake={() => {
@@ -1540,7 +1540,6 @@ export default function App() {
         )}
       </div>
     </div>
-      </div>
     </>
   );
 }
