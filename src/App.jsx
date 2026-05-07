@@ -1,164 +1,16 @@
-// demo-ready build: simulated features clearly labelled, wallet/ELM/network marked as demo, feedback path included.
-// 50-upgrade go-live enhancement pack: probability meter, launch proof, share prompts, quick actions, trust panels.
-// live-ready public beta build: clear status, feedback loop, FAQ, community cues, beta disclaimer.
-// 100-polish launch pack: premium UX, onboarding, market pulse, trust layer, terminal output, sharing polish.
+// ElementOS Persistent Discovery Layer
+// Frontend-only public demo build: local profile, persistent history, deterministic scoring, onboarding, discovery engine, and social cards.
+
 import React, { useEffect, useMemo, useState } from "react";
 
-const UI = {
-  appName: "ElementOS — ARM Simulation Network",
-  headline: "Simulate Element Interactions. Discover Legendary Alignments.",
-  sub: "Pick two elements → run simulation → hunt ZDAR.",
-  launch: "🚀 Run Simulation",
+const STORAGE_KEY = "elementos_profile_v1";
+
+const BRAND = {
+  name: "ElementOS",
+  tagline: "Persistent Discovery Layer",
+  manifesto:
+    "ElementOS turns element interaction into a visual discovery network: pick elements, run deterministic simulations, hunt ZDAR alignments, and collect shareable structures.",
 };
-
-
-const PARTICLES = Array.from({ length: 48 }, (_, i) => ({
-  id: i,
-  left: (i * 37) % 100,
-  top: (i * 61) % 100,
-  size: 2 + (i % 4),
-  delay: (i % 12) * 0.35,
-  duration: 7 + (i % 9),
-  tone: i % 3 === 0 ? "bg-fuchsia-300" : i % 3 === 1 ? "bg-cyan-300" : "bg-blue-300",
-}));
-
-
-const MARKET_STATS = [
-  ["Demo ELM Price", "$0.284", "+12.4%"],
-  ["24h Volume", "$2.1M", "mock"],
-  ["Sim Runs", "2.4M", "network"],
-  ["ZDAR Events", "12,904", "demo global"],
-];
-
-const FEATURE_PILLS = [
-  "SimulationFi", "ARM Engine", "ELM Gas", "ZDAR Rarity",
-  "118 Elements", "Simulated Demo Network", "Mobile Ready", "Shareable Results"
-];
-
-const LAUNCH_CHECKLIST = ["Pick two elements", "Run simulation", "Trigger ZDAR", "Share the result"];
-
-const PROOF_POINTS = [
-  "Live deployed MVP",
-  "Responsive desktop + mobile UI",
-  "Crypto-native wallet flow",
-  "Cinematic ZDAR mechanic"
-];
-
-
-const TRENDING_PAIRS = [
-  ["Fe / Ru", "ZDAR Legendary", "98%"],
-  ["Ti / W", "Epic", "91%"],
-  ["Al / Pt", "Rare", "87%"],
-  ["Si / C", "Prime Lattice", "84%"],
-];
-
-const COMING_SOON = [
-  "Structure Marketplace",
-  "Ranked Discoveries",
-  "ELM Staking Seasons",
-  "Global ARM Index",
-  "Creator Simulation Cards",
-  "Public ZDAR Challenges",
-];
-
-const ARM_AI_LINES = [
-  "Pair stability is trending upward.",
-  "Orbital distance suggests a possible rarity spike.",
-  "ARM field lock is stable.",
-  "ZDAR probability rises when angular delta compresses.",
-  "This pair is suitable for a shareable simulation card.",
-];
-
-
-
-const LAUNCH_STATUS = [
-  ["Public Demo", "Live"],
-  ["Network", "Online"],
-  ["Build", "Launch Ready"],
-  ["Access", "Open"],
-];
-
-const COMMUNITY_LINKS = [
-  ["X / Twitter", "Share ZDAR clips"],
-  ["Discord", "Community coming soon"],
-  ["Product Hunt", "Launch candidate"],
-  ["GitHub", "Public build ready"],
-];
-
-const FAQS = [
-  ["What is ElementOS?", "A crypto-native element simulation experience built around ARM, ELM gas, and ZDAR rarity events."],
-  ["Is this real blockchain?", "This public beta uses a testnet-style mock wallet while the core product loop is validated."],
-  ["What is ZDAR?", "ZDAR is the rare Legendary Alignment event users hunt for inside the simulation."],
-  ["What should users do first?", "Connect the demo wallet, run a simulation, then try Find Legendary Alignment."],
-];
-
-
-
-const PRESS_LINES = [
-  "A new way to explore element interactions.",
-  "SimulationFi meets collectible discovery.",
-  "Built around rare ZDAR alignment events.",
-];
-
-const USER_QUOTES = [
-  ["Beta User", "The ZDAR moment is instantly shareable."],
-  ["Crypto Builder", "Feels like DeFi, gaming, and science merged."],
-  ["Early Tester", "I understood the loop in under 10 seconds."],
-];
-
-const PLATFORM_MODES = [
-  ["Discover", "Random pair hunting"],
-  ["Rank", "Top alignment scoring"],
-  ["Collect", "Result card output"],
-  ["Share", "Social-ready clips"],
-];
-
-const LAUNCH_METRICS = [
-  ["Time to First Run", "<10s"],
-  ["Core Loop", "4 steps"],
-  ["Mobile Ready", "Yes"],
-  ["Backend Required", "No"],
-];
-
-const SAFETY_NOTES = [
-  "Prototype/demo wallet only",
-  "No real token transfer",
-  "Experimental scoring model",
-  "Public beta feedback welcomed",
-];
-
-
-
-const DEMO_TRUTH_TABLE = [
-  ["Real Today", "Live website, responsive UI, interactive simulations, shareable result cards"],
-  ["Simulated Today", "Demo wallet, demo ELM gas, activity feed, market stats, ARM Assistant output"],
-  ["Not Live Yet", "Real blockchain, user accounts, database persistence, token trading"],
-  ["Next Step", "Tester feedback, analytics, saved runs, real authentication"],
-];
-
-const DEMO_STEPS = [
-  ["1", "Connect Demo Wallet", "Starts the testnet-style experience. No real wallet or transaction occurs."],
-  ["2", "Run Simulation", "Spend demo ELM/credits and generate a result card."],
-  ["3", "Hunt ZDAR", "Trigger the rare Legendary Alignment moment."],
-  ["4", "Share Result", "Copy or share a demo result card for feedback."],
-];
-
-const DEMO_LIMITATIONS = [
-  "No real crypto transactions.",
-  "No user login or saved cloud accounts yet.",
-  "Network activity and ELM price are simulated.",
-  "Scoring model is experimental and for product demonstration.",
-  "Demo Wallet is a mock testnet-style interaction.",
-];
-
-const WHAT_FEEDBACK = [
-  "Did the site make sense in 10 seconds?",
-  "Was the ZDAR moment exciting?",
-  "Would you share a result card?",
-  "Where did the demo feel confusing?",
-  "What feature would make you return?",
-];
-
 
 const RAW_ELEMENTS = [
   "1|H|Hydrogen|20|Nonmetal","2|He|Helium|90|Noble Gas","3|Li|Lithium|20|Alkali Metal","4|Be|Beryllium|35|Alkaline Earth Metal","5|B|Boron|10|Metalloid","6|C|Carbon|45|Nonmetal","7|N|Nitrogen|60|Nonmetal","8|O|Oxygen|70|Nonmetal","9|F|Fluorine|80|Halogen","10|Ne|Neon|90|Noble Gas",
@@ -175,37 +27,88 @@ const RAW_ELEMENTS = [
 
 const ELEMENTS = RAW_ELEMENTS.map((row) => {
   const [num, sym, name, theta, family] = row.split("|");
-  return [Number(num), sym, name, Number(theta), family];
+  return { num: Number(num), sym, name, thetaBase: Number(theta), family };
 });
 
-
-const LIVE_EVENT_TEMPLATES = [
-  "⚡ User_442 discovered Fe / Ru — ZDAR Legendary",
-  "🔵 User_128 ran Ti / W — Epic 91%",
-  "🟣 User_905 saved Al / Pt to watchlist",
-  "⚡ User_317 triggered ZDAR with Co / Rh",
-  "💠 User_611 minted Si / C structure card",
-  "🔥 User_084 joined the ARM Simulation Network",
-  "🧪 User_720 ran Au / Al — Rare alignment",
-  "⚡ User_993 discovered Ru / Fe — ZDAR Legendary",
+const CHALLENGES = [
+  { title: "Weekly Challenge", pair: ["Fe", "Ru"], copy: "Trigger a Legendary ZDAR with Fe / Ru." },
+  { title: "Community Favourite", pair: ["Ti", "W"], copy: "Explore the transition-metal high stability lane." },
+  { title: "Today's Rarest", pair: ["Al", "Pt"], copy: "Test an Aluminium-origin rare structure." },
 ];
+
+const ROADMAP = [
+  "Public demo validation",
+  "User accounts + cloud saves",
+  "Real wallet integration",
+  "Creator structure marketplace",
+  "API for external simulations",
+  "Community ZDAR seasons",
+];
+
+const PARTICLES = Array.from({ length: 56 }, (_, i) => ({
+  id: i,
+  left: (i * 37) % 100,
+  top: (i * 61) % 100,
+  size: 2 + (i % 4),
+  delay: (i % 12) * 0.3,
+  duration: 7 + (i % 9),
+  tone: i % 3 === 0 ? "bg-fuchsia-300" : i % 3 === 1 ? "bg-cyan-300" : "bg-blue-300",
+}));
+
+const DEFAULT_PROFILE = {
+  username: "",
+  favouriteElement: "Al",
+  xp: 0,
+  level: 1,
+  simulationsRun: 0,
+  zdarCount: 0,
+  elm: 2000000,
+  credits: 5,
+  stakedElm: 0,
+  walletConnected: false,
+  walletAddress: "",
+  history: [],
+  favourites: [],
+  zdarDiscoveries: [],
+  onboardingComplete: false,
+  firstStructureSeen: false,
+};
+
+function loadProfile() {
+  try {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    return saved ? { ...DEFAULT_PROFILE, ...JSON.parse(saved) } : DEFAULT_PROFILE;
+  } catch {
+    return DEFAULT_PROFILE;
+  }
+}
+
+function saveProfile(profile) {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(profile));
+  } catch {}
+}
 
 function clamp(n, min, max) {
   return Math.max(min, Math.min(max, n));
 }
 
-function buildElement(row, settings) {
-  const [num, sym, name, thetaBase, family] = row;
-  let theta = thetaBase + settings.calibration;
-  if (settings.origin === sym) theta = 0;
-  theta = clamp(theta, 0, 180);
+function hashString(value) {
+  return value.split("").reduce((acc, char) => (acc * 31 + char.charCodeAt(0)) % 9973, 7);
+}
 
+function buildElement(element, settings) {
+  let theta = element.thetaBase + settings.calibration;
+  if (settings.origin === element.sym) theta = 0;
+  theta = clamp(theta, 0, 180);
   const rad = (theta * Math.PI) / 180;
   const nor = Math.round(900 * Math.sin(rad) ** 2);
   const sor = Math.abs(theta - 90);
-
   return {
-    num, sym, name, family, theta, nor, sor,
+    ...element,
+    theta,
+    nor,
+    sor,
     cluster: sor < 5 ? "Prime" : sor < 25 ? "Near" : sor < 55 ? "Shift" : "Extreme",
     influence: Math.round(clamp(100 - sor, 0, 100)),
   };
@@ -217,22 +120,41 @@ function simulate(elements, pair, settings) {
   const avgNor = safe.reduce((sum, e) => sum + e.nor, 0) / safe.length;
   const angles = safe.map((e) => e.theta);
   const delta = angles.length > 1 ? Math.max(...angles) - Math.min(...angles) : 0;
-  const zdar = delta <= settings.zdarThreshold;
-  const stability = clamp(Math.round(avgNor / 10 - delta * 0.15 + 6 + (zdar ? 15 : 0)), 0, 100);
+  const seed = hashString(pair.join("-"));
+  const deterministicNoise = ((seed % 17) - 8) / 2;
+  const specialZDAR = ["Fe-Ru", "Ru-Fe", "Co-Rh", "Rh-Co"].includes(pair.join("-"));
+  const zdar = specialZDAR || delta <= settings.zdarThreshold;
+  const stability = clamp(Math.round(avgNor / 10 - delta * 0.15 + 8 + deterministicNoise + (zdar ? 15 : 0)), 0, 100);
   const cost = Math.max(3, Math.round(5 + delta / 6 + (zdar ? 3 : 0)));
-
+  const rarity =
+    zdar ? "⚡ ZDAR — Legendary Alignment" :
+    stability > 84 ? "🟣 Epic" :
+    stability > 68 ? "🔵 Rare" :
+    stability > 42 ? "🟡 Experimental" : "⚪ Volatile";
   return {
+    seed,
     stability,
     zdar,
     delta: Math.round(delta * 10) / 10,
     cost,
-    structure: stability > 82 ? "Cubic Prime Lattice" : stability > 62 ? "Hex Structured Field" : stability > 38 ? "Reactive Distortion Grid" : "Chaotic Field",
-    rarity: zdar ? "⚡ ZDAR — Legendary Alignment" : stability > 84 ? "🟣 Epic" : stability > 68 ? "🔵 Rare" : stability > 42 ? "🟡 Experimental" : "⚪ Volatile",
+    structure:
+      stability > 82 ? "Cubic Prime Lattice" :
+      stability > 62 ? "Hex Structured Field" :
+      stability > 38 ? "Reactive Distortion Grid" : "Chaotic Field",
+    rarity,
     strength: Math.round((stability + clamp(100 - delta, 0, 100)) / 2),
     confidence: clamp(Math.round(76 + stability * 0.19 - delta * 0.08), 48, 99),
+    id: `ELM-${pair.join("").toUpperCase()}-${seed}-${stability}`,
   };
 }
 
+function ShineLayer() {
+  return (
+    <div className="pointer-events-none absolute inset-0 overflow-hidden rounded-[inherit]">
+      <div className="absolute -left-1/2 top-0 h-full w-1/2 -skew-x-12 bg-gradient-to-r from-transparent via-white/10 to-transparent opacity-40 transition-all duration-700 group-hover:left-full" />
+    </div>
+  );
+}
 
 function ParticleField() {
   return (
@@ -254,622 +176,9 @@ function ParticleField() {
   );
 }
 
-
-function ShineLayer() {
-  return (
-    <div className="pointer-events-none absolute inset-0 overflow-hidden rounded-[inherit]">
-      <div className="absolute -left-1/2 top-0 h-full w-1/2 -skew-x-12 bg-gradient-to-r from-transparent via-white/10 to-transparent opacity-40 transition-all duration-700 group-hover:left-full" />
-    </div>
-  );
-}
-
-function StatusPill({ children, tone = "cyan" }) {
-  const tones = {
-    cyan: "border-cyan-300/30 bg-cyan-300/10 text-cyan-100",
-    fuchsia: "border-fuchsia-300/30 bg-fuchsia-300/10 text-fuchsia-100",
-    emerald: "border-emerald-300/30 bg-emerald-300/10 text-emerald-100",
-    yellow: "border-yellow-300/30 bg-yellow-300/10 text-yellow-100",
-  };
-  return (
-    <span className={`rounded-full border px-3 py-1.5 text-[10px] font-black uppercase tracking-[0.22em] ${tones[tone] || tones.cyan}`}>
-      {children}
-    </span>
-  );
-}
-
-function RarityBadge({ result }) {
-  const cls = result.zdar
-    ? "border-fuchsia-300/50 bg-fuchsia-400/20 text-fuchsia-100 shadow-[0_0_30px_rgba(217,70,239,.25)]"
-    : result.stability > 84
-      ? "border-purple-300/40 bg-purple-400/15 text-purple-100"
-      : result.stability > 68
-        ? "border-cyan-300/40 bg-cyan-400/15 text-cyan-100"
-        : result.stability > 42
-          ? "border-yellow-300/40 bg-yellow-400/15 text-yellow-100"
-          : "border-slate-300/30 bg-slate-400/10 text-slate-200";
-  return <div className={`inline-flex rounded-full border px-4 py-2 text-xs font-black uppercase tracking-[0.18em] ${cls}`}>{result.rarity}</div>;
-}
-
-function TopNav({ onLaunch, showApp, walletConnected }) {
-  return (
-    <nav className="sticky top-2 z-50 mx-auto mb-4 flex max-w-7xl items-center justify-between gap-3 rounded-3xl border border-white/10 bg-slate-950/70 px-3 py-3 sm:top-4 sm:mb-5 sm:px-5 shadow-[0_20px_80px_rgba(0,0,0,.35)] backdrop-blur-2xl">
-      <div className="flex items-center gap-3">
-        <div className="grid h-10 w-10 place-items-center rounded-2xl border border-cyan-300/30 bg-cyan-300/10 font-black text-cyan-100 shadow-[0_0_28px_rgba(34,211,238,.25)]">E</div>
-        <div>
-          <div className="flex items-center gap-2 text-sm font-black tracking-tight"><span className="h-2 w-2 rounded-full bg-emerald-300 signal-blink shadow-[0_0_12px_rgba(110,231,183,.9)]" />ElementOS</div>
-          <div className="text-[10px] uppercase tracking-[0.25em] text-slate-400">ARM Network</div>
-        </div>
-      </div>
-      <div className="hidden items-center gap-2 md:flex">
-        <StatusPill tone="emerald">Simulated Demo Network</StatusPill>
-        <StatusPill tone="cyan">118 Elements</StatusPill>
-        <StatusPill tone="fuchsia">ZDAR Enabled</StatusPill>
-        <StatusPill tone={walletConnected ? "emerald" : "yellow"}>{walletConnected ? "Demo Wallet" : "Testnet"}</StatusPill>
-      </div>
-      {!showApp && (
-        <button onClick={onLaunch} className="rounded-2xl bg-cyan-300 px-4 py-2 text-sm font-black text-slate-950 shadow-[0_0_30px_rgba(34,211,238,.35)] transition hover:scale-[1.03]">
-          Enter App
-        </button>
-      )}
-    </nav>
-  );
-}
-
-function CTAFooter({ onFindZDAR, onRun, walletConnected }) {
-  return (
-    <section className="mt-5 rounded-[2.5rem] border border-fuchsia-300/20 bg-gradient-to-r from-cyan-500/10 via-fuchsia-500/10 to-blue-500/10 p-8 text-center shadow-[0_0_90px_rgba(217,70,239,.16)]">
-      <div className="text-xs font-black uppercase tracking-[0.38em] text-fuchsia-200">Ready for a legendary alignment?</div>
-      <h2 className="mt-3 text-3xl font-black tracking-tight text-white sm:text-4xl md:text-6xl">Discover your first ZDAR.</h2>
-      <p className="mx-auto mt-3 max-w-2xl text-slate-300">Pick a pair, run the simulation, and generate a shareable alignment result from the ARM network.</p>
-      <div className="mt-6 flex flex-wrap justify-center gap-3">
-        <button onClick={onFindZDAR} className="rounded-2xl border border-fuchsia-300/40 bg-fuchsia-500/15 px-6 py-4 font-black text-fuchsia-100 shadow-[0_0_35px_rgba(217,70,239,.2)] transition hover:scale-[1.03]">⚡ Find ZDAR</button>
-        <button disabled={!walletConnected} onClick={onRun} className="rounded-2xl bg-cyan-300 px-6 py-4 font-black text-slate-950 shadow-[0_0_35px_rgba(34,211,238,.35)] transition hover:scale-[1.03] disabled:opacity-50">🚀 Run Simulation</button>
-      </div>
-    </section>
-  );
-}
-
-
-
-function AnimatedGlowDivider() {
-  return <div className="my-5 h-px w-full bg-gradient-to-r from-transparent via-cyan-300/40 to-transparent shadow-[0_0_30px_rgba(34,211,238,.25)]" />;
-}
-
-function OnboardingStrip() {
-  return (
-    <div className="mt-5 grid gap-3 sm:grid-cols-4">
-      {LAUNCH_CHECKLIST.map((item, index) => (
-        <div key={item} className="rounded-2xl border border-white/10 bg-slate-950/50 p-3">
-          <div className="text-[10px] font-black uppercase tracking-[0.26em] text-cyan-300">Step {index + 1}</div>
-          <div className="mt-1 text-sm font-bold text-white">{item}</div>
-        </div>
-      ))}
-    </div>
-  );
-}
-
-function MarketPanel() {
-  return (
-    <Card title="Demo ELM Market Pulse" kicker="simulated ecosystem signal">
-      <div className="mt-4 grid gap-3 sm:grid-cols-2">
-        {MARKET_STATS.map(([label, value, sub]) => <Metric key={label} label={label} value={value} sub={sub} />)}
-      </div>
-    </Card>
-  );
-}
-
-function TrustPanel() {
-  return (
-    <Card title="Why ElementOS Feels Different" kicker="launch-ready positioning">
-      <div className="mt-4 grid gap-3">
-        {PROOF_POINTS.map((point) => (
-          <div key={point} className="rounded-2xl border border-white/10 bg-slate-950/45 p-3 text-sm text-slate-200">
-            <span className="mr-2 text-emerald-300">✓</span>{point}
-          </div>
-        ))}
-      </div>
-    </Card>
-  );
-}
-
-function LaunchBanner({ onFindZDAR }) {
-  return (
-    <div className="mt-5 rounded-[2rem] border border-cyan-300/20 bg-cyan-500/10 p-4 shadow-[0_0_60px_rgba(34,211,238,.12)]">
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <div className="text-[10px] font-black uppercase tracking-[0.34em] text-cyan-200">Public Launch Mode</div>
-          <div className="mt-1 text-lg font-black text-white">ElementOS is live. Your first viral moment is one ZDAR away.</div>
-        </div>
-        <button onClick={onFindZDAR} className="rounded-2xl border border-fuchsia-300/40 bg-fuchsia-500/20 px-5 py-3 font-black text-fuchsia-100 shadow-[0_0_35px_rgba(217,70,239,.22)] transition hover:scale-[1.03]">
-          ⚡ Prime ZDAR
-        </button>
-      </div>
-    </div>
-  );
-}
-
-function FeatureRibbon() {
-  return (
-    <div className="mt-5 flex flex-wrap gap-2">
-      {FEATURE_PILLS.map((pill, index) => (
-        <span key={pill} className={`rounded-full border px-3 py-2 text-[10px] font-black uppercase tracking-[0.2em] ${
-          index % 4 === 0 ? "border-cyan-300/30 bg-cyan-300/10 text-cyan-100" :
-          index % 4 === 1 ? "border-fuchsia-300/30 bg-fuchsia-300/10 text-fuchsia-100" :
-          index % 4 === 2 ? "border-emerald-300/30 bg-emerald-300/10 text-emerald-100" :
-          "border-yellow-300/30 bg-yellow-300/10 text-yellow-100"
-        }`}>{pill}</span>
-      ))}
-    </div>
-  );
-}
-
-function MiniTerminal({ pair, result }) {
-  return (
-    <div className="mt-4 rounded-2xl border border-emerald-300/20 bg-black/50 p-4 font-mono text-xs text-emerald-100 shadow-[0_0_35px_rgba(16,185,129,.12)]">
-      <div>&gt; arm.scan --pair {pair.join("/")}</div>
-      <div>&gt; stability: {result.stability}%</div>
-      <div>&gt; rarity: {result.rarity}</div>
-      <div>&gt; gas: {result.cost} ELM</div>
-    </div>
-  );
-}
-
-
-function NetworkStatsPanel({ history, feed, result }) {
-  const simsToday = 18420 + history.length * 17;
-  const online = 128 + feed.length * 3;
-  const zdarGlobal = 12904 + feed.length;
-  const streak = result.zdar ? 7 : 3;
-
-  return (
-    <section className="mt-5 grid gap-3 md:grid-cols-4">
-      <Metric label="Demo Users Online" value={online.toLocaleString()} sub="simulated network" />
-      <Metric label="Demo Simulations Today" value={simsToday.toLocaleString()} sub="simulated activity" />
-      <Metric label="Demo ZDAR Events" value={zdarGlobal.toLocaleString()} sub="legendary hits" />
-      <Metric label="ZDAR Streak" value={`${streak}x`} sub="active challenge" />
-    </section>
-  );
-}
-
-function CollectibleResultCard({ pair, result, shareText, onShare }) {
-  const id = `ZDAR-${Math.abs(pair.join("").split("").reduce((a, c) => a + c.charCodeAt(0), 0) * 137 + result.stability * 11)}`;
-  return (
-    <Card title="Collectible Result Card" kicker="share-ready output">
-      <div className={`relative mt-4 overflow-hidden rounded-[2rem] border p-5 ${
-        result.zdar
-          ? "border-fuchsia-300/50 bg-fuchsia-500/15 shadow-[0_0_70px_rgba(217,70,239,.32)]"
-          : "border-cyan-300/25 bg-cyan-500/10"
-      }`}>
-        <DemoWatermark />
-        <div className="flex items-start justify-between gap-3">
-          <div>
-            <div className="text-[10px] font-black uppercase tracking-[0.34em] text-slate-300">Simulation Card</div>
-            <div className="mt-2 text-3xl font-black text-white">{pair.join(" / ")}</div>
-          </div>
-          <div className="rounded-2xl border border-white/10 bg-slate-950/60 px-3 py-2 text-right font-mono text-xs text-cyan-100">
-            {id}
-          </div>
-        </div>
-        <div className="mt-5 grid gap-3 sm:grid-cols-3">
-          <Metric label="Stability" value={`${result.stability}%`} />
-          <Metric label="Rarity" value={result.zdar ? "ZDAR" : result.rarity.split(" ")[0]} />
-          <Metric label="Structure" value={result.structure.split(" ")[0]} />
-        </div>
-        <div className="mt-5 rounded-2xl border border-white/10 bg-black/30 p-4 text-sm text-slate-200">
-          {result.zdar
-            ? "Legendary alignment detected. This card is optimized for screenshots and social sharing."
-            : "Run more simulations or hunt ZDAR to generate a legendary share card."}
-        </div>
-        <button onClick={onShare} className="mt-4 w-full rounded-2xl bg-cyan-300 p-4 font-black text-slate-950 shadow-[0_0_40px_rgba(34,211,238,.35)] transition hover:scale-[1.02]">
-          📤 Generate Share Text
-        </button>
-        {shareText && <div className="mt-3 rounded-2xl border border-cyan-300/20 bg-slate-950/70 p-3 text-xs text-cyan-100">{shareText}</div>}
-      </div>
-    </Card>
-  );
-}
-
-function ARMAIPanel({ pair, result }) {
-  const advice = result.zdar
-    ? "ARM AI: ZDAR lock confirmed. This is a prime share event."
-    : result.stability > 75
-      ? "ARM AI: Strong candidate. Run again or compare against nearby transition metals."
-      : "ARM AI: Stability is forming. Try Discover or Find Legendary Alignment.";
-
-  return (
-    <Card title="ARM Assistant Demo" kicker="simulated assistant">
-      <div className="mt-4 rounded-2xl border border-emerald-300/20 bg-emerald-500/10 p-4 text-emerald-100 shadow-[0_0_35px_rgba(16,185,129,.12)]">
-        <div className="text-[10px] font-black uppercase tracking-[0.3em] text-emerald-200">Demo Interpretation</div>
-        <div className="mt-2 text-lg font-black">{advice}</div>
-        <div className="mt-3 text-sm text-emerald-100/75">
-          {pair.join(" / ")} currently resolves at {result.stability}% stability with {result.delta}° angular delta.
-        </div>
-      </div>
-      <div className="mt-4 grid gap-2">
-        {ARM_AI_LINES.slice(0, 4).map((line) => (
-          <div key={line} className="rounded-xl border border-white/10 bg-slate-950/45 p-3 text-sm text-slate-300">
-            <span className="mr-2 text-cyan-300">›</span>{line}
-          </div>
-        ))}
-      </div>
-    </Card>
-  );
-}
-
-function TrendingPairsPanel({ onSelect }) {
-  return (
-    <Card title="Trending Pairs" kicker="network discovery map">
-      <div className="mt-4 grid gap-3">
-        {TRENDING_PAIRS.map(([pair, rarity, score]) => {
-          const [a, b] = pair.split(" / ");
-          return (
-            <button key={pair} onClick={() => onSelect(a, b)} className="rounded-2xl border border-white/10 bg-slate-950/45 p-3 text-left transition hover:border-cyan-300/30 hover:bg-white/10">
-              <div className="flex items-center justify-between gap-3">
-                <div>
-                  <div className="font-black text-white">{pair}</div>
-                  <div className="text-xs text-slate-400">{rarity}</div>
-                </div>
-                <div className="text-xl font-black text-cyan-200">{score}</div>
-              </div>
-            </button>
-          );
-        })}
-      </div>
-    </Card>
-  );
-}
-
-function ComingSoonPanel() {
-  return (
-    <Card title="Coming Soon" kicker="ecosystem roadmap">
-      <div className="mt-4 grid gap-2 sm:grid-cols-2">
-        {COMING_SOON.map((item) => (
-          <div key={item} className="rounded-2xl border border-white/10 bg-white/5 p-3 text-sm font-bold text-slate-200">
-            <span className="mr-2 text-fuchsia-300">✦</span>{item}
-          </div>
-        ))}
-      </div>
-    </Card>
-  );
-}
-
-function ScreenshotFrame({ pair, result }) {
-  return (
-    <Card title="Screenshot Frame" kicker="social-ready preview">
-      <div className="mt-4 rounded-[2rem] border border-cyan-300/20 bg-gradient-to-br from-slate-950 via-cyan-950/30 to-fuchsia-950/30 p-5 shadow-[0_0_70px_rgba(34,211,238,.16)]">
-        <div className="flex items-center justify-between">
-          <div className="text-xs font-black uppercase tracking-[0.3em] text-cyan-200">ElementOS</div>
-          <div className="rounded-full border border-emerald-300/30 bg-emerald-300/10 px-3 py-1 text-[10px] font-black uppercase tracking-[0.2em] text-emerald-100">Live</div>
-        </div>
-        <div className="mt-8 text-center">
-          <div className="text-5xl font-black text-white">{pair.join(" / ")}</div>
-          <div className="mt-3 text-xl font-black text-fuchsia-200">{result.rarity}</div>
-          <div className="mt-2 text-4xl font-black text-cyan-200">{result.stability}%</div>
-          <div className="mt-1 text-xs uppercase tracking-[0.3em] text-slate-400">stability score</div>
-        </div>
-        <div className="mt-8 h-2 overflow-hidden rounded-full bg-slate-800">
-          <div className="h-full rounded-full bg-gradient-to-r from-cyan-300 to-fuchsia-300" style={{ width: `${result.stability}%` }} />
-        </div>
-      </div>
-    </Card>
-  );
-}
-
-
-
-function LaunchStatusBar() {
-  return (
-    <section className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-      {LAUNCH_STATUS.map(([label, value]) => (
-        <div key={label} className="rounded-2xl border border-emerald-300/20 bg-emerald-500/10 p-4 shadow-[0_0_35px_rgba(16,185,129,.1)]">
-          <div className="text-[10px] font-black uppercase tracking-[0.3em] text-emerald-200">{label}</div>
-          <div className="mt-1 text-2xl font-black text-white">{value}</div>
-        </div>
-      ))}
-    </section>
-  );
-}
-
-function PublicBetaNotice() {
-  return (
-    <div className="mt-5 rounded-[2rem] border border-yellow-300/25 bg-yellow-400/10 p-4 text-yellow-50 shadow-[0_0_45px_rgba(250,204,21,.1)]">
-      <div className="text-[10px] font-black uppercase tracking-[0.32em] text-yellow-200">Public Demo Notice</div>
-      <p className="mt-2 text-sm text-yellow-50/85">
-        ElementOS is live as an experimental SimulationFi MVP. Demo wallet, demo ELM gas, market stats, and activity signals are prototype/testnet mechanics while the product loop is validated.
-      </p>
-    </div>
-  );
-}
-
-function FeedbackPanel() {
-  return (
-    <Card title="Public Demo Feedback" kicker="help shape ElementOS">
-      <div className="mt-4 rounded-2xl border border-cyan-300/20 bg-cyan-500/10 p-4">
-        <div className="text-lg font-black text-white">What should users tell us?</div>
-        <div className="mt-3 grid gap-2 text-sm text-slate-300">
-          <div>• Did you understand the product in 10 seconds?</div>
-          <div>• Did ZDAR feel exciting?</div>
-          <div>• Would you share a result card?</div>
-          <div>• What confused you?</div>
-        </div>
-      </div>
-      <button
-        onClick={() => window.location.href = "mailto:elementoscrypto@gmail.com?subject=ElementOS%20Beta%20Feedback"}
-        className="mt-4 w-full rounded-2xl bg-cyan-300 p-4 font-black text-slate-950 shadow-[0_0_35px_rgba(34,211,238,.3)] transition hover:scale-[1.02]"
-      >
-        Send Beta Feedback
-      </button>
-    </Card>
-  );
-}
-
-function CommunityPanel() {
-  return (
-    <Card title="Community Launch Channels" kicker="public growth layer">
-      <div className="mt-4 grid gap-3 sm:grid-cols-2">
-        {COMMUNITY_LINKS.map(([name, detail]) => (
-          <div key={name} className="rounded-2xl border border-white/10 bg-slate-950/45 p-4">
-            <div className="font-black text-white">{name}</div>
-            <div className="mt-1 text-xs text-slate-400">{detail}</div>
-          </div>
-        ))}
-      </div>
-    </Card>
-  );
-}
-
-function FAQPanel() {
-  return (
-    <Card title="New User FAQ" kicker="reduce launch confusion">
-      <div className="mt-4 grid gap-3">
-        {FAQS.map(([q, a]) => (
-          <details key={q} className="rounded-2xl border border-white/10 bg-slate-950/45 p-4">
-            <summary className="cursor-pointer font-black text-white">{q}</summary>
-            <p className="mt-2 text-sm leading-6 text-slate-300">{a}</p>
-          </details>
-        ))}
-      </div>
-    </Card>
-  );
-}
-
-function LiveLaunchFooter({ onFindZDAR, onRun, walletConnected }) {
-  return (
-    <footer className="mt-5 rounded-[2.5rem] border border-white/10 bg-slate-950/70 p-6 text-center shadow-[0_0_80px_rgba(0,0,0,.25)]">
-      <div className="text-[10px] font-black uppercase tracking-[0.4em] text-cyan-300">ElementOS Public Demo</div>
-      <h2 className="mt-3 text-3xl font-black text-white sm:text-5xl">Run a simulation. Hunt ZDAR. Share the result. Go live.</h2>
-      <p className="mx-auto mt-3 max-w-2xl text-sm leading-6 text-slate-300">
-        Public demo build for validating the ElementOS SimulationFi loop before accounts, backend persistence, and real token integrations.
-      </p>
-      <div className="mt-5 flex flex-wrap justify-center gap-3">
-        <button onClick={onFindZDAR} className="rounded-2xl border border-fuchsia-300/40 bg-fuchsia-500/20 px-5 py-3 font-black text-fuchsia-100 shadow-[0_0_35px_rgba(217,70,239,.22)] transition hover:scale-[1.03]">⚡ Find ZDAR</button>
-        <button disabled={!walletConnected} onClick={onRun} className="rounded-2xl bg-cyan-300 px-5 py-3 font-black text-slate-950 shadow-[0_0_35px_rgba(34,211,238,.35)] transition hover:scale-[1.03] disabled:opacity-50">🚀 Run Simulation</button>
-      </div>
-      <div className="mt-5 text-xs text-slate-500">
-        ElementOS Public Demo — experimental MVP. No real transactions, no real wallet connection, no investment offer, and no scientific validation.
-      </div>
-    </footer>
-  );
-}
-
-
-
-function PressStrip() {
-  return (
-    <div className="mt-5 grid gap-3 md:grid-cols-3">
-      {PRESS_LINES.map((line) => (
-        <div key={line} className="rounded-2xl border border-white/10 bg-white/[0.055] p-4 text-sm font-bold text-slate-200 shadow-[0_0_35px_rgba(34,211,238,.07)]">
-          <span className="mr-2 text-cyan-300">✦</span>{line}
-        </div>
-      ))}
-    </div>
-  );
-}
-
-function UserQuotePanel() {
-  return (
-    <Card title="Early Beta Reactions" kicker="social proof mockup">
-      <div className="mt-4 grid gap-3">
-        {USER_QUOTES.map(([name, quote]) => (
-          <div key={quote} className="rounded-2xl border border-white/10 bg-slate-950/50 p-4">
-            <div className="text-sm text-slate-200">“{quote}”</div>
-            <div className="mt-2 text-xs font-black uppercase tracking-[0.2em] text-cyan-300">{name}</div>
-          </div>
-        ))}
-      </div>
-    </Card>
-  );
-}
-
-function QuickActionsPanel({ onRun, onFindZDAR, onShare, walletConnected }) {
-  return (
-    <Card title="Quick Actions" kicker="launch control">
-      <div className="mt-4 grid gap-3 sm:grid-cols-2">
-        <button disabled={!walletConnected} onClick={onRun} className="rounded-2xl bg-cyan-300 p-4 font-black text-slate-950 shadow-[0_0_35px_rgba(34,211,238,.32)] transition hover:scale-[1.02] disabled:opacity-50">🚀 Run</button>
-        <button onClick={onFindZDAR} className="rounded-2xl border border-fuchsia-300/40 bg-fuchsia-500/20 p-4 font-black text-fuchsia-100 shadow-[0_0_35px_rgba(217,70,239,.18)] transition hover:scale-[1.02]">⚡ ZDAR</button>
-        <button onClick={onShare} className="rounded-2xl border border-white/10 bg-white/10 p-4 font-black text-white transition hover:bg-white/15">📤 Share</button>
-        <button onClick={onFindZDAR} className="rounded-2xl border border-emerald-300/30 bg-emerald-500/10 p-4 font-black text-emerald-100 transition hover:bg-emerald-500/15">🎲 Hunt</button>
-      </div>
-    </Card>
-  );
-}
-
-function PlatformModesPanel() {
-  return (
-    <Card title="Platform Modes" kicker="what users can do">
-      <div className="mt-4 grid gap-3 sm:grid-cols-2">
-        {PLATFORM_MODES.map(([mode, desc]) => (
-          <div key={mode} className="rounded-2xl border border-white/10 bg-slate-950/45 p-4">
-            <div className="text-xl font-black text-white">{mode}</div>
-            <div className="mt-1 text-xs text-slate-400">{desc}</div>
-          </div>
-        ))}
-      </div>
-    </Card>
-  );
-}
-
-function LaunchMetricsPanel() {
-  return (
-    <Card title="Launch Readiness" kicker="public beta metrics">
-      <div className="mt-4 grid gap-3 sm:grid-cols-2">
-        {LAUNCH_METRICS.map(([label, value]) => (
-          <Metric key={label} label={label} value={value} />
-        ))}
-      </div>
-    </Card>
-  );
-}
-
-function SafetyNotesPanel() {
-  return (
-    <Card title="Beta Transparency" kicker="trust layer">
-      <div className="mt-4 grid gap-2">
-        {SAFETY_NOTES.map((note) => (
-          <div key={note} className="rounded-xl border border-yellow-300/15 bg-yellow-400/5 p-3 text-sm text-yellow-50/85">
-            <span className="mr-2 text-yellow-300">•</span>{note}
-          </div>
-        ))}
-      </div>
-    </Card>
-  );
-}
-
-function ZDARProbabilityPanel({ result }) {
-  const probability = result.zdar ? 97 : Math.max(8, Math.min(88, Math.round(result.stability - result.delta / 2)));
-  return (
-    <Card title="ZDAR Probability" kicker="anticipation meter">
-      <div className="mt-4">
-        <div className="flex items-end justify-between">
-          <div className="text-5xl font-black text-fuchsia-200">{probability}%</div>
-          <div className="text-xs uppercase tracking-[0.22em] text-slate-400">{result.zdar ? "locked" : "scanning"}</div>
-        </div>
-        <div className="mt-4 h-3 overflow-hidden rounded-full bg-slate-800">
-          <div className="h-full rounded-full bg-gradient-to-r from-cyan-300 via-fuchsia-300 to-yellow-300 transition-all duration-700" style={{ width: `${probability}%` }} />
-        </div>
-        <p className="mt-3 text-sm text-slate-300">Higher probability creates a stronger reason to run, hunt, and share.</p>
-      </div>
-    </Card>
-  );
-}
-
-function SharePromptPanel({ result, onShare }) {
-  return (
-    <Card title="Share Moment" kicker="viral prompt">
-      <div className="mt-4 rounded-2xl border border-fuchsia-300/25 bg-fuchsia-500/10 p-4">
-        <div className="text-2xl font-black text-white">{result.zdar ? "You hit Legendary." : "Generate a shareable result."}</div>
-        <p className="mt-2 text-sm text-slate-300">Use this panel to push users toward screenshots, clips, and social posts.</p>
-        <button onClick={onShare} className="mt-4 w-full rounded-2xl bg-fuchsia-300 p-4 font-black text-slate-950 shadow-[0_0_35px_rgba(217,70,239,.35)] transition hover:scale-[1.02]">📤 Prepare Share Text</button>
-      </div>
-    </Card>
-  );
-}
-
-
-
-function DemoModeBadge() {
-  return (
-    <div className="fixed bottom-3 left-3 z-[70] rounded-2xl border border-yellow-300/30 bg-slate-950/90 px-4 py-3 text-xs font-black uppercase tracking-[0.2em] text-yellow-100 shadow-[0_0_40px_rgba(250,204,21,.18)] backdrop-blur-xl">
-      Demo Build • No Real Transactions
-    </div>
-  );
-}
-
-function DemoTruthPanel() {
-  return (
-    <Card title="What Is Real vs Simulated?" kicker="demo transparency">
-      <div className="mt-4 grid gap-3">
-        {DEMO_TRUTH_TABLE.map(([label, detail]) => (
-          <div key={label} className="rounded-2xl border border-white/10 bg-slate-950/45 p-4">
-            <div className="text-xs font-black uppercase tracking-[0.24em] text-cyan-300">{label}</div>
-            <div className="mt-2 text-sm leading-6 text-slate-300">{detail}</div>
-          </div>
-        ))}
-      </div>
-    </Card>
-  );
-}
-
-function GuidedDemoPanel({ onConnect, onRun, onFindZDAR, onShare, walletConnected }) {
-  return (
-    <Card title="Guided Demo Mode" kicker="recommended first path">
-      <div className="mt-4 grid gap-3">
-        {DEMO_STEPS.map(([num, title, desc]) => (
-          <div key={title} className="rounded-2xl border border-white/10 bg-slate-950/45 p-4">
-            <div className="flex gap-3">
-              <div className="grid h-9 w-9 shrink-0 place-items-center rounded-xl border border-cyan-300/30 bg-cyan-300/10 font-black text-cyan-100">{num}</div>
-              <div>
-                <div className="font-black text-white">{title}</div>
-                <div className="mt-1 text-sm leading-6 text-slate-400">{desc}</div>
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
-      <div className="mt-4 grid gap-3 sm:grid-cols-2">
-        <button onClick={onConnect} className="rounded-2xl bg-cyan-300 p-4 font-black text-slate-950 shadow-[0_0_35px_rgba(34,211,238,.3)] transition hover:scale-[1.02]">
-          {walletConnected ? "Demo Wallet Connected" : "Connect Demo Wallet"}
-        </button>
-        <button disabled={!walletConnected} onClick={onRun} className="rounded-2xl border border-cyan-300/30 bg-cyan-500/10 p-4 font-black text-cyan-100 transition hover:bg-cyan-500/15 disabled:opacity-50">Run Demo Simulation</button>
-        <button onClick={onFindZDAR} className="rounded-2xl border border-fuchsia-300/40 bg-fuchsia-500/20 p-4 font-black text-fuchsia-100 transition hover:scale-[1.02]">Find ZDAR</button>
-        <button onClick={onShare} className="rounded-2xl border border-white/10 bg-white/10 p-4 font-black text-white transition hover:bg-white/15">Generate Share Card</button>
-      </div>
-    </Card>
-  );
-}
-
-function DemoLimitationsPanel() {
-  return (
-    <Card title="Current Demo Limitations" kicker="honest product status">
-      <div className="mt-4 grid gap-2">
-        {DEMO_LIMITATIONS.map((item) => (
-          <div key={item} className="rounded-xl border border-yellow-300/15 bg-yellow-400/5 p-3 text-sm text-yellow-50/85">
-            <span className="mr-2 text-yellow-300">!</span>{item}
-          </div>
-        ))}
-      </div>
-    </Card>
-  );
-}
-
-function FeedbackChecklistPanel() {
-  return (
-    <Card title="What Feedback We Need" kicker="early tester prompt">
-      <div className="mt-4 grid gap-2">
-        {WHAT_FEEDBACK.map((item) => (
-          <div key={item} className="rounded-xl border border-emerald-300/15 bg-emerald-400/5 p-3 text-sm text-emerald-50/85">
-            <span className="mr-2 text-emerald-300">✓</span>{item}
-          </div>
-        ))}
-      </div>
-    </Card>
-  );
-}
-
-function DemoWatermark() {
-  return (
-    <div className="pointer-events-none absolute right-4 top-4 rounded-full border border-yellow-300/20 bg-yellow-400/10 px-3 py-1 text-[10px] font-black uppercase tracking-[0.22em] text-yellow-100">
-      Demo Data
-    </div>
-  );
-}
-
-function AboutDemoPanel() {
-  return (
-    <Card title="What Is ElementOS?" kicker="10-second explanation">
-      <div className="mt-4 rounded-2xl border border-cyan-300/20 bg-cyan-500/10 p-5">
-        <p className="text-sm leading-7 text-slate-200">
-          ElementOS is an interactive SimulationFi demo where users select elements, run simulated ARM-based pairings, hunt rare ZDAR alignment events, and generate shareable result cards. This build is designed for early feedback before real accounts, persistence, and blockchain integrations.
-        </p>
-      </div>
-    </Card>
-  );
-}
-
-
 function Metric({ label, value, sub }) {
   return (
-    <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-slate-950/55 p-3 sm:p-4 shadow-[inset_0_1px_0_rgba(255,255,255,.06)]">
+    <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-slate-950/55 p-3 shadow-[inset_0_1px_0_rgba(255,255,255,.06)] sm:p-4">
       <div className="text-[10px] uppercase tracking-[0.24em] text-slate-400">{label}</div>
       <div className="mt-1 text-xl font-black text-white tabular-nums sm:text-2xl">{value}</div>
       {sub && <div className="mt-1 text-xs text-cyan-200/70">{sub}</div>}
@@ -879,7 +188,8 @@ function Metric({ label, value, sub }) {
 
 function Card({ title, kicker, children, className = "" }) {
   return (
-    <div className={`group relative overflow-hidden rounded-[1.5rem] border border-white/10 bg-white/[0.07] p-4 sm:rounded-[2rem] sm:p-5 shadow-[0_24px_80px_rgba(0,0,0,.35),inset_0_1px_0_rgba(255,255,255,.08)] backdrop-blur-2xl transition duration-300 hover:border-cyan-300/25 ${className}`}><ShineLayer />
+    <div className={`group relative overflow-hidden rounded-[1.5rem] border border-white/10 bg-white/[0.07] p-4 shadow-[0_24px_80px_rgba(0,0,0,.35),inset_0_1px_0_rgba(255,255,255,.08)] backdrop-blur-2xl transition duration-300 hover:border-cyan-300/25 sm:rounded-[2rem] sm:p-5 ${className}`}>
+      <ShineLayer />
       {kicker && <div className="mb-1 text-[10px] uppercase tracking-[0.32em] text-cyan-300">{kicker}</div>}
       <h2 className="text-xl font-black tracking-tight text-white">{title}</h2>
       {children}
@@ -889,7 +199,7 @@ function Card({ title, kicker, children, className = "" }) {
 
 function PrimaryButton({ children, onClick, disabled = false, className = "" }) {
   return (
-    <button disabled={disabled} onClick={onClick} className={`rounded-2xl bg-cyan-300 p-4 font-black text-slate-950 shadow-[0_0_35px_rgba(34,211,238,.35)] transition hover:scale-[1.02] disabled:cursor-not-allowed disabled:opacity-50 ${className}`}>
+    <button disabled={disabled} onClick={onClick} className={`rounded-2xl bg-cyan-300 p-4 font-black text-slate-950 shadow-[0_0_35px_rgba(34,211,238,.35)] transition hover:scale-[1.02] active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50 ${className}`}>
       {children}
     </button>
   );
@@ -897,7 +207,7 @@ function PrimaryButton({ children, onClick, disabled = false, className = "" }) 
 
 function GhostButton({ children, onClick, disabled = false, className = "" }) {
   return (
-    <button disabled={disabled} onClick={onClick} className={`rounded-2xl border border-white/10 bg-white/10 p-3 font-bold text-white transition hover:bg-white/15 disabled:cursor-not-allowed disabled:opacity-50 ${className}`}>
+    <button disabled={disabled} onClick={onClick} className={`rounded-2xl border border-white/10 bg-white/10 p-3 font-bold text-white transition hover:bg-white/15 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50 ${className}`}>
       {children}
     </button>
   );
@@ -910,7 +220,7 @@ function ElementSelect({ value, onChange, elements, label }) {
       <select
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="w-full appearance-none rounded-2xl border border-cyan-300/20 bg-slate-950/90 px-3 py-3 sm:px-4 sm:py-4 font-bold text-cyan-50 shadow-[inset_0_1px_0_rgba(255,255,255,.06),0_0_25px_rgba(34,211,238,.08)] outline-none transition hover:border-cyan-300/40 focus:border-fuchsia-300/50 focus:ring-2 focus:ring-fuchsia-300/20"
+        className="w-full appearance-none rounded-2xl border border-cyan-300/20 bg-slate-950/90 px-3 py-3 font-bold text-cyan-50 shadow-[inset_0_1px_0_rgba(255,255,255,.06),0_0_25px_rgba(34,211,238,.08)] outline-none transition hover:border-cyan-300/40 focus:border-fuchsia-300/50 focus:ring-2 focus:ring-fuchsia-300/20 sm:px-4 sm:py-4"
       >
         {elements.map((e) => (
           <option key={e.sym} value={e.sym} className="bg-slate-950 text-cyan-50">
@@ -922,52 +232,118 @@ function ElementSelect({ value, onChange, elements, label }) {
   );
 }
 
-function LandingPage({ onLaunch }) {
+function OnboardingModal({ profile, elements, onComplete }) {
+  const [username, setUsername] = useState(profile.username || "");
+  const [favouriteElement, setFavouriteElement] = useState(profile.favouriteElement || "Al");
+
+  if (profile.onboardingComplete) return null;
+
   return (
-    <section className="relative overflow-hidden rounded-[1.8rem] border border-cyan-300/20 bg-white/[0.065] p-4 sm:rounded-[2.75rem] sm:p-8 shadow-[0_30px_140px_rgba(0,0,0,.5)] backdrop-blur-2xl">
+    <div className="fixed inset-0 z-[100] grid place-items-center bg-slate-950/85 p-4 backdrop-blur-xl">
+      <div className="max-w-2xl rounded-[2rem] border border-cyan-300/25 bg-slate-950 p-6 shadow-[0_0_120px_rgba(34,211,238,.25)]">
+        <div className="text-[10px] font-black uppercase tracking-[0.35em] text-cyan-300">Welcome to ElementOS</div>
+        <h1 className="mt-3 text-4xl font-black text-white sm:text-6xl">Create your demo profile.</h1>
+        <p className="mt-3 text-sm leading-7 text-slate-300">
+          This saves your simulation history, favourites, ZDAR discoveries, and profile progress locally in your browser.
+        </p>
+        <div className="mt-5 grid gap-4 sm:grid-cols-2">
+          <label>
+            <div className="mb-2 text-[10px] font-black uppercase tracking-[0.25em] text-cyan-300">Username</div>
+            <input
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              placeholder="e.g. RoperPrime"
+              className="w-full rounded-2xl border border-white/10 bg-white/10 p-4 font-bold text-white outline-none focus:border-cyan-300/50"
+            />
+          </label>
+          <ElementSelect
+            value={favouriteElement}
+            onChange={setFavouriteElement}
+            elements={elements}
+            label="Favourite Element"
+          />
+        </div>
+        <div className="mt-5 grid gap-3 sm:grid-cols-3">
+          <Metric label="Saved History" value="Local" sub="browser storage" />
+          <Metric label="Profile XP" value="Enabled" sub="progression" />
+          <Metric label="ZDAR Cards" value="Persistent" sub="demo profile" />
+        </div>
+        <PrimaryButton
+          className="mt-5 w-full"
+          onClick={() => onComplete(username.trim() || "Element Explorer", favouriteElement)}
+        >
+          Enter Persistent Discovery Layer
+        </PrimaryButton>
+      </div>
+    </div>
+  );
+}
+
+function TopNav({ profile, setShowApp, showApp }) {
+  return (
+    <nav className="sticky top-2 z-50 mx-auto mb-4 flex max-w-7xl items-center justify-between gap-3 rounded-3xl border border-white/10 bg-slate-950/70 px-3 py-3 shadow-[0_20px_80px_rgba(0,0,0,.35)] backdrop-blur-2xl sm:top-4 sm:mb-5 sm:px-5">
+      <div className="flex items-center gap-3">
+        <div className="grid h-10 w-10 place-items-center rounded-2xl border border-cyan-300/30 bg-cyan-300/10 font-black text-cyan-100 shadow-[0_0_28px_rgba(34,211,238,.25)]">E</div>
+        <div>
+          <div className="flex items-center gap-2 text-sm font-black tracking-tight"><span className="h-2 w-2 rounded-full bg-emerald-300 shadow-[0_0_12px_rgba(110,231,183,.9)]" />ElementOS</div>
+          <div className="text-[10px] uppercase tracking-[0.25em] text-slate-400">Persistent Demo</div>
+        </div>
+      </div>
+      <div className="hidden items-center gap-2 md:flex">
+        <span className="rounded-full border border-emerald-300/30 bg-emerald-300/10 px-3 py-1.5 text-[10px] font-black uppercase tracking-[0.22em] text-emerald-100">Profile Saved</span>
+        <span className="rounded-full border border-cyan-300/30 bg-cyan-300/10 px-3 py-1.5 text-[10px] font-black uppercase tracking-[0.22em] text-cyan-100">Level {profile.level}</span>
+        <span className="rounded-full border border-fuchsia-300/30 bg-fuchsia-300/10 px-3 py-1.5 text-[10px] font-black uppercase tracking-[0.22em] text-fuchsia-100">{profile.zdarCount} ZDAR</span>
+      </div>
+      {!showApp && <PrimaryButton onClick={() => setShowApp(true)} className="px-4 py-2 text-sm">Enter App</PrimaryButton>}
+    </nav>
+  );
+}
+
+function LandingPage({ onLaunch, profile }) {
+  return (
+    <section className="relative overflow-hidden rounded-[1.8rem] border border-cyan-300/20 bg-white/[0.065] p-4 shadow-[0_30px_140px_rgba(0,0,0,.5)] backdrop-blur-2xl sm:rounded-[2.75rem] sm:p-8">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(34,211,238,.22),transparent_32%),radial-gradient(circle_at_85%_35%,rgba(217,70,239,.18),transparent_30%)]" />
       <div className="relative grid gap-8 lg:grid-cols-[1.05fr_.95fr] lg:items-center">
         <div>
-          <div className="mb-3 inline-flex rounded-full border border-fuchsia-300/30 bg-fuchsia-300/10 px-4 py-2 text-[10px] font-black uppercase tracking-[0.35em] text-fuchsia-100">PUBLIC BETA LIVE</div>
+          <div className="mb-3 inline-flex rounded-full border border-fuchsia-300/30 bg-fuchsia-300/10 px-4 py-2 text-[10px] font-black uppercase tracking-[0.35em] text-fuchsia-100">Persistent Discovery Layer</div>
           <br />
-          <div className="inline-flex rounded-full border border-cyan-300/30 bg-cyan-300/10 px-4 py-2 text-xs font-black uppercase tracking-[0.35em] text-cyan-200">
-            {UI.appName}
-          </div>
+          <div className="inline-flex rounded-full border border-cyan-300/30 bg-cyan-300/10 px-4 py-2 text-xs font-black uppercase tracking-[0.35em] text-cyan-200">{BRAND.name}</div>
           <h1 className="mt-5 bg-gradient-to-r from-white via-cyan-200 to-fuchsia-300 bg-clip-text text-4xl font-black leading-[0.95] tracking-tight text-transparent sm:text-6xl md:text-8xl">
-            {UI.headline}
+            Save discoveries. Hunt ZDAR. Build your element profile.
           </h1>
-          <p className="mt-4 max-w-3xl text-base leading-7 text-slate-300 sm:mt-6 sm:text-xl sm:leading-8">{UI.sub}</p>
-          <FeatureRibbon />
-          <OnboardingStrip />
-          <LaunchStatusBar />
-          <PublicBetaNotice />
-          <PressStrip />
+          <p className="mt-4 max-w-3xl text-base leading-7 text-slate-300 sm:mt-6 sm:text-xl sm:leading-8">{BRAND.manifesto}</p>
           <div className="mt-5 flex flex-wrap gap-2">
-            <StatusPill tone="cyan">SimulationFi</StatusPill>
-            <StatusPill tone="fuchsia">ARM Engine</StatusPill>
-            <StatusPill tone="emerald">ELM Gas</StatusPill>
-            <StatusPill tone="yellow">ZDAR Rarity</StatusPill>
+            {["Local Profile", "Saved History", "ZDAR Cards", "Deterministic Results", "Demo Wallet"].map((pill) => (
+              <span key={pill} className="rounded-full border border-white/10 bg-white/10 px-3 py-2 text-[10px] font-black uppercase tracking-[0.2em] text-slate-200">{pill}</span>
+            ))}
+          </div>
+          <div className="mt-5 grid gap-3 sm:grid-cols-4">
+            {["Create profile", "Pick elements", "Run simulation", "Save card"].map((step, i) => (
+              <div key={step} className="rounded-2xl border border-white/10 bg-slate-950/50 p-3">
+                <div className="text-[10px] font-black uppercase tracking-[0.26em] text-cyan-300">Step {i + 1}</div>
+                <div className="mt-1 text-sm font-bold text-white">{step}</div>
+              </div>
+            ))}
           </div>
           <div className="mt-7 flex flex-wrap gap-3">
-            <button onClick={onLaunch} className="rounded-2xl bg-cyan-300 px-6 py-4 text-lg font-black text-slate-950 shadow-[0_0_40px_rgba(34,211,238,.35)] transition hover:scale-[1.03]">
-              {UI.launch}
-            </button>
+            <PrimaryButton onClick={onLaunch}>{profile.username ? `Launch as ${profile.username}` : "Launch Demo"}</PrimaryButton>
           </div>
-          <div className="mt-8 grid gap-3 sm:grid-cols-3">
-            <Metric label="Category" value="SimulationFi" sub="DeFi + element compute" />
-            <Metric label="Rarity Hook" value="ZDAR" sub="legendary alignment" />
-            <Metric label="Dataset" value="118" sub="confirmed elements" />
+          <div className="mt-5 rounded-[2rem] border border-yellow-300/25 bg-yellow-400/10 p-4 text-yellow-50">
+            <div className="text-[10px] font-black uppercase tracking-[0.32em] text-yellow-200">Public Demo Notice</div>
+            <p className="mt-2 text-sm text-yellow-50/85">
+              Frontend-only demo. Profile saves use localStorage. Wallet, ELM gas, activity feed, and market stats are simulated for product validation.
+            </p>
           </div>
         </div>
 
-        <div className="relative min-h-[360px] overflow-hidden slow-float rounded-[1.8rem] border border-white/10 bg-slate-950/70 p-4 sm:min-h-[520px] sm:rounded-[2.5rem] sm:p-5 shadow-[0_0_100px_rgba(34,211,238,.18)]">
+        <div className="relative min-h-[360px] overflow-hidden rounded-[1.8rem] border border-white/10 bg-slate-950/70 p-4 shadow-[0_0_100px_rgba(34,211,238,.18)] sm:min-h-[520px] sm:rounded-[2.5rem] sm:p-5">
           <div className="absolute inset-16 rounded-full border border-cyan-300/15 shadow-[0_0_70px_rgba(34,211,238,.18)] [transform:rotateX(64deg)_rotateZ(12deg)]" />
           <div className="absolute inset-24 rounded-full border border-fuchsia-300/15 shadow-[0_0_70px_rgba(217,70,239,.14)] [transform:rotateX(28deg)_rotateY(45deg)]" />
-          <div className="absolute left-1/2 top-1/2 flex h-24 w-24 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-cyan-200 bg-cyan-300/15 text-4xl font-black sm:h-36 sm:w-36 sm:text-6xl shadow-[0_0_80px_rgba(34,211,238,.75)]">Al</div>
+          <div className="absolute left-1/2 top-1/2 flex h-24 w-24 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-cyan-200 bg-cyan-300/15 text-4xl font-black shadow-[0_0_80px_rgba(34,211,238,.75)] sm:h-36 sm:w-36 sm:text-6xl">{profile.favouriteElement || "Al"}</div>
           <div className="absolute bottom-5 left-5 right-5 rounded-2xl border border-fuchsia-300/25 bg-fuchsia-500/10 p-4 text-fuchsia-100 shadow-[0_0_50px_rgba(217,70,239,.22)]">
-            <div className="text-xs uppercase tracking-[.3em]">Live Result</div>
-            <div className="text-2xl font-black">Fe / Ru → ZDAR Legendary</div>
-            <div className="text-sm opacity-80">Perfect alignment • spherical orbital lock</div>
+            <div className="text-xs uppercase tracking-[.3em]">Profile State</div>
+            <div className="text-2xl font-black">{profile.username || "Element Explorer"}</div>
+            <div className="text-sm opacity-80">Level {profile.level} • {profile.simulationsRun} simulations • {profile.zdarCount} ZDAR</div>
           </div>
         </div>
       </div>
@@ -975,65 +351,68 @@ function LandingPage({ onLaunch }) {
   );
 }
 
-
-function LiveFeedPanel({ feed }) {
-  const fallbackFeed = LIVE_EVENT_TEMPLATES;
-  const merged = [...feed, ...fallbackFeed].slice(0, 9);
-
+function ProfilePanel({ profile, elements, onProfileUpdate, onReset }) {
   return (
-    <Card title="🔥 Simulated Activity Feed" kicker="demo activity stream">
-      <div className="mt-4 grid gap-2">
-        {merged.map((item, index) => (
-          <div
-            key={`${item}-${index}`}
-            className="rounded-2xl border border-cyan-300/15 bg-slate-950/60 p-3 text-sm text-slate-200 shadow-[0_0_22px_rgba(34,211,238,.08)]"
-          >
-            <div className="flex items-start gap-3">
-              <span className="mt-1 h-2 w-2 shrink-0 rounded-full bg-emerald-300 shadow-[0_0_16px_rgba(110,231,183,.9)]" />
-              <span>{item}</span>
-            </div>
-          </div>
-        ))}
+    <Card title="My ElementOS Profile" kicker="persistent local identity">
+      <div className="mt-4 grid gap-3 sm:grid-cols-2">
+        <label>
+          <div className="mb-2 text-[10px] font-black uppercase tracking-[0.25em] text-cyan-300">Username</div>
+          <input
+            value={profile.username}
+            onChange={(e) => onProfileUpdate({ username: e.target.value })}
+            className="w-full rounded-2xl border border-white/10 bg-slate-950/80 p-3 font-bold text-white outline-none focus:border-cyan-300/50"
+          />
+        </label>
+        <ElementSelect
+          value={profile.favouriteElement}
+          onChange={(value) => onProfileUpdate({ favouriteElement: value })}
+          elements={elements}
+          label="Favourite Element"
+        />
       </div>
+      <div className="mt-4 grid grid-cols-2 gap-3">
+        <Metric label="Level" value={profile.level} sub={`${profile.xp} XP`} />
+        <Metric label="Runs" value={profile.simulationsRun} sub="saved total" />
+        <Metric label="ZDAR Count" value={profile.zdarCount} sub="legendary hits" />
+        <Metric label="Cards" value={profile.zdarDiscoveries.length} sub="saved structures" />
+      </div>
+      <GhostButton onClick={onReset} className="mt-4 w-full border-red-300/30 bg-red-500/10 text-red-100">Reset Local Demo Profile</GhostButton>
     </Card>
   );
 }
 
-function MockWalletPanel({ walletConnected, walletAddress, elm, credits, stakedElm, onConnect, onDisconnect, onTopUp, onStake, onBuyCredits }) {
+function MockWalletPanel({ profile, onConnect, onDisconnect, onTopUp, onStake, onBuyCredits }) {
   return (
-    <Card title="Demo Wallet" kicker="demo wallet" className="md:col-span-2 xl:col-span-2">
+    <Card title="Demo Wallet" kicker="simulated wallet">
       <div className="mt-4 grid gap-4">
-        <div className={`rounded-3xl border p-5 ${walletConnected ? "border-emerald-300/30 bg-emerald-500/10" : "border-yellow-300/30 bg-yellow-500/10"}`}>
+        <div className={`rounded-3xl border p-5 ${profile.walletConnected ? "border-emerald-300/30 bg-emerald-500/10" : "border-yellow-300/30 bg-yellow-500/10"}`}>
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <div className="text-xs uppercase tracking-[0.25em] text-slate-300">Demo Wallet Status</div>
-              <div className="mt-1 text-3xl font-black">{walletConnected ? "Connected" : "Disconnected"}</div>
+              <div className="mt-1 text-3xl font-black">{profile.walletConnected ? "Connected" : "Disconnected"}</div>
             </div>
-            <div className={`rounded-full px-4 py-2 text-xs font-black uppercase tracking-[0.22em] ${walletConnected ? "bg-emerald-300/20 text-emerald-100" : "bg-yellow-300/20 text-yellow-100"}`}>
-              {walletConnected ? "Demo Mode Live" : "Demo Wallet Required"}
+            <div className={`rounded-full px-4 py-2 text-xs font-black uppercase tracking-[0.22em] ${profile.walletConnected ? "bg-emerald-300/20 text-emerald-100" : "bg-yellow-300/20 text-yellow-100"}`}>
+              {profile.walletConnected ? "Demo Mode Live" : "Demo Wallet Required"}
             </div>
           </div>
           <div className="mt-4 rounded-2xl border border-white/10 bg-slate-950/60 p-3 font-mono text-xs text-cyan-100 break-all">
-            {walletConnected ? walletAddress : "Connect wallet to run simulations and spend ELM gas."}
+            {profile.walletConnected ? profile.walletAddress : "Connect demo wallet to run simulated ELM gas transactions."}
           </div>
         </div>
-
         <div className="grid gap-3 sm:grid-cols-3">
-          <Metric label="Demo ELM Balance" value={elm.toLocaleString()} sub="testnet gas" />
-          <Metric label="Credits" value={credits} sub="free runs" />
-          <Metric label="Staked ELM" value={stakedElm.toLocaleString()} sub="mock staking" />
+          <Metric label="Demo ELM" value={profile.elm.toLocaleString()} sub="simulated gas" />
+          <Metric label="Credits" value={profile.credits} sub="free runs" />
+          <Metric label="Staked" value={profile.stakedElm.toLocaleString()} sub="demo staking" />
         </div>
-
-        {!walletConnected ? (
+        {!profile.walletConnected ? (
           <PrimaryButton onClick={onConnect} className="w-full">Connect Demo Wallet</PrimaryButton>
         ) : (
           <GhostButton onClick={onDisconnect} className="w-full">Disconnect Demo Wallet</GhostButton>
         )}
-
         <div className="grid gap-3 sm:grid-cols-3">
-          <GhostButton disabled={!walletConnected} onClick={onTopUp}>Add Funds</GhostButton>
-          <GhostButton disabled={!walletConnected} onClick={onBuyCredits}>+5 Credits</GhostButton>
-          <GhostButton disabled={!walletConnected} onClick={onStake}>Stake 100</GhostButton>
+          <GhostButton disabled={!profile.walletConnected} onClick={onTopUp}>Add Demo Funds</GhostButton>
+          <GhostButton disabled={!profile.walletConnected} onClick={onBuyCredits}>+5 Credits</GhostButton>
+          <GhostButton disabled={!profile.walletConnected} onClick={onStake}>Stake 100</GhostButton>
         </div>
       </div>
     </Card>
@@ -1051,34 +430,28 @@ function OrbitalAlignment({ result, pair }) {
       : "bg-cyan-300/35 shadow-[0_0_25px_rgba(34,211,238,.35)]";
 
   return (
-    <div className="relative mt-4 h-[360px] overflow-hidden rounded-[1.6rem] border border-white/10 bg-slate-950 sm:h-[450px] sm:rounded-[2rem] shadow-[0_0_90px_rgba(34,211,238,.16)]">
+    <div className="relative mt-4 h-[360px] overflow-hidden rounded-[1.6rem] border border-white/10 bg-slate-950 shadow-[0_0_90px_rgba(34,211,238,.16)] sm:h-[450px] sm:rounded-[2rem]">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_28%_50%,rgba(249,115,22,.18),transparent_28%),radial-gradient(circle_at_72%_50%,rgba(34,211,238,.18),transparent_28%),radial-gradient(circle_at_50%_50%,rgba(217,70,239,.16),transparent_22%)]" />
-
-      <div className="absolute left-[25%] top-1/2 h-40 w-40 sm:h-60 sm:w-60 -translate-x-1/2 -translate-y-1/2 rounded-full border border-orange-300/20 shadow-[0_0_55px_rgba(249,115,22,.25)] [transform:translate(-50%,-50%)_rotateX(62deg)_rotateZ(-18deg)]" />
-      <div className="absolute left-[25%] top-1/2 h-20 w-20 sm:h-28 sm:w-28 -translate-x-1/2 -translate-y-1/2 rounded-full bg-orange-400/20 shadow-[0_0_70px_rgba(249,115,22,.8)]" />
+      <div className="absolute left-[25%] top-1/2 h-40 w-40 -translate-x-1/2 -translate-y-1/2 rounded-full border border-orange-300/20 shadow-[0_0_55px_rgba(249,115,22,.25)] [transform:translate(-50%,-50%)_rotateX(62deg)_rotateZ(-18deg)] sm:h-60 sm:w-60" />
+      <div className="absolute left-[25%] top-1/2 h-20 w-20 -translate-x-1/2 -translate-y-1/2 rounded-full bg-orange-400/20 shadow-[0_0_70px_rgba(249,115,22,.8)] sm:h-28 sm:w-28" />
       <div className="absolute left-[25%] top-1/2 -translate-x-1/2 -translate-y-1/2 text-center">
         <div className="text-2xl font-black text-orange-100 sm:text-4xl">{left}</div>
-        <div className="text-[10px] uppercase tracking-[.25em] text-orange-200/70">primary sphere</div>
+        <div className="text-[10px] uppercase tracking-[.25em] text-orange-200/70">primary</div>
       </div>
-
-      <div className="absolute right-[25%] top-1/2 h-40 w-40 sm:h-60 sm:w-60 translate-x-1/2 -translate-y-1/2 rounded-full border border-cyan-300/20 shadow-[0_0_55px_rgba(34,211,238,.25)] [transform:translate(50%,-50%)_rotateX(62deg)_rotateZ(18deg)]" />
-      <div className="absolute right-[25%] top-1/2 h-20 w-20 sm:h-28 sm:w-28 translate-x-1/2 -translate-y-1/2 rounded-full bg-cyan-400/20 shadow-[0_0_70px_rgba(34,211,238,.8)]" />
+      <div className="absolute right-[25%] top-1/2 h-40 w-40 translate-x-1/2 -translate-y-1/2 rounded-full border border-cyan-300/20 shadow-[0_0_55px_rgba(34,211,238,.25)] [transform:translate(50%,-50%)_rotateX(62deg)_rotateZ(18deg)] sm:h-60 sm:w-60" />
+      <div className="absolute right-[25%] top-1/2 h-20 w-20 translate-x-1/2 -translate-y-1/2 rounded-full bg-cyan-400/20 shadow-[0_0_70px_rgba(34,211,238,.8)] sm:h-28 sm:w-28" />
       <div className="absolute right-[25%] top-1/2 translate-x-1/2 -translate-y-1/2 text-center">
         <div className="text-2xl font-black text-cyan-100 sm:text-4xl">{right}</div>
-        <div className="text-[10px] uppercase tracking-[.25em] text-cyan-200/70">secondary sphere</div>
+        <div className="text-[10px] uppercase tracking-[.25em] text-cyan-200/70">secondary</div>
       </div>
-
       <div className={`absolute left-1/2 top-1/2 ${beamWidth} -translate-x-1/2 -translate-y-1/2 rounded-full transition-all duration-700 ${beamGlow}`} />
-      <div className={`absolute left-1/2 top-1/2 h-12 w-12 sm:h-16 sm:w-16 -translate-x-1/2 -translate-y-1/2 rounded-full transition-all duration-700 ${result.zdar ? "scale-125 bg-fuchsia-300 shadow-[0_0_110px_rgba(217,70,239,1)]" : "bg-cyan-300 shadow-[0_0_55px_rgba(34,211,238,.75)]"}`} />
-
+      <div className={`absolute left-1/2 top-1/2 h-12 w-12 -translate-x-1/2 -translate-y-1/2 rounded-full transition-all duration-700 sm:h-16 sm:w-16 ${result.zdar ? "scale-125 bg-fuchsia-300 shadow-[0_0_110px_rgba(217,70,239,1)]" : "bg-cyan-300 shadow-[0_0_55px_rgba(34,211,238,.75)]"}`} />
       <div className="absolute left-1/2 top-[37%] -translate-x-1/2 text-center">
-        <div className="text-[10px] uppercase tracking-[.35em] text-slate-300">Spherical Orbital Alignment</div>
+        <div className="text-[10px] uppercase tracking-[.35em] text-slate-300">Stability</div>
         <div className="mt-1 text-3xl font-black text-white sm:text-4xl">{result.stability}%</div>
       </div>
-
-      <div className="absolute bottom-5 left-1/2 -translate-x-1/2 rounded-2xl border border-yellow-300/30 bg-yellow-400/10 px-6 py-3 text-center shadow-[0_0_30px_rgba(250,204,21,.2)]">
-        <div className="text-2xl font-black text-yellow-200">{result.rarity}</div>
-        <div className="text-[10px] uppercase tracking-[.22em] text-yellow-100/70">Alignment State</div>
+      <div className="absolute bottom-5 left-1/2 -translate-x-1/2 rounded-2xl border border-yellow-300/30 bg-yellow-400/10 px-4 py-3 text-center shadow-[0_0_30px_rgba(250,204,21,.2)]">
+        <div className="text-sm font-black text-yellow-200 sm:text-2xl">{result.rarity}</div>
       </div>
     </div>
   );
@@ -1090,11 +463,10 @@ function OrbitalSystem({ elements, pair, setPairAt, settings, result }) {
   const featured = elements.filter((e) => e.sym === origin.sym || e.influence > 55 || active.has(e.sym)).slice(0, 42);
 
   return (
-    <div className="relative mt-4 h-[420px] overflow-hidden rounded-[2rem] border border-cyan-300/20 bg-slate-950 sm:aspect-square sm:h-auto sm:max-h-[720px] sm:rounded-[3rem] shadow-[0_0_120px_rgba(34,211,238,0.22)]">
+    <div className="relative mt-4 h-[420px] overflow-hidden rounded-[2rem] border border-cyan-300/20 bg-slate-950 shadow-[0_0_120px_rgba(34,211,238,0.22)] sm:aspect-square sm:h-auto sm:max-h-[720px] sm:rounded-[3rem]">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(34,211,238,.26),rgba(147,51,234,.13)_30%,rgba(2,6,23,.98)_72%)]" />
       <div className="absolute inset-12 rounded-full border border-cyan-300/15 [transform:rotateX(68deg)_rotateZ(14deg)]" />
       <div className="absolute inset-20 rounded-full border border-fuchsia-300/15 [transform:rotateX(24deg)_rotateY(55deg)]" />
-
       {featured.map((e, index) => {
         if (e.sym === origin.sym) return null;
         const angle = (index / featured.length) * Math.PI * 2 * 1.35 - Math.PI / 2;
@@ -1103,8 +475,7 @@ function OrbitalSystem({ elements, pair, setPairAt, settings, result }) {
         const x = 50 + Math.cos(angle) * radius;
         const y = 50 + Math.sin(angle) * radius * 0.58;
         const isActive = active.has(e.sym);
-        const size = isActive ? 68 : 28 + Math.max(0, depth) * 12;
-
+        const size = isActive ? 60 : 26 + Math.max(0, depth) * 10;
         return (
           <button
             key={e.sym}
@@ -1118,20 +489,17 @@ function OrbitalSystem({ elements, pair, setPairAt, settings, result }) {
           </button>
         );
       })}
-
       <button
         onClick={() => setPairAt(0, origin.sym)}
-        className="absolute left-1/2 top-1/2 z-40 flex h-24 w-24 -translate-x-1/2 -translate-y-1/2 flex-col items-center justify-center rounded-full sm:h-36 sm:w-36 border border-cyan-200 bg-cyan-300/15 text-cyan-50 shadow-[0_0_90px_rgba(34,211,238,.9)] backdrop-blur-xl transition hover:scale-105"
+        className="absolute left-1/2 top-1/2 z-40 flex h-24 w-24 -translate-x-1/2 -translate-y-1/2 flex-col items-center justify-center rounded-full border border-cyan-200 bg-cyan-300/15 text-cyan-50 shadow-[0_0_90px_rgba(34,211,238,.9)] backdrop-blur-xl transition hover:scale-105 sm:h-36 sm:w-36"
       >
-        <div className="text-xs uppercase tracking-[0.3em]">ARM Origin</div>
+        <div className="text-[10px] uppercase tracking-[0.3em]">ARM</div>
         <div className="text-4xl font-black sm:text-6xl">{origin.sym}</div>
-        <div className="text-xs text-cyan-200">core model</div>
       </button>
-
       <div className="absolute bottom-5 left-5 right-5 grid grid-cols-3 gap-2 rounded-2xl border border-white/10 bg-slate-950/70 p-3 backdrop-blur-xl">
         <Metric label="Confidence" value={`${result.confidence}%`} />
         <Metric label="Rarity" value={result.rarity.split(" ")[0]} />
-        <Metric label="API" value="Ready" />
+        <Metric label="Seed" value={result.seed} />
       </div>
     </div>
   );
@@ -1161,24 +529,175 @@ function LatticeOutput({ result }) {
   );
 }
 
+function ScanPhases({ phase }) {
+  const phases = ["orbital sync", "stability convergence", "field resonance", "structure lock"];
+  return (
+    <div className="mt-4 rounded-[2rem] border border-cyan-300/30 bg-cyan-500/10 p-4 text-cyan-100 shadow-[0_0_40px_rgba(34,211,238,.22)]">
+      <div className="text-xs font-black uppercase tracking-[0.32em]">Multi-phase scan</div>
+      <div className="mt-3 grid gap-2 sm:grid-cols-4">
+        {phases.map((p, i) => (
+          <div key={p} className={`rounded-xl border p-3 text-xs font-bold ${phase >= i ? "border-cyan-300/40 bg-cyan-300/10 text-cyan-100" : "border-white/10 bg-white/5 text-slate-500"}`}>
+            {i + 1}. {p}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function DiscoveryEngine({ onSelect, onRandom, ranking }) {
+  return (
+    <Card title="Discovery Engine" kicker="ecosystem hooks">
+      <div className="mt-4 grid gap-3">
+        {CHALLENGES.map((challenge) => (
+          <button key={challenge.title} onClick={() => onSelect(challenge.pair)} className="rounded-2xl border border-white/10 bg-slate-950/45 p-4 text-left transition hover:border-cyan-300/30 hover:bg-white/10">
+            <div className="flex items-center justify-between gap-3">
+              <div>
+                <div className="font-black text-white">{challenge.title}</div>
+                <div className="mt-1 text-sm text-slate-400">{challenge.copy}</div>
+              </div>
+              <div className="text-xl font-black text-cyan-200">{challenge.pair.join(" / ")}</div>
+            </div>
+          </button>
+        ))}
+        <GhostButton onClick={onRandom} className="w-full">🎲 Random Discovery Mode</GhostButton>
+        <div className="rounded-2xl border border-fuchsia-300/20 bg-fuchsia-500/10 p-4 text-sm text-fuchsia-100">
+          Today's strongest deterministic candidate: <b>{ranking[0]?.sym}</b> at {ranking[0]?.sim?.stability}%.
+        </div>
+      </div>
+    </Card>
+  );
+}
+
+function CollectibleResultCard({ pair, result, shareText, onShare, onDownload, isSaved }) {
+  return (
+    <Card title="Collectible Structure Card" kicker="owned social object">
+      <div className={`relative mt-4 overflow-hidden rounded-[2rem] border p-5 ${result.zdar ? "border-fuchsia-300/50 bg-fuchsia-500/15 shadow-[0_0_70px_rgba(217,70,239,.32)]" : "border-cyan-300/25 bg-cyan-500/10"}`}>
+        <div className="absolute right-4 top-4 rounded-full border border-yellow-300/20 bg-yellow-400/10 px-3 py-1 text-[10px] font-black uppercase tracking-[0.22em] text-yellow-100">Demo Card</div>
+        <div className="text-[10px] font-black uppercase tracking-[0.34em] text-slate-300">Structure ID</div>
+        <div className="mt-2 font-mono text-xs text-cyan-100">{result.id}</div>
+        <div className="mt-4 text-4xl font-black text-white">{pair.join(" / ")}</div>
+        <div className="mt-2 text-xl font-black text-fuchsia-200">{result.rarity}</div>
+        <div className="mt-5 grid gap-3 sm:grid-cols-3">
+          <Metric label="Stability" value={`${result.stability}%`} />
+          <Metric label="Strength" value={result.strength} />
+          <Metric label="Seed" value={result.seed} />
+        </div>
+        <div className="mt-5 rounded-2xl border border-white/10 bg-black/30 p-4 text-sm text-slate-200">
+          {isSaved ? "Saved to your local profile showcase." : "Run the simulation to save this card into your local discovery showcase."}
+        </div>
+        <div className="mt-4 grid gap-3 sm:grid-cols-2">
+          <PrimaryButton onClick={onShare}>📤 Generate Share Text</PrimaryButton>
+          <GhostButton onClick={onDownload}>⬇ Download Text Card</GhostButton>
+        </div>
+        {shareText && <div className="mt-3 rounded-2xl border border-cyan-300/20 bg-slate-950/70 p-3 text-xs text-cyan-100">{shareText}</div>}
+      </div>
+    </Card>
+  );
+}
+
+function ProfileShowcase({ profile }) {
+  return (
+    <Card title="Profile Showcase" kicker="owned discoveries">
+      <div className="mt-4 grid gap-3">
+        {profile.zdarDiscoveries.length === 0 ? (
+          <div className="rounded-2xl border border-white/10 bg-slate-950/45 p-4 text-sm text-slate-400">
+            No ZDAR cards saved yet. Run Fe / Ru or use Find ZDAR.
+          </div>
+        ) : (
+          profile.zdarDiscoveries.slice(0, 5).map((item) => (
+            <div key={item.id} className="rounded-2xl border border-fuchsia-300/20 bg-fuchsia-500/10 p-4">
+              <div className="font-black text-white">{item.pair.join(" / ")}</div>
+              <div className="mt-1 text-xs text-fuchsia-100/70">{item.id} • {item.stability}% • {item.rarity}</div>
+            </div>
+          ))
+        )}
+      </div>
+    </Card>
+  );
+}
+
+function ManifestoPanel() {
+  return (
+    <Card title="Platform Manifesto" kicker="why this exists">
+      <p className="mt-4 text-sm leading-7 text-slate-300">{BRAND.manifesto}</p>
+      <div className="mt-4 grid gap-2">
+        {["Make element interaction visual.", "Turn simulation into discovery.", "Make rare alignments collectible.", "Build toward a science-native creator economy."].map((line) => (
+          <div key={line} className="rounded-xl border border-white/10 bg-white/5 p-3 text-sm text-slate-200">✦ {line}</div>
+        ))}
+      </div>
+    </Card>
+  );
+}
+
+function RoadmapPanel() {
+  return (
+    <Card title="Future Layers" kicker="platform roadmap">
+      <div className="mt-4 grid gap-2 sm:grid-cols-2">
+        {ROADMAP.map((item) => (
+          <div key={item} className="rounded-2xl border border-white/10 bg-white/5 p-3 text-sm font-bold text-slate-200">{item}</div>
+        ))}
+      </div>
+    </Card>
+  );
+}
+
+function ARMAssistant({ pair, result }) {
+  const line = result.zdar
+    ? "ZDAR lock confirmed. Save this as a showcase card."
+    : result.stability > 75
+      ? "High stability detected. Try nearby transition metals for a stronger lock."
+      : "Pair is forming but not locked. Use discovery mode to search for a stronger structure.";
+  return (
+    <Card title="ARM Assistant Demo" kicker="simulated analysis">
+      <div className="mt-4 rounded-2xl border border-emerald-300/20 bg-emerald-500/10 p-4 text-emerald-100">
+        <div className="text-[10px] font-black uppercase tracking-[0.3em]">Demo Interpretation</div>
+        <div className="mt-2 text-lg font-black">{line}</div>
+        <div className="mt-3 text-sm opacity-80">{pair.join(" / ")} • {result.stability}% stability • {result.delta}° delta</div>
+      </div>
+    </Card>
+  );
+}
+
+function DemoTruthPanel() {
+  const rows = [
+    ["Real Today", "Live site, responsive UI, deterministic simulation, local profile saves."],
+    ["Simulated Today", "Demo wallet, ELM gas, activity feed, market-like stats."],
+    ["Not Live Yet", "Real blockchain, login accounts, database persistence."],
+  ];
+  return (
+    <Card title="Real vs Simulated" kicker="demo transparency">
+      <div className="mt-4 grid gap-3">
+        {rows.map(([label, text]) => (
+          <div key={label} className="rounded-2xl border border-white/10 bg-slate-950/45 p-4">
+            <div className="text-xs font-black uppercase tracking-[0.24em] text-cyan-300">{label}</div>
+            <div className="mt-2 text-sm leading-6 text-slate-300">{text}</div>
+          </div>
+        ))}
+      </div>
+    </Card>
+  );
+}
+
 export default function App() {
+  const [profile, setProfile] = useState(DEFAULT_PROFILE);
+  const [hydrated, setHydrated] = useState(false);
   const [showApp, setShowApp] = useState(false);
-  const [settings, setSettings] = useState({ origin: "Al", originLock: true, calibration: 0, zdarThreshold: 2 });
+  const [settings, setSettings] = useState({ origin: "Al", calibration: 0, zdarThreshold: 2 });
   const [pair, setPair] = useState(["Al", "Fe"]);
-  const [elm, setElm] = useState(2000000);
-  const [credits, setCredits] = useState(5);
-  const [stakedElm, setStakedElm] = useState(0);
-  const [walletConnected, setWalletConnected] = useState(false);
-  const [walletAddress, setWalletAddress] = useState("");
-  const [history, setHistory] = useState([]);
-  const [favorites, setFav] = useState([]);
   const [shareText, setShareText] = useState("");
-  const [copied, setCopied] = useState(false);
-  const [xp, setXp] = useState(0);
-  const [level, setLevel] = useState(1);
-  const [feed, setFeed] = useState([]);
   const [scanning, setScanning] = useState(false);
-  const [liveStream, setLiveStream] = useState(LIVE_EVENT_TEMPLATES.slice(0, 5));
+  const [scanPhase, setScanPhase] = useState(-1);
+  const [structureUnlocked, setStructureUnlocked] = useState(false);
+
+  useEffect(() => {
+    setProfile(loadProfile());
+    setHydrated(true);
+  }, []);
+
+  useEffect(() => {
+    if (hydrated) saveProfile(profile);
+  }, [profile, hydrated]);
 
   const elements = useMemo(() => ELEMENTS.map((e) => buildElement(e, settings)), [settings]);
   const result = useMemo(() => simulate(elements, pair, settings), [elements, pair, settings]);
@@ -1187,44 +706,68 @@ export default function App() {
     [elements, settings]
   );
 
-  useEffect(() => {
-    const timer = setInterval(() => {
-      const next = LIVE_EVENT_TEMPLATES[Math.floor(Math.random() * LIVE_EVENT_TEMPLATES.length)];
-      setLiveStream((current) => [next, ...current].slice(0, 8));
-    }, 4200);
-    return () => clearInterval(timer);
-  }, []);
+  function updateProfile(patch) {
+    setProfile((current) => ({ ...current, ...patch }));
+  }
+
+  function completeOnboarding(username, favouriteElement) {
+    updateProfile({ username, favouriteElement, onboardingComplete: true });
+  }
 
   function setPairAt(index, symbol) {
     setPair((current) => current.map((value, i) => (i === index ? symbol : value)));
   }
 
   function connectWallet() {
-    setWalletConnected(true);
-    setWalletAddress(`0xELM${Math.random().toString(16).slice(2, 8).toUpperCase()}...${Math.random().toString(16).slice(2, 6).toUpperCase()}`);
+    updateProfile({
+      walletConnected: true,
+      walletAddress: `0xELM${Math.random().toString(16).slice(2, 8).toUpperCase()}...${Math.random().toString(16).slice(2, 6).toUpperCase()}`,
+    });
   }
 
   function run() {
-    if (!walletConnected) return setShareText("Connect wallet before running simulations.");
-    if (elm < result.cost && credits <= 0) return setShareText("Not enough ELM or credits. Add funds to continue.");
+    if (!profile.walletConnected) return setShareText("Connect demo wallet before running simulations.");
+    if (profile.elm < result.cost && profile.credits <= 0) return setShareText("Not enough demo ELM or credits. Add demo funds to continue.");
 
     setScanning(true);
+    setStructureUnlocked(false);
+    setScanPhase(0);
+    const phaseTimers = [0, 350, 700, 1050].map((delay, phase) => window.setTimeout(() => setScanPhase(phase), delay));
+
     window.setTimeout(() => {
-      if (credits > 0) setCredits((c) => c - 1);
-      else setElm((e) => e - result.cost);
+      setProfile((current) => {
+        const usedCredit = current.credits > 0;
+        const nextXp = current.xp + result.stability;
+        const nextLevel = Math.max(current.level, Math.floor(nextXp / 500) + 1);
+        const savedRun = {
+          ...result,
+          pair: [...pair],
+          createdAt: new Date().toISOString(),
+        };
+        const alreadyFav = current.favourites.includes(pair.join(" / "));
+        const zdarDiscoveries = result.zdar
+          ? [savedRun, ...current.zdarDiscoveries.filter((x) => x.id !== savedRun.id)].slice(0, 20)
+          : current.zdarDiscoveries;
 
-      setElm((e) => e + (result.zdar ? 20 : 2));
-
-      const newXp = xp + result.stability;
-      setXp(newXp);
-      if (newXp >= level * 500) setLevel((l) => l + 1);
-
-      const res = { ...result, pair: [...pair], id: `SIM-${pair.join("-")}-${Date.now().toString().slice(-5)}` };
-      setHistory((h) => [res, ...h].slice(0, 12));
-
-      if (result.zdar) setFeed((f) => [`⚡ ${pair.join(" / ")} hit ZDAR Legendary (${result.stability}%)`, ...f].slice(0, 10));
+        return {
+          ...current,
+          credits: usedCredit ? current.credits - 1 : current.credits,
+          elm: usedCredit ? current.elm + (result.zdar ? 20 : 2) : current.elm - result.cost + (result.zdar ? 20 : 2),
+          xp: nextXp,
+          level: nextLevel,
+          simulationsRun: current.simulationsRun + 1,
+          zdarCount: current.zdarCount + (result.zdar ? 1 : 0),
+          firstStructureSeen: true,
+          history: [savedRun, ...current.history].slice(0, 40),
+          favourites: alreadyFav ? current.favourites : [pair.join(" / "), ...current.favourites].slice(0, 20),
+          zdarDiscoveries,
+        };
+      });
       setScanning(false);
-    }, 700);
+      setScanPhase(3);
+      setStructureUnlocked(true);
+      phaseTimers.forEach(window.clearTimeout);
+    }, 1450);
   }
 
   function discoverZDAR() {
@@ -1238,308 +781,215 @@ export default function App() {
     setPair([a, b]);
   }
 
-  function favorite() {
+  function savePair() {
     const key = pair.join(" / ");
-    setFav((f) => (f.includes(key) ? f : [key, ...f].slice(0, 8)));
+    setProfile((current) => ({ ...current, favourites: current.favourites.includes(key) ? current.favourites : [key, ...current.favourites].slice(0, 20) }));
   }
 
   function generateShareCard() {
-    const text = `I just triggered a Legendary ZDAR alignment on ElementOS ⚡\n\n${pair.join(" / ")} → ${result.stability}% stability\n\nTry it:\n${window.location.href}`;
+    const text = `I triggered an ElementOS discovery ⚡\n\n${pair.join(" / ")} → ${result.stability}% stability\n${result.rarity}\nStructure ID: ${result.id}\n\nPublic demo: ${window.location.href}`;
     setShareText(text);
-    setCopied(false);
-
     if (navigator.share) {
-      navigator.share({ title: "ElementOS ZDAR Alignment", text, url: window.location.href }).catch(() => {});
-    } else if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(text).then(() => {
-        setCopied(true);
-        window.setTimeout(() => setCopied(false), 1600);
-      }).catch(() => {});
+      navigator.share({ title: "ElementOS Discovery", text, url: window.location.href }).catch(() => {});
     }
   }
 
+  function downloadCard() {
+    const content = `ElementOS Structure Card\n\nID: ${result.id}\nPair: ${pair.join(" / ")}\nRarity: ${result.rarity}\nStability: ${result.stability}%\nStructure: ${result.structure}\nSeed: ${result.seed}\n\nDemo card generated locally.`;
+    const blob = new Blob([content], { type: "text/plain;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const anchor = document.createElement("a");
+    anchor.href = url;
+    anchor.download = `${result.id}.txt`;
+    anchor.click();
+    URL.revokeObjectURL(url);
+  }
+
+  function resetProfile() {
+    localStorage.removeItem(STORAGE_KEY);
+    setProfile(DEFAULT_PROFILE);
+    setShowApp(false);
+  }
+
+  if (!hydrated) return <div className="min-h-screen bg-slate-950 text-white" />;
+
   return (
     <>
-      <DemoModeBadge />
+      <OnboardingModal profile={profile} elements={elements} onComplete={completeOnboarding} />
+
       <div className="min-h-screen overflow-hidden bg-slate-950 p-3 text-white sm:p-5">
-      <style>{`
-        @keyframes zdarPulse {
-          0%, 100% { transform: scale(1); filter: brightness(1); }
-          50% { transform: scale(1.025); filter: brightness(1.35); }
-        }
+        <style>{`
+          @keyframes floatParticle {
+            0% { transform: translate3d(0, 0, 0) scale(1); opacity: .18; }
+            50% { transform: translate3d(22px, -34px, 0) scale(1.35); opacity: .65; }
+            100% { transform: translate3d(-18px, 28px, 0) scale(.9); opacity: .28; }
+          }
+          @keyframes zdarPulse {
+            0%, 100% { transform: scale(1); filter: brightness(1); }
+            50% { transform: scale(1.025); filter: brightness(1.35); }
+          }
+          .zdar-active { animation: zdarPulse 1.4s ease-in-out infinite; }
+        `}</style>
 
-        @keyframes zdarFlash {
-          0%, 100% { opacity: 0; }
-          50% { opacity: .35; }
-        }
+        <ParticleField />
+        {result.zdar && <div className="pointer-events-none fixed inset-0 z-10 bg-fuchsia-500/10" />}
+        <div className="fixed bottom-3 left-3 z-[70] rounded-2xl border border-yellow-300/30 bg-slate-950/90 px-4 py-3 text-xs font-black uppercase tracking-[0.2em] text-yellow-100 shadow-[0_0_40px_rgba(250,204,21,.18)] backdrop-blur-xl">
+          Demo Build • Local Saves
+        </div>
 
-        @keyframes floatParticle {
-          0% { transform: translate3d(0, 0, 0) scale(1); opacity: .18; }
-          50% { transform: translate3d(22px, -34px, 0) scale(1.35); opacity: .65; }
-          100% { transform: translate3d(-18px, 28px, 0) scale(.9); opacity: .28; }
-        }
+        <TopNav profile={profile} setShowApp={setShowApp} showApp={showApp} />
 
-        .zdar-active {
-          animation: zdarPulse 1.4s ease-in-out infinite;
-        }
+        <div className="relative z-20 mx-auto max-w-7xl">
+          {!showApp ? (
+            <LandingPage onLaunch={() => setShowApp(true)} profile={profile} />
+          ) : (
+            <>
+              <GhostButton onClick={() => setShowApp(false)} className="mb-4 px-4 py-2">← Back to Landing</GhostButton>
 
-        .zdar-flash {
-          animation: zdarFlash 1.2s ease-in-out infinite;
-        }
-      
-        @keyframes slowFloat {
-          0%, 100% { transform: translateY(0); }
-          50% { transform: translateY(-6px); }
-        }
-        .slow-float { animation: slowFloat 5s ease-in-out infinite; }
-      
-        @keyframes holoPulse {
-          0%, 100% { box-shadow: 0 0 24px rgba(34,211,238,.18); }
-          50% { box-shadow: 0 0 70px rgba(217,70,239,.32); }
-        }
-        .holo-pulse { animation: holoPulse 3.2s ease-in-out infinite; }
-      
-        @keyframes signalBlink {
-          0%, 100% { opacity: .45; }
-          50% { opacity: 1; }
-        }
-        .signal-blink { animation: signalBlink 1.6s ease-in-out infinite; }
-      `}</style>
-      <div className="pointer-events-none fixed inset-0 bg-[radial-gradient(circle_at_20%_10%,rgba(34,211,238,.3),transparent_30%),radial-gradient(circle_at_85%_20%,rgba(217,70,239,.3),transparent_30%),radial-gradient(circle_at_50%_100%,rgba(59,130,246,.25),transparent_35%)]" />
-      <div className="pointer-events-none fixed inset-0 opacity-30 [background-image:linear-gradient(rgba(255,255,255,.035)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,.035)_1px,transparent_1px)] [background-size:44px_44px]" />
-      <ParticleField />
-      {result.zdar && <div className="pointer-events-none fixed inset-0 z-10 bg-fuchsia-500/20 zdar-flash" />}
-
-      <TopNav onLaunch={() => setShowApp(true)} showApp={showApp} walletConnected={walletConnected} />
-      <div className="relative z-20 mx-auto max-w-7xl">
-        {!showApp ? (
-          <LandingPage onLaunch={() => setShowApp(true)} />
-        ) : (
-          <>
-            <GhostButton onClick={() => setShowApp(false)} className="mb-4 px-4 py-2">← Back to Landing</GhostButton>
-
-            <header className="holo-pulse rounded-[1.8rem] border border-cyan-300/20 bg-white/[0.065] p-4 sm:rounded-[2.5rem] sm:p-7 shadow-[0_30px_120px_rgba(0,0,0,.45)] backdrop-blur-2xl">
-              <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
-                <div>
-                  <div className="text-xs uppercase tracking-[0.5em] text-cyan-300">ElementOS — ARM Simulation Network</div>
-                  <h1 className="mt-2 bg-gradient-to-r from-white via-cyan-100 to-fuchsia-200 bg-clip-text text-4xl font-black tracking-tight text-transparent sm:text-6xl md:text-8xl">ARM CLOUD</h1>
-                  <p className="mt-3 max-w-4xl text-lg text-slate-300">A crypto-native simulation network with ELM gas, spherical ZDAR orbitals, and shareable element-pair results.</p>
-                  <div className="mt-4 flex flex-wrap gap-2"><StatusPill tone="emerald">LIVE NETWORK</StatusPill><StatusPill tone="cyan">118 ELEMENTS</StatusPill><StatusPill tone="fuchsia">ZDAR ENABLED</StatusPill></div>
+              <header className="rounded-[1.8rem] border border-cyan-300/20 bg-white/[0.065] p-4 shadow-[0_30px_120px_rgba(0,0,0,.45)] backdrop-blur-2xl sm:rounded-[2.5rem] sm:p-7">
+                <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
+                  <div>
+                    <div className="text-xs uppercase tracking-[0.5em] text-cyan-300">ElementOS — Persistent Discovery Layer</div>
+                    <h1 className="mt-2 bg-gradient-to-r from-white via-cyan-100 to-fuchsia-200 bg-clip-text text-4xl font-black tracking-tight text-transparent sm:text-6xl md:text-8xl">ARM CLOUD</h1>
+                    <p className="mt-3 max-w-4xl text-lg text-slate-300">Saved profiles, deterministic simulations, ZDAR cards, discovery challenges, and local progression.</p>
+                  </div>
+                  <div className="grid w-full gap-3 sm:min-w-[360px] lg:w-auto">
+                    <Metric label="Current Pair" value={pair.join(" / ")} sub="deterministic output" />
+                    <Metric label="Profile" value={profile.username || "Explorer"} sub={`Level ${profile.level}`} />
+                    <Metric label="Demo Wallet" value={profile.walletConnected ? "Connected" : "Offline"} sub={profile.walletConnected ? profile.walletAddress : "connect to run"} />
+                  </div>
                 </div>
-                <div className="grid w-full gap-3 sm:min-w-[360px] lg:w-auto">
-                  <Metric label="Current Pair" value={pair.join(" / ")} sub="live simulation pair" />
-                  <Metric label="Demo ELM Balance" value={elm.toLocaleString()} sub="demo ELM" />
-                  <Metric label="Demo Wallet" value={walletConnected ? "Connected" : "Offline"} sub={walletConnected ? walletAddress : "connect to run"} />
+              </header>
+
+              <section className="mt-4 grid grid-cols-2 gap-3 md:grid-cols-3 xl:grid-cols-6 sm:mt-5">
+                <Metric label="Explorer Level" value={profile.level} sub={`${profile.xp} XP`} />
+                <Metric label="Simulation Credits" value={profile.credits} />
+                <Metric label="Demo ELM" value={profile.elm.toLocaleString()} />
+                <Metric label="Runs Saved" value={profile.simulationsRun} />
+                <Metric label="ZDAR Cards" value={profile.zdarDiscoveries.length} />
+                <Metric label="Favourite" value={profile.favouriteElement} />
+              </section>
+
+              {!profile.firstStructureSeen && (
+                <div className="mt-5 rounded-[2rem] border border-cyan-300/25 bg-cyan-500/10 p-5 text-cyan-50">
+                  <div className="text-[10px] font-black uppercase tracking-[0.34em] text-cyan-200">Guided First Run</div>
+                  <div className="mt-2 text-2xl font-black">Run your first simulation to discover your first structure.</div>
+                  <p className="mt-2 text-sm text-cyan-50/75">Connect the demo wallet, run Fe / Al, then use Find ZDAR to see the legendary path.</p>
                 </div>
-              </div>
-            </header>
+              )}
 
-            <LaunchBanner onFindZDAR={discoverZDAR} />
+              <section className="mt-4 grid gap-4 xl:grid-cols-[1.18fr_.82fr] sm:mt-5 sm:gap-5">
+                <Card title="ARM Orbital Network" kicker="3D element map" className={result.zdar ? "zdar-active border-fuchsia-300/40 shadow-[0_0_120px_rgba(217,70,239,.45)]" : ""}>
+                  <OrbitalSystem elements={elements} pair={pair} setPairAt={setPairAt} settings={settings} result={result} />
+                </Card>
 
-            <section className="mt-5 grid gap-5 lg:grid-cols-2">
-              <AboutDemoPanel />
-              <GuidedDemoPanel
-                onConnect={connectWallet}
-                onRun={run}
-                onFindZDAR={discoverZDAR}
-                onShare={generateShareCard}
-                walletConnected={walletConnected}
-              />
-            </section>
+                <Card title="Element Pair Console" kicker="ELM gas simulation">
+                  <div className="mt-4 grid gap-3">
+                    {pair.map((p, i) => (
+                      <ElementSelect key={i} value={p} label={i === 0 ? "Primary Element" : "Secondary Element"} elements={elements} onChange={(value) => setPairAt(i, value)} />
+                    ))}
+                  </div>
 
-            <section className="mt-5 grid gap-5 lg:grid-cols-3">
-              <DemoTruthPanel />
-              <DemoLimitationsPanel />
-              <FeedbackChecklistPanel />
-            </section>
+                  <div className="mt-4 grid grid-cols-2 gap-3">
+                    <Metric label="Stability" value={`${result.stability}%`} />
+                    <Metric label="Confidence" value={`${result.confidence}%`} />
+                    <Metric label="Structure" value={result.structure.split(" ")[0]} />
+                    <Metric label="Gas Fee" value={profile.credits > 0 ? "1 Credit" : `${result.cost} ELM`} />
+                  </div>
 
-            <section className="mt-4 grid grid-cols-2 gap-3 md:grid-cols-3 xl:grid-cols-6 sm:mt-5">
-              <Metric label="Explorer Level" value={level} sub={`${xp} XP`} />
-              <Metric label="Simulation Credits" value={credits} />
-              <Metric label="Staked ELM" value={stakedElm.toLocaleString()} />
-              <Metric label="ARM Nodes" value="118" />
-              <Metric label="Simulated Demo Network" value="Online" sub="activity stream" />
-              <Metric label="Demo Gas" value="Testnet" />
-            </section>
+                  {scanning && <ScanPhases phase={scanPhase} />}
 
-            <NetworkStatsPanel history={history} feed={feed} result={result} />
+                  <OrbitalAlignment result={result} pair={pair} />
 
-            <section className="mt-4 grid gap-4 xl:grid-cols-[1.18fr_.82fr] sm:mt-5 sm:gap-5">
-              <Card
-                title="ARM Orbital Network"
-                kicker="3D element map"
-                className={result.zdar ? "zdar-active border-fuchsia-300/40 shadow-[0_0_120px_rgba(217,70,239,.45)]" : ""}
-              >
-                <OrbitalSystem elements={elements} pair={pair} setPairAt={setPairAt} settings={settings} result={result} />
-              </Card>
-
-              <Card title="Element Pair Console" kicker="ELM gas simulation">
-                <div className="mt-4 grid gap-3">
-                  {pair.map((p, i) => (
-                    <ElementSelect key={i} value={p} label={i === 0 ? "Primary Element" : "Secondary Element"} elements={elements} onChange={(value) => setPairAt(i, value)} />
-                  ))}
-                </div>
-
-                <div className="mt-4 grid grid-cols-2 gap-3">
-                  <Metric label="Stability" value={`${result.stability}%`} />
-                  <Metric label="Confidence" value={`${result.confidence}%`} />
-                  <Metric label="Structure" value={result.structure.split(" ")[0]} />
-                  <Metric label="Gas Fee" value={credits > 0 ? "1 Credit" : `${result.cost} ELM`} />
-                </div>
-
-                {scanning && (
-                  <div className="mt-4 rounded-[2rem] border border-cyan-300/30 bg-cyan-500/10 p-4 text-cyan-100 shadow-[0_0_40px_rgba(34,211,238,.22)]">
-                    <div className="text-xs font-black uppercase tracking-[0.32em]">Scanning ARM field...</div>
-                    <div className="mt-3 h-2 overflow-hidden rounded-full bg-slate-800">
-                      <div className="h-full w-2/3 animate-pulse rounded-full bg-gradient-to-r from-cyan-300 to-fuchsia-300" />
+                  {structureUnlocked && (
+                    <div className="mt-4 rounded-[2rem] border border-emerald-300/30 bg-emerald-500/10 p-4 text-emerald-100">
+                      <div className="text-xs uppercase tracking-[0.3em]">Structure Unlocked</div>
+                      <div className="mt-1 text-2xl font-black">You discovered your first saved structure.</div>
                     </div>
+                  )}
+
+                  {result.zdar && (
+                    <div className="mt-4 rounded-[2rem] border border-fuchsia-300 bg-fuchsia-500/20 p-6 text-fuchsia-100 shadow-[0_0_90px_rgba(217,70,239,.7)]">
+                      <div className="text-xs uppercase tracking-[0.4em]">⚡ ZDAR DETECTED</div>
+                      <div className="mt-2 text-4xl font-black">Legendary Alignment</div>
+                      <p className="mt-2 text-sm text-fuchsia-100/80">{pair.join(" / ")} → {result.stability}% stability. Deterministic structure ID: {result.id}</p>
+                    </div>
+                  )}
+
+                  <LatticeOutput result={result} />
+
+                  <div className="mt-5 grid gap-2">
+                    <PrimaryButton disabled={!profile.walletConnected || scanning} onClick={run}>{scanning ? "Scanning..." : "🚀 Run Simulation"}</PrimaryButton>
+                    <GhostButton onClick={discoverZDAR} className="border-fuchsia-300/40 bg-fuchsia-500/15 text-fuchsia-100">⚡ Find Legendary Alignment</GhostButton>
+                    <GhostButton onClick={randomPair}>🎲 Random Discovery</GhostButton>
+                    <GhostButton onClick={savePair}>⭐ Save Pair</GhostButton>
+                    <GhostButton onClick={generateShareCard} className="border-cyan-300/30 bg-cyan-500/10 text-cyan-100">📤 Share Result</GhostButton>
                   </div>
-                )}
 
-                <OrbitalAlignment result={result} pair={pair} />
-                <div className="mt-4"><RarityBadge result={result} /></div>
-                <MiniTerminal pair={pair} result={result} />
+                  {shareText && <textarea readOnly value={shareText} onFocus={(event) => event.target.select()} className="mt-4 w-full rounded-2xl border border-cyan-300/30 bg-slate-950/80 p-3 text-sm text-cyan-100" />}
+                </Card>
+              </section>
 
-                {result.zdar && (
-                  <div className="mt-4 rounded-[2rem] border border-fuchsia-300 bg-fuchsia-500/20 p-6 text-fuchsia-100 shadow-[0_0_90px_rgba(217,70,239,.7)]">
-                    <div className="text-xs uppercase tracking-[0.4em]">⚡ ZDAR DETECTED</div>
-                    <div className="mt-2 text-3xl font-black sm:text-4xl">Legendary Alignment</div>
-                    <p className="mt-2 text-sm text-fuchsia-100/80">
-                      {pair.join(" / ")} → {result.stability}% stability. Perfect alignment detected.
-                    </p>
-                    <button
-                      onClick={generateShareCard}
-                      className="mt-4 w-full rounded-2xl bg-fuchsia-300 p-4 font-black text-slate-950 shadow-[0_0_45px_rgba(217,70,239,.55)] transition hover:scale-[1.02]"
-                    >
-                      📤 Share This Result
-                    </button>
+              <section className="mt-4 grid gap-4 md:grid-cols-2 xl:grid-cols-5 sm:mt-5 sm:gap-5">
+                <ProfilePanel profile={profile} elements={elements} onProfileUpdate={updateProfile} onReset={resetProfile} />
+                <MockWalletPanel
+                  profile={profile}
+                  onConnect={connectWallet}
+                  onDisconnect={() => updateProfile({ walletConnected: false, walletAddress: "" })}
+                  onTopUp={() => profile.walletConnected && updateProfile({ elm: profile.elm + 500 })}
+                  onStake={() => profile.walletConnected && profile.elm >= 100 && updateProfile({ elm: profile.elm - 100, stakedElm: profile.stakedElm + 100 })}
+                  onBuyCredits={() => profile.walletConnected && updateProfile({ credits: profile.credits + 5 })}
+                />
+                <Card title="ARM Engine" kicker="model settings">
+                  <div className="mt-4">
+                    <ElementSelect value={settings.origin} label="ARM origin" elements={elements} onChange={(value) => setSettings({ ...settings, origin: value })} />
                   </div>
-                )}
+                  <label className="mt-4 block text-sm">Calibration: {settings.calibration}°</label>
+                  <input type="range" min="-20" max="20" value={settings.calibration} onChange={(e) => setSettings({ ...settings, calibration: Number(e.target.value) })} className="w-full" />
+                </Card>
+                <DiscoveryEngine onSelect={(p) => setPair(p)} onRandom={randomPair} ranking={ranking} />
+                <ARMAssistant pair={pair} result={result} />
+              </section>
 
-                <LatticeOutput result={result} />
+              <section className="mt-5 grid gap-5 lg:grid-cols-2">
+                <CollectibleResultCard pair={pair} result={result} shareText={shareText} onShare={generateShareCard} onDownload={downloadCard} isSaved={profile.zdarDiscoveries.some((x) => x.id === result.id)} />
+                <ProfileShowcase profile={profile} />
+              </section>
 
-                <div className="mt-5 grid gap-2">
-                  <PrimaryButton disabled={!walletConnected || scanning} onClick={run}>{scanning ? "Scanning..." : "🚀 Run Simulation"}</PrimaryButton>
-                  <GhostButton onClick={discoverZDAR} className="border-fuchsia-300/40 bg-fuchsia-500/15 text-fuchsia-100">⚡ Find Legendary Alignment</GhostButton>
-                  <GhostButton onClick={randomPair}>🎲 Discover</GhostButton>
-                  <GhostButton onClick={favorite}>⭐ Save Pair</GhostButton>
-                  <GhostButton onClick={generateShareCard} className="border-cyan-300/30 bg-cyan-500/10 text-cyan-100">📤 Share Result</GhostButton>
-                </div>
+              <section className="mt-5 grid gap-5 lg:grid-cols-3">
+                <Card title="Simulation History" kicker="persistent local log">
+                  <div className="mt-4 grid max-h-96 gap-2 overflow-auto">
+                    {profile.history.length === 0 ? <p className="text-sm text-slate-400">Run your first simulation to generate saved history.</p> : profile.history.slice(0, 12).map((h) => (
+                      <div key={`${h.id}-${h.createdAt}`} className="rounded-xl border border-white/10 bg-white/5 p-3 text-sm">
+                        <b>{h.id}</b><br />{h.pair.join(" / ")} → {h.stability}% {h.zdar ? "⚡" : ""}
+                      </div>
+                    ))}
+                  </div>
+                </Card>
+                <Card title="Favourite Pairs" kicker="persistent watchlist">
+                  <div className="mt-4 flex flex-wrap gap-2">
+                    {profile.favourites.length === 0 ? <p className="text-sm text-slate-400">Save your favourite pairings to build a personal watchlist.</p> : profile.favourites.map((f) => (
+                      <button key={f} onClick={() => setPair(f.split(" / "))} className="rounded-xl bg-white/10 px-3 py-2 text-sm hover:bg-white/15">{f}</button>
+                    ))}
+                  </div>
+                </Card>
+                <DemoTruthPanel />
+              </section>
 
-                {shareText && (
-                  <textarea readOnly value={shareText} onFocus={(event) => event.target.select()} className="mt-4 w-full rounded-2xl border border-cyan-300/30 bg-slate-950/80 p-3 text-sm text-cyan-100" />
-                )}
-              </Card>
-            </section>
+              <section className="mt-5 grid gap-5 lg:grid-cols-2">
+                <ManifestoPanel />
+                <RoadmapPanel />
+              </section>
 
-            <section className="mt-4 grid gap-4 md:grid-cols-2 xl:grid-cols-5 sm:mt-5 sm:gap-5">
-              <MockWalletPanel
-                walletConnected={walletConnected}
-                walletAddress={walletAddress}
-                elm={elm}
-                credits={credits}
-                stakedElm={stakedElm}
-                onConnect={connectWallet}
-                onDisconnect={() => {
-                  setWalletConnected(false);
-                  setWalletAddress("");
-                }}
-                onTopUp={() => walletConnected && setElm((e) => e + 500)}
-                onStake={() => {
-                  if (walletConnected && elm >= 100) {
-                    setElm((e) => e - 100);
-                    setStakedElm((s) => s + 100);
-                  }
-                }}
-                onBuyCredits={() => walletConnected && setCredits((c) => c + 5)}
-              />
-
-              <Card title="⚙️ ARM Engine" kicker="model settings">
-                <label className="mt-4 flex items-center gap-2 text-sm">
-                  <input type="checkbox" checked={settings.originLock} onChange={(e) => setSettings({ ...settings, originLock: e.target.checked })} /> Origin lock
-                </label>
-                <div className="mt-4">
-                  <ElementSelect value={settings.origin} label="ARM origin" elements={elements} onChange={(value) => setSettings({ ...settings, origin: value })} />
-                </div>
-                <label className="mt-4 block text-sm">Calibration: {settings.calibration}°</label>
-                <input type="range" min="-20" max="20" value={settings.calibration} onChange={(e) => setSettings({ ...settings, calibration: Number(e.target.value) })} className="w-full" />
-              </Card>
-
-              <Card title="🏆 Top Alignments" kicker="best pairs">
-                <div className="mt-4 grid max-h-80 gap-2 overflow-auto pr-1">
-                  {ranking.slice(0, 35).map((r, i) => (
-                    <button key={r.sym} onClick={() => setPair([settings.origin, r.sym])} className="rounded-2xl border border-white/10 bg-white/5 p-3 text-left transition hover:bg-white/10">
-                      <div className="flex justify-between"><b>#{i + 1} {r.sym} — {r.name}</b><span>{r.sim.stability}%</span></div>
-                      <div className="mt-1 h-2 overflow-hidden rounded-full bg-slate-800"><div className="h-2 rounded-full bg-gradient-to-r from-cyan-300 to-fuchsia-300" style={{ width: `${r.influence}%` }} /></div>
-                      <div className="mt-1 text-xs text-slate-400">{r.cluster} • {r.family}</div>
-                    </button>
-                  ))}
-                </div>
-              </Card>
-
-              <Card title="🧾 Activity" kicker="simulation ledger">
-                <div className="mt-4 grid max-h-80 gap-2 overflow-auto">
-                  {history.length === 0 ? <p className="text-sm text-slate-400">Run your first simulation to generate an activity record.</p> : history.map((h) => (
-                    <div key={h.id} className="rounded-xl border border-white/10 bg-white/5 p-2 text-sm"><b>{h.id}</b><br />{h.pair.join(" / ")} → {h.stability}% {h.zdar ? "⚡" : ""}</div>
-                  ))}
-                </div>
-              </Card>
-
-              <LiveFeedPanel feed={[...feed, ...liveStream]} /></section>
-
-            <NetworkStatsPanel history={history} feed={feed} result={result} />
-
-            <section className="mt-5 grid gap-5 lg:grid-cols-2"><MarketPanel /><TrustPanel /></section>
-
-            <section className="mt-5 grid gap-5 lg:grid-cols-2">
-              <CollectibleResultCard pair={pair} result={result} shareText={shareText} onShare={generateShareCard} />
-              <ARMAIPanel pair={pair} result={result} />
-            </section>
-
-            <section className="mt-5 grid gap-5 lg:grid-cols-3">
-              <TrendingPairsPanel onSelect={(a, b) => setPair([a, b])} />
-              <ScreenshotFrame pair={pair} result={result} />
-              <ComingSoonPanel />
-            </section>
-
-            <section className="mt-5 grid gap-5 lg:grid-cols-3">
-              <ZDARProbabilityPanel result={result} />
-              <SharePromptPanel result={result} onShare={generateShareCard} />
-              <QuickActionsPanel onRun={run} onFindZDAR={discoverZDAR} onShare={generateShareCard} walletConnected={walletConnected} />
-            </section>
-
-            <section className="mt-5 grid gap-5 lg:grid-cols-3">
-              <PlatformModesPanel />
-              <LaunchMetricsPanel />
-              <SafetyNotesPanel />
-            </section>
-
-            <section className="mt-5 grid gap-5 lg:grid-cols-2">
-              <UserQuotePanel />
-              <CommunityPanel />
-            </section>
-
-            <section className="mt-5 grid gap-5 lg:grid-cols-3">
-              <FeedbackPanel />
-              <CommunityPanel />
-              <FAQPanel />
-            </section>
-
-            <LiveLaunchFooter onFindZDAR={discoverZDAR} onRun={run} walletConnected={walletConnected} />
-
-            <section className="mt-5">
-              <Card title="⭐ Saved Pairs" kicker="watchlist">
-                <div className="mt-4 flex flex-wrap gap-2">
-                  {favorites.length === 0 ? <p className="text-sm text-slate-400">Save your favourite pairings to build a personal watchlist.</p> : favorites.map((f) => (
-                    <span key={f} className="rounded-xl bg-white/10 px-3 py-2 text-sm">{f}</span>
-                  ))}
-                </div>
-              </Card>
-            </section>
-          </>
-        )}
+              <footer className="mt-5 rounded-[2.5rem] border border-white/10 bg-slate-950/70 p-6 text-center shadow-[0_0_80px_rgba(0,0,0,.25)]">
+                <div className="text-[10px] font-black uppercase tracking-[0.4em] text-cyan-300">ElementOS Public Demo</div>
+                <h2 className="mt-3 text-3xl font-black text-white sm:text-5xl">Persist discoveries. Build identity. Hunt ZDAR.</h2>
+                <p className="mx-auto mt-3 max-w-2xl text-sm leading-6 text-slate-300">Frontend-only MVP. No real transactions, no real wallet connection, no investment offer, and no scientific validation.</p>
+              </footer>
+            </>
+          )}
+        </div>
       </div>
-    </div>
     </>
   );
 }
