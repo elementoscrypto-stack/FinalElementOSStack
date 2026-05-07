@@ -382,37 +382,106 @@ function ProfilePanel({ profile, elements, onProfileUpdate, onReset }) {
 }
 
 function MockWalletPanel({ profile, onConnect, onDisconnect, onTopUp, onStake, onBuyCredits }) {
+  const statusTone = profile.walletConnected
+    ? "border-emerald-300/35 bg-emerald-500/10 text-emerald-100"
+    : "border-yellow-300/35 bg-yellow-500/10 text-yellow-100";
+
+  const transactions = [
+    ["Demo gas reserve", profile.elm.toLocaleString(), "ELM"],
+    ["Available credits", profile.credits, "runs"],
+    ["Staked balance", profile.stakedElm.toLocaleString(), "ELM"],
+  ];
+
   return (
-    <Card title="Demo Wallet" kicker="simulated wallet">
-      <div className="mt-4 grid gap-4">
-        <div className={`rounded-3xl border p-5 ${profile.walletConnected ? "border-emerald-300/30 bg-emerald-500/10" : "border-yellow-300/30 bg-yellow-500/10"}`}>
-          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+    <Card title="Demo Wallet Command Centre" kicker="simulated finance layer" className="md:col-span-2 xl:col-span-3">
+      <div className="mt-5 grid gap-5">
+        <div className={`relative overflow-hidden rounded-[2rem] border p-5 ${statusTone} shadow-[0_0_60px_rgba(34,211,238,.10)]`}>
+          <div className="absolute -right-16 -top-16 h-44 w-44 rounded-full bg-cyan-300/10 blur-3xl" />
+          <div className="absolute -bottom-16 -left-16 h-44 w-44 rounded-full bg-fuchsia-300/10 blur-3xl" />
+
+          <div className="relative flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
+            <div className="min-w-0">
+              <div className="inline-flex rounded-full border border-white/10 bg-slate-950/50 px-3 py-1 text-[10px] font-black uppercase tracking-[0.26em] text-slate-200">
+                {profile.walletConnected ? "Demo Wallet Connected" : "Demo Wallet Offline"}
+              </div>
+              <div className="mt-3 text-4xl font-black tracking-tight text-white sm:text-5xl">
+                {profile.walletConnected ? "Ready to Simulate" : "Connect to Continue"}
+              </div>
+              <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-300">
+                This wallet is a simulated testnet-style interface. It powers demo ELM gas, credits, staking, and simulation runs without real blockchain transactions.
+              </p>
+            </div>
+
+            <div className="shrink-0 rounded-[1.5rem] border border-white/10 bg-slate-950/60 p-4 text-left lg:min-w-[280px]">
+              <div className="text-[10px] font-black uppercase tracking-[0.25em] text-cyan-300">Wallet Address</div>
+              <div className="mt-2 break-all rounded-2xl border border-cyan-300/15 bg-cyan-300/5 p-3 font-mono text-xs leading-5 text-cyan-100">
+                {profile.walletConnected ? profile.walletAddress : "No demo wallet connected"}
+              </div>
+              <div className="mt-3 flex items-center gap-2 text-xs text-slate-400">
+                <span className={`h-2 w-2 rounded-full ${profile.walletConnected ? "bg-emerald-300 shadow-[0_0_12px_rgba(110,231,183,.9)]" : "bg-yellow-300 shadow-[0_0_12px_rgba(250,204,21,.65)]"}`} />
+                {profile.walletConnected ? "Demo session active" : "Awaiting connection"}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="grid gap-4 lg:grid-cols-3">
+          {transactions.map(([label, value, unit]) => (
+            <div key={label} className="rounded-[1.6rem] border border-white/10 bg-slate-950/55 p-5 shadow-[inset_0_1px_0_rgba(255,255,255,.06)]">
+              <div className="text-[10px] font-black uppercase tracking-[0.24em] text-slate-400">{label}</div>
+              <div className="mt-2 flex items-end justify-between gap-3">
+                <div className="text-3xl font-black text-white tabular-nums">{value}</div>
+                <div className="rounded-full border border-cyan-300/20 bg-cyan-300/10 px-3 py-1 text-[10px] font-black uppercase tracking-[0.18em] text-cyan-100">{unit}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div className="rounded-[2rem] border border-white/10 bg-white/[0.045] p-4">
+          <div className="mb-3 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
             <div>
-              <div className="text-xs uppercase tracking-[0.25em] text-slate-300">Demo Wallet Status</div>
-              <div className="mt-1 text-3xl font-black">{profile.walletConnected ? "Connected" : "Disconnected"}</div>
+              <div className="text-[10px] font-black uppercase tracking-[0.28em] text-fuchsia-300">Wallet Actions</div>
+              <div className="mt-1 text-sm text-slate-400">Clear, spacious controls designed for desktop and mobile.</div>
             </div>
-            <div className={`rounded-full px-4 py-2 text-xs font-black uppercase tracking-[0.22em] ${profile.walletConnected ? "bg-emerald-300/20 text-emerald-100" : "bg-yellow-300/20 text-yellow-100"}`}>
-              {profile.walletConnected ? "Demo Mode Live" : "Demo Wallet Required"}
+            <div className="rounded-full border border-yellow-300/25 bg-yellow-400/10 px-3 py-1 text-[10px] font-black uppercase tracking-[0.2em] text-yellow-100">
+              Demo Only
             </div>
           </div>
-          <div className="mt-4 rounded-2xl border border-white/10 bg-slate-950/60 p-3 font-mono text-xs text-cyan-100 break-all">
-            {profile.walletConnected ? profile.walletAddress : "Connect demo wallet to run simulated ELM gas transactions."}
+
+          <div className="grid gap-3">
+            {!profile.walletConnected ? (
+              <PrimaryButton onClick={onConnect} className="w-full text-base">Connect Demo Wallet</PrimaryButton>
+            ) : (
+              <GhostButton onClick={onDisconnect} className="w-full border-emerald-300/25 bg-emerald-500/10 text-emerald-100">Disconnect Demo Wallet</GhostButton>
+            )}
+
+            <div className="grid gap-3 sm:grid-cols-3">
+              <GhostButton disabled={!profile.walletConnected} onClick={onTopUp} className="min-h-[64px]">
+                <div className="text-sm font-black">Add Demo Funds</div>
+                <div className="mt-1 text-[10px] font-normal uppercase tracking-[0.18em] text-slate-400">+500 ELM</div>
+              </GhostButton>
+              <GhostButton disabled={!profile.walletConnected} onClick={onBuyCredits} className="min-h-[64px]">
+                <div className="text-sm font-black">Buy Credits</div>
+                <div className="mt-1 text-[10px] font-normal uppercase tracking-[0.18em] text-slate-400">+5 Runs</div>
+              </GhostButton>
+              <GhostButton disabled={!profile.walletConnected} onClick={onStake} className="min-h-[64px]">
+                <div className="text-sm font-black">Stake Demo ELM</div>
+                <div className="mt-1 text-[10px] font-normal uppercase tracking-[0.18em] text-slate-400">100 ELM</div>
+              </GhostButton>
+            </div>
           </div>
         </div>
-        <div className="grid gap-3 sm:grid-cols-3">
-          <Metric label="Demo ELM" value={profile.elm.toLocaleString()} sub="simulated gas" />
-          <Metric label="Credits" value={profile.credits} sub="free runs" />
-          <Metric label="Staked" value={profile.stakedElm.toLocaleString()} sub="demo staking" />
-        </div>
-        {!profile.walletConnected ? (
-          <PrimaryButton onClick={onConnect} className="w-full">Connect Demo Wallet</PrimaryButton>
-        ) : (
-          <GhostButton onClick={onDisconnect} className="w-full">Disconnect Demo Wallet</GhostButton>
-        )}
-        <div className="grid gap-3 sm:grid-cols-3">
-          <GhostButton disabled={!profile.walletConnected} onClick={onTopUp}>Add Demo Funds</GhostButton>
-          <GhostButton disabled={!profile.walletConnected} onClick={onBuyCredits}>+5 Credits</GhostButton>
-          <GhostButton disabled={!profile.walletConnected} onClick={onStake}>Stake 100</GhostButton>
+
+        <div className="grid gap-3 lg:grid-cols-3">
+          <div className="rounded-2xl border border-cyan-300/15 bg-cyan-500/10 p-4 text-sm text-cyan-50/85">
+            <b className="text-cyan-100">Gas Preview:</b> simulations consume credits first, then demo ELM.
+          </div>
+          <div className="rounded-2xl border border-fuchsia-300/15 bg-fuchsia-500/10 p-4 text-sm text-fuchsia-50/85">
+            <b className="text-fuchsia-100">ZDAR Reward:</b> legendary hits add bonus demo ELM.
+          </div>
+          <div className="rounded-2xl border border-yellow-300/15 bg-yellow-400/10 p-4 text-sm text-yellow-50/85">
+            <b className="text-yellow-100">Transparency:</b> no real wallet, token, or payment is connected.
+          </div>
         </div>
       </div>
     </Card>
@@ -930,7 +999,7 @@ export default function App() {
                 </Card>
               </section>
 
-              <section className="mt-4 grid gap-4 md:grid-cols-2 xl:grid-cols-5 sm:mt-5 sm:gap-5">
+              <section className="mt-4 grid gap-4 md:grid-cols-2 xl:grid-cols-6 sm:mt-5 sm:gap-5">
                 <ProfilePanel profile={profile} elements={elements} onProfileUpdate={updateProfile} onReset={resetProfile} />
                 <MockWalletPanel
                   profile={profile}
