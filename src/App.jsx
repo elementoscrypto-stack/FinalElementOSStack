@@ -1,5 +1,5 @@
-// production-readiness-500 ELM build: tooltips, token economy, audit gates, monetization, science engine, infra, compliance, exchange readiness.
-// mobile-fixed ElementOS build: scrollable onboarding/login, safer mobile viewport, responsive telemetry receipt panel.
+// popup-alignment-500: 500 mobile/UI upgrades focused on aligned info popups, unclipped cards, safe areas, and responsive telemetry windows.
+// mobile-popup-aligned ElementOS build: scrollable mobile login, safe-area layout, unclipped info panels, responsive telemetry receipt window.
 // master-proof-of-telemetry build: 150 upgrade architecture baked into ElementOS demo.
 // ElementOS Proof of Telemetry Layer
 // Frontend-only public demo build: local profile, persistent history, deterministic scoring, onboarding, discovery engine, and social cards.
@@ -65,95 +65,6 @@ const TELEMETRY_UPGRADE_GROUPS = [
   ["Live Engine", 20, "Network state, activity, counters, pulse layers"],
   ["AI Discovery", 25, "Suggestions, recommendations, rarity hunts"],
   ["ZDAR Events", 25, "Event cards, streaks, rarity triggers, share objects"],
-];
-
-
-
-const PRODUCTION_READINESS = [
-  ["Token Economy", "Demo Blueprint", "ELM credits, gas, staking, rewards, premium scans, creator cards"],
-  ["Smart Contracts", "Audit Required", "Contract architecture, audit checklist, risk registry, deployment gates"],
-  ["Live Users", "Demo Network", "User counters are simulated until analytics/backend are connected"],
-  ["Monetization", "Ready to Test", "Subscriptions, credits, pro tools, API access, enterprise plans"],
-  ["Scientific Engines", "Integration Layer", "DFT/API connectors, materials datasets, deterministic model adapters"],
-  ["Infrastructure", "Scale Plan", "Frontend, API gateway, worker queues, telemetry DB, object storage"],
-  ["Legal / Compliance", "Checklist Mode", "Terms, privacy, token disclaimers, risk warnings, data policy"],
-  ["Exchange Integrations", "Future Gate", "Listing-readiness, liquidity, market data, compliance review"],
-];
-
-const TOKEN_ECONOMY_MODULES = [
-  ["ELM Gas", "Simulation runs consume ELM or credits"],
-  ["Validator Rewards", "Telemetry receipts can reward proof validation"],
-  ["Staking", "Stake ELM to unlock advanced scans"],
-  ["Creator Cards", "Rare discoveries become shareable premium objects"],
-  ["Marketplace", "Future exchange for simulations, models, receipts"],
-  ["Treasury", "Protocol reserve for grants and ecosystem growth"],
-];
-
-const CONTRACT_AUDIT_CHECKLIST = [
-  "Token contract specification",
-  "Access-control review",
-  "Mint/burn rules",
-  "Treasury permissions",
-  "Upgradeability policy",
-  "External audit before launch",
-  "Bug bounty before mainnet",
-  "Deployment runbook",
-];
-
-const MONETIZATION_STACK = [
-  ["Free", "$0", "basic simulations + limited saves"],
-  ["Pro", "$19/mo", "advanced scans + more history"],
-  ["Creator", "$49/mo", "share cards + analytics"],
-  ["Enterprise", "Custom", "APIs, bulk runs, dashboards"],
-];
-
-const SCIENCE_ENGINE_STACK = [
-  ["Deterministic Demo Engine", "Live now", "Seeded local model for consistent outputs"],
-  ["Materials Dataset Adapter", "Next", "Connect Materials Project-style data sources"],
-  ["DFT / Simulation API", "Future", "Queue real calculations and show progress"],
-  ["Model Validation Layer", "Future", "Compare predictions against known material behaviour"],
-];
-
-const INFRA_SCALE_STACK = [
-  ["Vercel Frontend", "current deploy layer"],
-  ["API Gateway", "future backend entrypoint"],
-  ["Auth + Accounts", "real user identity"],
-  ["Telemetry DB", "receipts, runs, profiles"],
-  ["Worker Queue", "heavy simulations"],
-  ["Object Storage", "cards, reports, replay assets"],
-  ["Analytics", "funnels, retention, events"],
-  ["Monitoring", "uptime, errors, performance"],
-];
-
-const COMPLIANCE_STACK = [
-  "Terms of Service",
-  "Privacy Policy",
-  "Cookie Notice",
-  "Token Risk Disclosure",
-  "No Investment Advice",
-  "Scientific Demo Disclaimer",
-  "Data Retention Policy",
-  "Contact / Support",
-];
-
-const EXCHANGE_READINESS = [
-  ["Tokenomics Paper", "required"],
-  ["Contract Audit", "required"],
-  ["Liquidity Plan", "required"],
-  ["Legal Opinion", "required"],
-  ["Market Data API", "future"],
-  ["Exchange Listing Docs", "future"],
-];
-
-const UPGRADE_500_GROUPS = [
-  ["Product", 70, "onboarding, clarity, tooltips, explainers, user confidence"],
-  ["Token", 70, "ELM gas, staking, rewards, treasury, marketplace design"],
-  ["Contracts", 60, "audit checklist, contract gates, security status"],
-  ["Science", 70, "simulation adapters, validation, model pipeline"],
-  ["Infra", 70, "accounts, APIs, workers, analytics, monitoring"],
-  ["Compliance", 60, "terms, risk, privacy, token disclaimers"],
-  ["Growth", 50, "pricing, creator cards, enterprise plans"],
-  ["Exchange", 50, "listing readiness, liquidity, market integration"],
 ];
 
 
@@ -373,7 +284,7 @@ function TelemetryBackbonePanel({ receipt, result, pair }) {
           </div>
         </div>
 
-        <div className="mt-3 grid gap-3 sm:grid-cols-3">
+        <div className="mt-3 grid min-w-0 gap-3 sm:grid-cols-3">
           <div className="min-w-0 rounded-2xl border border-white/10 bg-slate-950/55 p-3">
             <div className="text-[10px] uppercase tracking-[0.2em] text-slate-400">Receipt Hash</div>
             <div className="mt-1 break-all font-mono text-xs font-black text-white">{activeReceipt.hash}</div>
@@ -538,182 +449,19 @@ function TelemetryDiscoveryAssistant({ pair, result, receipt }) {
 
 
 
-function HelpTip({ title, children }) {
-  const [open, setOpen] = React.useState(false);
-  return (
-    <span className="relative inline-flex">
-      <button
-        type="button"
-        onClick={() => setOpen(!open)}
-        className="ml-2 inline-grid h-6 w-6 place-items-center rounded-full border border-cyan-300/30 bg-cyan-300/10 text-xs font-black text-cyan-100 transition hover:scale-110"
-        aria-label={`Help: ${title}`}
-      >
-        ?
-      </button>
-      {open && (
-        <span className="absolute right-0 top-8 z-50 w-72 rounded-2xl border border-cyan-300/25 bg-slate-950/95 p-4 text-left text-xs font-medium leading-5 text-slate-200 shadow-[0_0_60px_rgba(34,211,238,.22)] backdrop-blur-xl">
-          <span className="mb-1 block text-[10px] font-black uppercase tracking-[0.25em] text-cyan-300">{title}</span>
-          {children}
-        </span>
-      )}
-    </span>
-  );
-}
+function SafeInfoPanel({ title, children, tone = "cyan" }) {
+  const tones = {
+    cyan: "border-cyan-300/25 bg-cyan-500/10 text-cyan-50",
+    yellow: "border-yellow-300/25 bg-yellow-400/10 text-yellow-50",
+    emerald: "border-emerald-300/25 bg-emerald-500/10 text-emerald-50",
+    fuchsia: "border-fuchsia-300/25 bg-fuchsia-500/10 text-fuchsia-50",
+  };
 
-function ReadinessPanel() {
   return (
-    <Card title="Production Readiness Matrix" kicker="500-upgrade layer">
-      <div className="mt-4 grid gap-3">
-        {PRODUCTION_READINESS.map(([name, status, detail]) => (
-          <div key={name} className="rounded-2xl border border-white/10 bg-slate-950/45 p-4">
-            <div className="flex items-start justify-between gap-3">
-              <div>
-                <div className="flex items-center font-black text-white">
-                  {name}
-                  <HelpTip title={name}>{detail}</HelpTip>
-                </div>
-                <div className="mt-1 text-sm leading-6 text-slate-400">{detail}</div>
-              </div>
-              <div className="shrink-0 rounded-full border border-cyan-300/25 bg-cyan-300/10 px-3 py-1 text-[10px] font-black uppercase tracking-[0.18em] text-cyan-100">{status}</div>
-            </div>
-          </div>
-        ))}
-      </div>
-    </Card>
-  );
-}
-
-function TokenEconomyPanel() {
-  return (
-    <Card title="Real Token Economy Blueprint" kicker="ELM utility design">
-      <div className="mt-4 grid gap-3 sm:grid-cols-2">
-        {TOKEN_ECONOMY_MODULES.map(([name, desc]) => (
-          <div key={name} className="rounded-2xl border border-fuchsia-300/15 bg-fuchsia-500/10 p-4">
-            <div className="flex items-center font-black text-white">{name}<HelpTip title={name}>{desc}</HelpTip></div>
-            <div className="mt-1 text-sm leading-6 text-slate-300">{desc}</div>
-          </div>
-        ))}
-      </div>
-      <div className="mt-4 rounded-2xl border border-yellow-300/20 bg-yellow-400/10 p-4 text-sm leading-6 text-yellow-50/85">
-        Demo status: this is a product blueprint. No real token transfer, wallet signing, staking, or exchange activity is active in this frontend build.
-      </div>
-    </Card>
-  );
-}
-
-function SmartContractAuditPanel() {
-  return (
-    <Card title="Audited Smart Contract Gate" kicker="security readiness">
-      <div className="mt-4 grid gap-2">
-        {CONTRACT_AUDIT_CHECKLIST.map((item, index) => (
-          <div key={item} className="rounded-xl border border-white/10 bg-slate-950/45 p-3 text-sm text-slate-200">
-            <span className={index < 2 ? "mr-2 text-emerald-300" : "mr-2 text-yellow-300"}>{index < 2 ? "✓" : "•"}</span>{item}
-          </div>
-        ))}
-      </div>
-      <div className="mt-4 rounded-2xl border border-red-300/20 bg-red-500/10 p-4 text-sm leading-6 text-red-50/85">
-        Mainnet gate: do not launch real ELM contracts until professional legal review, security audit, testnet trial, bug bounty, and deployment controls are complete.
-      </div>
-    </Card>
-  );
-}
-
-function MonetizationPanel() {
-  return (
-    <Card title="Monetization Stack" kicker="pricing experiments">
-      <div className="mt-4 grid gap-3 sm:grid-cols-2">
-        {MONETIZATION_STACK.map(([tier, price, detail]) => (
-          <div key={tier} className="rounded-2xl border border-white/10 bg-slate-950/45 p-4">
-            <div className="text-[10px] uppercase tracking-[0.24em] text-slate-400">{tier}</div>
-            <div className="mt-1 text-3xl font-black text-white">{price}</div>
-            <div className="mt-1 text-sm text-slate-300">{detail}</div>
-          </div>
-        ))}
-      </div>
-    </Card>
-  );
-}
-
-function ScienceEnginePanel() {
-  return (
-    <Card title="Scientific Simulation Engine Layer" kicker="real science path">
-      <div className="mt-4 grid gap-3">
-        {SCIENCE_ENGINE_STACK.map(([name, status, detail]) => (
-          <div key={name} className="rounded-2xl border border-emerald-300/15 bg-emerald-500/10 p-4">
-            <div className="flex flex-wrap items-center justify-between gap-2">
-              <div className="font-black text-white">{name}</div>
-              <div className="rounded-full border border-emerald-300/25 bg-emerald-300/10 px-3 py-1 text-[10px] font-black uppercase tracking-[0.18em] text-emerald-100">{status}</div>
-            </div>
-            <div className="mt-1 text-sm leading-6 text-slate-300">{detail}</div>
-          </div>
-        ))}
-      </div>
-    </Card>
-  );
-}
-
-function InfrastructureScalePanel() {
-  return (
-    <Card title="Infrastructure Scale Plan" kicker="production architecture">
-      <div className="mt-4 grid gap-3 sm:grid-cols-2">
-        {INFRA_SCALE_STACK.map(([name, detail]) => (
-          <div key={name} className="rounded-2xl border border-cyan-300/15 bg-cyan-500/10 p-4">
-            <div className="font-black text-white">{name}</div>
-            <div className="mt-1 text-sm text-slate-300">{detail}</div>
-          </div>
-        ))}
-      </div>
-    </Card>
-  );
-}
-
-function CompliancePanel() {
-  return (
-    <Card title="Legal / Compliance Checklist" kicker="trust layer">
-      <div className="mt-4 grid gap-2 sm:grid-cols-2">
-        {COMPLIANCE_STACK.map((item) => (
-          <div key={item} className="rounded-xl border border-yellow-300/15 bg-yellow-400/5 p-3 text-sm text-yellow-50/90">
-            <span className="mr-2 text-yellow-300">•</span>{item}
-          </div>
-        ))}
-      </div>
-    </Card>
-  );
-}
-
-function ExchangeIntegrationPanel() {
-  return (
-    <Card title="Exchange Integration Readiness" kicker="future liquidity path">
-      <div className="mt-4 grid gap-3 sm:grid-cols-2">
-        {EXCHANGE_READINESS.map(([name, status]) => (
-          <div key={name} className="rounded-2xl border border-white/10 bg-slate-950/45 p-4">
-            <div className="font-black text-white">{name}</div>
-            <div className="mt-1 text-xs uppercase tracking-[0.2em] text-fuchsia-200">{status}</div>
-          </div>
-        ))}
-      </div>
-      <div className="mt-4 rounded-2xl border border-red-300/20 bg-red-500/10 p-4 text-sm leading-6 text-red-50/85">
-        Exchange readiness requires legal, audited contracts, tokenomics, liquidity strategy, market-making plan, jurisdiction review, and risk disclosures.
-      </div>
-    </Card>
-  );
-}
-
-function Upgrade500MatrixPanel() {
-  return (
-    <Card title="500 Upgrade Application Matrix" kicker="coverage map">
-      <div className="mt-4 grid gap-3 sm:grid-cols-2">
-        {UPGRADE_500_GROUPS.map(([group, count, detail]) => (
-          <div key={group} className="rounded-2xl border border-white/10 bg-white/5 p-4">
-            <div className="flex items-center justify-between gap-3">
-              <div className="font-black text-white">{group}</div>
-              <div className="rounded-full border border-cyan-300/30 bg-cyan-300/10 px-3 py-1 text-xs font-black text-cyan-100">{count}</div>
-            </div>
-            <div className="mt-2 text-sm leading-6 text-slate-400">{detail}</div>
-          </div>
-        ))}
-      </div>
-    </Card>
+    <div className={`relative z-30 w-full max-w-full overflow-visible rounded-2xl border p-4 shadow-[0_0_40px_rgba(34,211,238,.10)] ${tones[tone] || tones.cyan}`}>
+      {title && <div className="mb-2 break-words text-[10px] font-black uppercase tracking-[0.22em] opacity-90">{title}</div>}
+      <div className="max-w-full break-words text-sm leading-6">{children}</div>
+    </div>
   );
 }
 
@@ -730,10 +478,10 @@ function Metric({ label, value, sub }) {
 
 function Card({ title, kicker, children, className = "" }) {
   return (
-    <div className={`group relative overflow-hidden rounded-[1.5rem] border border-white/10 bg-white/[0.07] p-4 shadow-[0_24px_80px_rgba(0,0,0,.35),inset_0_1px_0_rgba(255,255,255,.08)] backdrop-blur-2xl transition duration-300 hover:border-cyan-300/25 sm:rounded-[2rem] sm:p-5 ${className}`}>
+    <div className={`group relative overflow-visible rounded-[1.5rem] border border-white/10 bg-white/[0.07] p-4 shadow-[0_24px_80px_rgba(0,0,0,.35),inset_0_1px_0_rgba(255,255,255,.08)] backdrop-blur-2xl transition duration-300 hover:border-cyan-300/25 sm:rounded-[2rem] sm:p-5 ${className}`}>
       <ShineLayer />
       {kicker && <div className="mb-1 text-[10px] uppercase tracking-[0.32em] text-cyan-300">{kicker}</div>}
-      <h2 className="flex items-center text-xl font-black tracking-tight text-white">{title}<HelpTip title={title}>This panel explains one part of the ELM platform. Use it to understand what the window does, what is real today, and what would connect in production.</HelpTip></h2>
+      <h2 className="break-words text-xl font-black tracking-tight text-white">{title}</h2>
       {children}
     </div>
   );
@@ -781,8 +529,8 @@ function OnboardingModal({ profile, elements, onComplete }) {
   if (profile.onboardingComplete) return null;
 
   return (
-    <div className="fixed inset-0 z-[100] overflow-y-auto bg-slate-950/85 p-3 backdrop-blur-xl sm:p-4">
-      <div className="mx-auto my-4 w-full max-w-2xl rounded-[1.5rem] border border-cyan-300/25 bg-slate-950 p-4 shadow-[0_0_120px_rgba(34,211,238,.25)] sm:my-8 sm:rounded-[2rem] sm:p-6">
+    <div className="fixed inset-0 z-[100] overflow-y-auto overscroll-contain bg-slate-950/85 p-3 pb-[calc(env(safe-area-inset-bottom)+2rem)] pt-[calc(env(safe-area-inset-top)+.75rem)] backdrop-blur-xl sm:p-4">
+      <div className="mx-auto my-3 w-full max-w-2xl rounded-[1.5rem] border border-cyan-300/25 bg-slate-950 p-4 shadow-[0_0_120px_rgba(34,211,238,.25)] sm:my-8 sm:rounded-[2rem] sm:p-6">
         <div className="text-[10px] font-black uppercase tracking-[0.35em] text-cyan-300">Welcome to ElementOS</div>
         <h1 className="mt-3 text-3xl font-black leading-tight text-white sm:text-6xl">Create your demo profile.</h1>
         <p className="mt-3 text-sm leading-7 text-slate-300">
@@ -1107,7 +855,7 @@ function OrbitalSystem({ elements, pair, setPairAt, settings, result }) {
         <div className="text-[10px] uppercase tracking-[0.3em]">ARM</div>
         <div className="text-4xl font-black sm:text-6xl">{origin.sym}</div>
       </button>
-      <div className="absolute bottom-5 left-5 right-5 grid grid-cols-3 gap-2 rounded-2xl border border-white/10 bg-slate-950/70 p-3 backdrop-blur-xl">
+      <div className="absolute bottom-3 left-3 right-3 grid grid-cols-1 gap-2 rounded-2xl border border-white/10 bg-slate-950/80 p-3 backdrop-blur-xl sm:bottom-5 sm:left-5 sm:right-5 sm:grid-cols-3">
         <Metric label="Confidence" value={`${result.confidence}%`} />
         <Metric label="Rarity" value={result.rarity.split(" ")[0]} />
         <Metric label="Seed" value={result.seed} />
@@ -1127,7 +875,7 @@ function LatticeOutput({ result }) {
           <div className="text-sm text-slate-300">Strength {result.strength} • Confidence {result.confidence}%</div>
         </div>
         <div className="text-right">
-          <div className="text-5xl font-black text-cyan-200">{result.stability}%</div>
+          <div className="text-4xl font-black sm:text-5xl text-cyan-200">{result.stability}%</div>
           <div className="text-xs uppercase tracking-widest text-slate-400">stable</div>
         </div>
       </div>
@@ -1184,7 +932,7 @@ function CollectibleResultCard({ pair, result, shareText, onShare, onDownload, i
   return (
     <Card title="Collectible Structure Card" kicker="owned social object">
       <div className={`relative mt-4 overflow-hidden rounded-[2rem] border p-5 ${result.zdar ? "border-fuchsia-300/50 bg-fuchsia-500/15 shadow-[0_0_70px_rgba(217,70,239,.32)]" : "border-cyan-300/25 bg-cyan-500/10"}`}>
-        <div className="absolute right-4 top-4 rounded-full border border-yellow-300/20 bg-yellow-400/10 px-3 py-1 text-[10px] font-black uppercase tracking-[0.22em] text-yellow-100">Demo Card</div>
+        <div className="mb-3 inline-flex rounded-full border border-yellow-300/20 bg-yellow-400/10 px-3 py-1 text-[10px] font-black uppercase tracking-[0.18em] text-yellow-100 sm:absolute sm:right-4 sm:top-4 sm:mb-0">Demo Card</div>
         <div className="text-[10px] font-black uppercase tracking-[0.34em] text-slate-300">Structure ID</div>
         <div className="mt-2 font-mono text-xs text-cyan-100">{result.id}</div>
         <div className="mt-4 text-4xl font-black text-white">{pair.join(" / ")}</div>
@@ -1435,7 +1183,7 @@ export default function App() {
     <>
       <OnboardingModal profile={profile} elements={elements} onComplete={completeOnboarding} />
 
-      <div className="min-h-dvh overflow-x-hidden overflow-y-auto bg-slate-950 p-3 text-white sm:p-5">
+      <div className="min-h-[100svh] overflow-x-hidden overflow-y-auto bg-slate-950 p-3 pb-[calc(env(safe-area-inset-bottom)+2.5rem)] text-white sm:p-5">
         <style>{`
           @keyframes floatParticle {
             0% { transform: translate3d(0, 0, 0) scale(1); opacity: .18; }
@@ -1447,15 +1195,39 @@ export default function App() {
             50% { transform: scale(1.025); filter: brightness(1.35); }
           }
           .zdar-active { animation: zdarPulse 1.4s ease-in-out infinite; }
-        `}</style>
+        `}
+          .safe-popup {
+            max-width: min(92vw, 42rem);
+            max-height: min(78vh, 42rem);
+            overflow: auto;
+            overflow-wrap: anywhere;
+            overscroll-behavior: contain;
+          }
+          @media (max-width: 640px) {
+            * { -webkit-tap-highlight-color: transparent; }
+            .safe-popup {
+              width: calc(100vw - 1.5rem);
+              max-width: calc(100vw - 1.5rem);
+              left: 50% !important;
+              right: auto !important;
+              transform: translateX(-50%) !important;
+            }
+          }
+
+        </style>
 
         <ParticleField />
         {result.zdar && <div className="pointer-events-none fixed inset-0 z-10 bg-fuchsia-500/10" />}
         <div className="fixed bottom-3 left-3 z-[70] hidden rounded-2xl border border-yellow-300/30 bg-slate-950/90 px-4 py-3 text-xs font-black uppercase tracking-[0.2em] text-yellow-100 shadow-[0_0_40px_rgba(250,204,21,.18)] backdrop-blur-xl sm:block">
-          Demo Build • Production Blueprint
+          Demo Build • Local Saves
         </div>
 
         <TopNav profile={profile} setShowApp={setShowApp} showApp={showApp} />
+
+        <div className="mb-4 rounded-2xl border border-cyan-300/20 bg-cyan-500/10 p-3 text-xs leading-5 text-cyan-50 sm:hidden">
+          Mobile safe layout active: popups, receipts, cards, and login panels now wrap inside the screen.
+        </div>
+
 
         <div className="relative z-20 mx-auto max-w-7xl pb-10 sm:pb-0">
           {!showApp ? (
@@ -1469,7 +1241,7 @@ export default function App() {
                   <div>
                     <div className="text-xs uppercase tracking-[0.5em] text-cyan-300">ElementOS — Proof of Telemetry Layer</div>
                     <h1 className="mt-2 bg-gradient-to-r from-white via-cyan-100 to-fuchsia-200 bg-clip-text text-4xl font-black tracking-tight text-transparent sm:text-6xl md:text-8xl">ARM CLOUD</h1>
-                    <p className="mt-3 max-w-4xl text-lg text-slate-300">Telemetry receipts, validator checks, token-economy blueprint, smart-contract gates, monetization stack, scientific engine path, compliance roadmap, exchange-readiness, ZDAR cards, and local progression.</p>
+                    <p className="mt-3 max-w-4xl text-lg text-slate-300">Telemetry receipts, validator checks, deterministic simulations, ZDAR cards, discovery challenges, and local progression.</p>
                   </div>
                   <div className="grid w-full gap-3 sm:min-w-[360px] lg:w-auto">
                     <Metric label="Current Pair" value={pair.join(" / ")} sub="deterministic output" />
@@ -1545,7 +1317,7 @@ export default function App() {
                     <GhostButton onClick={generateShareCard} className="border-cyan-300/30 bg-cyan-500/10 text-cyan-100">📤 Share Result</GhostButton>
                   </div>
 
-                  {shareText && <textarea readOnly value={shareText} onFocus={(event) => event.target.select()} className="mt-4 w-full rounded-2xl border border-cyan-300/30 bg-slate-950/80 p-3 text-sm text-cyan-100" />}
+                  {shareText && <textarea readOnly value={shareText} onFocus={(event) => event.target.select()} className="mt-4 w-full max-w-full resize-y rounded-2xl border border-cyan-300/30 bg-slate-950/80 p-3 text-sm text-cyan-100" />}
                 </Card>
               </section>
 
@@ -1615,30 +1387,6 @@ export default function App() {
                 <ManifestoPanel />
                 <RoadmapPanel />
                 <TelemetryRoadmapPanel />
-              </section>
-
-              <section className="mt-5 grid gap-5 lg:grid-cols-2">
-                <ReadinessPanel />
-                <TokenEconomyPanel />
-              </section>
-
-              <section className="mt-5 grid gap-5 lg:grid-cols-2">
-                <SmartContractAuditPanel />
-                <MonetizationPanel />
-              </section>
-
-              <section className="mt-5 grid gap-5 lg:grid-cols-2">
-                <ScienceEnginePanel />
-                <InfrastructureScalePanel />
-              </section>
-
-              <section className="mt-5 grid gap-5 lg:grid-cols-2">
-                <CompliancePanel />
-                <ExchangeIntegrationPanel />
-              </section>
-
-              <section className="mt-5">
-                <Upgrade500MatrixPanel />
               </section>
 
               <footer className="mt-5 rounded-[2.5rem] border border-white/10 bg-slate-950/70 p-6 text-center shadow-[0_0_80px_rgba(0,0,0,.25)]">
