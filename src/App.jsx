@@ -1196,24 +1196,6 @@ export default function App() {
           }
           .zdar-active { animation: zdarPulse 1.4s ease-in-out infinite; }
         `}
-          .safe-popup {
-            max-width: min(92vw, 42rem);
-            max-height: min(78vh, 42rem);
-            overflow: auto;
-            overflow-wrap: anywhere;
-            overscroll-behavior: contain;
-          }
-          @media (max-width: 640px) {
-            * { -webkit-tap-highlight-color: transparent; }
-            .safe-popup {
-              width: calc(100vw - 1.5rem);
-              max-width: calc(100vw - 1.5rem);
-              left: 50% !important;
-              right: auto !important;
-              transform: translateX(-50%) !important;
-            }
-          }
-
         </style>
 
         <ParticleField />
