@@ -1,3 +1,4 @@
+// mobile-fixed ElementOS build: scrollable onboarding/login, safer mobile viewport, responsive telemetry receipt panel.
 // master-proof-of-telemetry build: 150 upgrade architecture baked into ElementOS demo.
 // ElementOS Proof of Telemetry Layer
 // Frontend-only public demo build: local profile, persistent history, deterministic scoring, onboarding, discovery engine, and social cards.
@@ -271,22 +272,44 @@ function TelemetryBackbonePanel({ receipt, result, pair }) {
 
   return (
     <Card title="Proof of Telemetry Backbone" kicker="invisible intelligence engine">
-      <div className="mt-4 rounded-[2rem] border border-cyan-300/20 bg-cyan-500/10 p-5 shadow-[0_0_55px_rgba(34,211,238,.12)]">
-        <div className="text-[10px] font-black uppercase tracking-[0.32em] text-cyan-200">Telemetry Receipt</div>
-        <div className="mt-2 break-all font-mono text-sm text-cyan-50">{activeReceipt.id}</div>
-        <div className="mt-3 grid gap-3 sm:grid-cols-3">
-          <Metric label="Receipt Hash" value={activeReceipt.hash} />
-          <Metric label="Model" value={activeReceipt.model.split(".")[0]} sub={activeReceipt.model.split(".")[1] || "demo"} />
-          <Metric label="Validator Score" value={`${activeReceipt.validatorScore}%`} />
+      <div className="mt-4 rounded-[1.5rem] border border-cyan-300/20 bg-cyan-500/10 p-4 shadow-[0_0_55px_rgba(34,211,238,.12)] sm:rounded-[2rem] sm:p-5">
+        <div className="text-[10px] font-black uppercase tracking-[0.26em] text-cyan-200 sm:tracking-[0.32em]">
+          Telemetry Receipt
         </div>
+
+        <div className="mt-2 max-w-full overflow-hidden rounded-2xl border border-cyan-300/15 bg-slate-950/55 p-3">
+          <div className="break-all font-mono text-[11px] leading-5 text-cyan-50 sm:text-sm">
+            {activeReceipt.id}
+          </div>
+        </div>
+
+        <div className="mt-3 grid gap-3 sm:grid-cols-3">
+          <div className="min-w-0 rounded-2xl border border-white/10 bg-slate-950/55 p-3">
+            <div className="text-[10px] uppercase tracking-[0.2em] text-slate-400">Receipt Hash</div>
+            <div className="mt-1 break-all font-mono text-xs font-black text-white">{activeReceipt.hash}</div>
+          </div>
+
+          <div className="min-w-0 rounded-2xl border border-white/10 bg-slate-950/55 p-3">
+            <div className="text-[10px] uppercase tracking-[0.2em] text-slate-400">Model</div>
+            <div className="mt-1 break-words text-base font-black text-white">{activeReceipt.model}</div>
+          </div>
+
+          <div className="min-w-0 rounded-2xl border border-white/10 bg-slate-950/55 p-3">
+            <div className="text-[10px] uppercase tracking-[0.2em] text-slate-400">Validator</div>
+            <div className="mt-1 text-2xl font-black text-white">{activeReceipt.validatorScore}%</div>
+          </div>
+        </div>
+
         <div className="mt-4 rounded-2xl border border-white/10 bg-slate-950/55 p-4 text-sm leading-6 text-slate-300">
           {telemetryInsight(pair, result)}
         </div>
       </div>
+
       <div className="mt-4 grid gap-2 sm:grid-cols-2">
         {activeReceipt.signals.map((signal, index) => (
-          <div key={`${signal}-${index}`} className="rounded-xl border border-white/10 bg-slate-950/45 p-3 text-xs font-bold text-slate-200">
-            <span className="mr-2 text-emerald-300">●</span>{signal}
+          <div key={`${signal}-${index}`} className="min-w-0 rounded-xl border border-white/10 bg-slate-950/45 p-3 text-xs font-bold text-slate-200">
+            <span className="mr-2 text-emerald-300">●</span>
+            <span className="break-words">{signal}</span>
           </div>
         ))}
       </div>
@@ -428,7 +451,7 @@ function Metric({ label, value, sub }) {
   return (
     <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-slate-950/55 p-3 shadow-[inset_0_1px_0_rgba(255,255,255,.06)] sm:p-4">
       <div className="text-[10px] uppercase tracking-[0.24em] text-slate-400">{label}</div>
-      <div className="mt-1 text-xl font-black text-white tabular-nums sm:text-2xl">{value}</div>
+      <div className="mt-1 break-words text-xl font-black text-white tabular-nums sm:text-2xl">{value}</div>
       {sub && <div className="mt-1 text-xs text-cyan-200/70">{sub}</div>}
     </div>
   );
@@ -487,10 +510,10 @@ function OnboardingModal({ profile, elements, onComplete }) {
   if (profile.onboardingComplete) return null;
 
   return (
-    <div className="fixed inset-0 z-[100] grid place-items-center bg-slate-950/85 p-4 backdrop-blur-xl">
-      <div className="max-w-2xl rounded-[2rem] border border-cyan-300/25 bg-slate-950 p-6 shadow-[0_0_120px_rgba(34,211,238,.25)]">
+    <div className="fixed inset-0 z-[100] overflow-y-auto bg-slate-950/85 p-3 backdrop-blur-xl sm:p-4">
+      <div className="mx-auto my-4 w-full max-w-2xl rounded-[1.5rem] border border-cyan-300/25 bg-slate-950 p-4 shadow-[0_0_120px_rgba(34,211,238,.25)] sm:my-8 sm:rounded-[2rem] sm:p-6">
         <div className="text-[10px] font-black uppercase tracking-[0.35em] text-cyan-300">Welcome to ElementOS</div>
-        <h1 className="mt-3 text-4xl font-black text-white sm:text-6xl">Create your demo profile.</h1>
+        <h1 className="mt-3 text-3xl font-black leading-tight text-white sm:text-6xl">Create your demo profile.</h1>
         <p className="mt-3 text-sm leading-7 text-slate-300">
           This saves your simulation history, favourites, ZDAR discoveries, and profile progress locally in your browser.
         </p>
@@ -529,7 +552,7 @@ function OnboardingModal({ profile, elements, onComplete }) {
 
 function TopNav({ profile, setShowApp, showApp }) {
   return (
-    <nav className="sticky top-2 z-50 mx-auto mb-4 flex max-w-7xl items-center justify-between gap-3 rounded-3xl border border-white/10 bg-slate-950/70 px-3 py-3 shadow-[0_20px_80px_rgba(0,0,0,.35)] backdrop-blur-2xl sm:top-4 sm:mb-5 sm:px-5">
+    <nav className="sticky top-2 z-50 mx-auto mb-4 flex max-w-7xl flex-wrap items-center justify-between gap-3 rounded-3xl border border-white/10 bg-slate-950/70 px-3 py-3 shadow-[0_20px_80px_rgba(0,0,0,.35)] backdrop-blur-2xl sm:top-4 sm:mb-5 sm:px-5">
       <div className="flex items-center gap-3">
         <div className="grid h-10 w-10 place-items-center rounded-2xl border border-cyan-300/30 bg-cyan-300/10 font-black text-cyan-100 shadow-[0_0_28px_rgba(34,211,238,.25)]">E</div>
         <div>
@@ -584,7 +607,7 @@ function LandingPage({ onLaunch, profile }) {
           </div>
         </div>
 
-        <div className="relative min-h-[360px] overflow-hidden rounded-[1.8rem] border border-white/10 bg-slate-950/70 p-4 shadow-[0_0_100px_rgba(34,211,238,.18)] sm:min-h-[520px] sm:rounded-[2.5rem] sm:p-5">
+        <div className="relative min-h-[300px] overflow-hidden rounded-[1.8rem] border border-white/10 bg-slate-950/70 p-4 shadow-[0_0_100px_rgba(34,211,238,.18)] sm:min-h-[520px] sm:rounded-[2.5rem] sm:p-5">
           <div className="absolute inset-16 rounded-full border border-cyan-300/15 shadow-[0_0_70px_rgba(34,211,238,.18)] [transform:rotateX(64deg)_rotateZ(12deg)]" />
           <div className="absolute inset-24 rounded-full border border-fuchsia-300/15 shadow-[0_0_70px_rgba(217,70,239,.14)] [transform:rotateX(28deg)_rotateY(45deg)]" />
           <div className="absolute left-1/2 top-1/2 flex h-24 w-24 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-cyan-200 bg-cyan-300/15 text-4xl font-black shadow-[0_0_80px_rgba(34,211,238,.75)] sm:h-36 sm:w-36 sm:text-6xl">{profile.favouriteElement || "Al"}</div>
@@ -747,7 +770,7 @@ function OrbitalAlignment({ result, pair }) {
       : "bg-cyan-300/35 shadow-[0_0_25px_rgba(34,211,238,.35)]";
 
   return (
-    <div className="relative mt-4 h-[360px] overflow-hidden rounded-[1.6rem] border border-white/10 bg-slate-950 shadow-[0_0_90px_rgba(34,211,238,.16)] sm:h-[450px] sm:rounded-[2rem]">
+    <div className="relative mt-4 h-[300px] overflow-hidden sm:h-[450px] rounded-[1.6rem] border border-white/10 bg-slate-950 shadow-[0_0_90px_rgba(34,211,238,.16)] sm:h-[450px] sm:rounded-[2rem]">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_28%_50%,rgba(249,115,22,.18),transparent_28%),radial-gradient(circle_at_72%_50%,rgba(34,211,238,.18),transparent_28%),radial-gradient(circle_at_50%_50%,rgba(217,70,239,.16),transparent_22%)]" />
       <div className="absolute left-[25%] top-1/2 h-40 w-40 -translate-x-1/2 -translate-y-1/2 rounded-full border border-orange-300/20 shadow-[0_0_55px_rgba(249,115,22,.25)] [transform:translate(-50%,-50%)_rotateX(62deg)_rotateZ(-18deg)] sm:h-60 sm:w-60" />
       <div className="absolute left-[25%] top-1/2 h-20 w-20 -translate-x-1/2 -translate-y-1/2 rounded-full bg-orange-400/20 shadow-[0_0_70px_rgba(249,115,22,.8)] sm:h-28 sm:w-28" />
@@ -780,7 +803,7 @@ function OrbitalSystem({ elements, pair, setPairAt, settings, result }) {
   const featured = elements.filter((e) => e.sym === origin.sym || e.influence > 55 || active.has(e.sym)).slice(0, 42);
 
   return (
-    <div className="relative mt-4 h-[420px] overflow-hidden rounded-[2rem] border border-cyan-300/20 bg-slate-950 shadow-[0_0_120px_rgba(34,211,238,0.22)] sm:aspect-square sm:h-auto sm:max-h-[720px] sm:rounded-[3rem]">
+    <div className="relative mt-4 h-[340px] overflow-hidden sm:h-[420px] rounded-[2rem] border border-cyan-300/20 bg-slate-950 shadow-[0_0_120px_rgba(34,211,238,0.22)] sm:aspect-square sm:h-auto sm:max-h-[720px] sm:rounded-[3rem]">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(34,211,238,.26),rgba(147,51,234,.13)_30%,rgba(2,6,23,.98)_72%)]" />
       <div className="absolute inset-12 rounded-full border border-cyan-300/15 [transform:rotateX(68deg)_rotateZ(14deg)]" />
       <div className="absolute inset-20 rounded-full border border-fuchsia-300/15 [transform:rotateX(24deg)_rotateY(55deg)]" />
@@ -1141,7 +1164,7 @@ export default function App() {
     <>
       <OnboardingModal profile={profile} elements={elements} onComplete={completeOnboarding} />
 
-      <div className="min-h-screen overflow-hidden bg-slate-950 p-3 text-white sm:p-5">
+      <div className="min-h-dvh overflow-x-hidden overflow-y-auto bg-slate-950 p-3 text-white sm:p-5">
         <style>{`
           @keyframes floatParticle {
             0% { transform: translate3d(0, 0, 0) scale(1); opacity: .18; }
@@ -1157,13 +1180,13 @@ export default function App() {
 
         <ParticleField />
         {result.zdar && <div className="pointer-events-none fixed inset-0 z-10 bg-fuchsia-500/10" />}
-        <div className="fixed bottom-3 left-3 z-[70] rounded-2xl border border-yellow-300/30 bg-slate-950/90 px-4 py-3 text-xs font-black uppercase tracking-[0.2em] text-yellow-100 shadow-[0_0_40px_rgba(250,204,21,.18)] backdrop-blur-xl">
+        <div className="fixed bottom-3 left-3 z-[70] hidden rounded-2xl border border-yellow-300/30 bg-slate-950/90 px-4 py-3 text-xs font-black uppercase tracking-[0.2em] text-yellow-100 shadow-[0_0_40px_rgba(250,204,21,.18)] backdrop-blur-xl sm:block">
           Demo Build • Local Saves
         </div>
 
         <TopNav profile={profile} setShowApp={setShowApp} showApp={showApp} />
 
-        <div className="relative z-20 mx-auto max-w-7xl">
+        <div className="relative z-20 mx-auto max-w-7xl pb-10 sm:pb-0">
           {!showApp ? (
             <LandingPage onLaunch={() => setShowApp(true)} profile={profile} />
           ) : (
